@@ -1,0 +1,99 @@
+name: Bug report
+description: Report reproducible gameplay or build defects.
+labels: ["type:bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. PitPact is a simulation game; the more
+        precisely you can describe the situation (seed, build order, save
+        file), the faster we can reproduce and fix it.
+
+  - type: input
+    id: summary
+    attributes:
+      label: One-line summary
+      description: A short, specific title. "Crashes on save load" is better than "broken".
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Where did this happen?
+      options:
+        - macOS (Apple Silicon)
+        - macOS (Intel)
+        - Windows
+        - Linux
+        - Build server / CI
+        - Other / not sure
+    validations:
+      required: true
+
+  - type: input
+    id: godot_version
+    attributes:
+      label: Godot version
+      description: "From Help → About in the editor, or `godot --version` on the CLI."
+      placeholder: "4.3.0"
+    validations:
+      required: true
+
+  - type: input
+    id: seed
+    attributes:
+      label: Generator seed
+      description: If the bug depends on a generated dungeon, paste the seed.
+      placeholder: "e.g. 1720458311"
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: A numbered list of the minimum actions needed to reach the bug.
+      placeholder: |
+        1. Start a new campaign with seed 1720458311.
+        2. Build two Hearths and a Workshop.
+        3. Wait until day 14.
+        4. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log / event-log excerpt
+      description: Paste the lines you see in the in-game event log or stdout. Wrap in ```fences.
+
+  - type: textarea
+    id: severity
+    attributes:
+      label: Severity and workarounds
+      description: How broken is it? Is there a workaround? Does it block your campaign?
+
+  - type: checkboxes
+    id: attachments
+    attributes:
+      label: Attachments
+      description: Tick everything you can share.
+      options:
+        - label: "Save file (share only if it contains no personal data)"
+        - label: "Stack trace / crash dump"
+        - label: "Screenshot or short screen recording"
+        - label: "Output of `tools/run_quality.sh`"

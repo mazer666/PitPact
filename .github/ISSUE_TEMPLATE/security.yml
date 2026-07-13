@@ -1,0 +1,60 @@
+name: Security / privacy
+description: Report a suspected security or privacy issue.
+labels: ["type:security", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **For issues that put users at risk, do NOT use this template.**
+        Use the private disclosure channel listed in `SECURITY.md`
+        instead. Anything you post here is public the moment you submit.
+
+        This template is for lower-severity observations, hardening
+        ideas, dependency/license concerns, and privacy questions
+        where public discussion is appropriate.
+
+  - type: dropdown
+    id: class
+    attributes:
+      label: What kind of issue
+      options:
+        - Save-file safety (import validation, format issues)
+        - Dependency / supply-chain
+        - License / attribution concern
+        - Privacy / data handling
+        - Hardening idea (sandbox, permissions)
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity (best guess)
+      options:
+        - Informational
+        - Low
+        - Medium
+        - High
+        - Critical
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: What is the issue?
+      description: Be precise. Avoid pasting exploit payloads here; use SECURITY.md for those.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: Steps to reach the situation, with seeds and save paths where relevant.
+
+  - type: textarea
+    id: mitigation
+    attributes:
+      label: Suggested mitigation (optional)

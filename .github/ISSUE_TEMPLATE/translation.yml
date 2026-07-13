@@ -1,0 +1,73 @@
+name: Translation
+description: Report a missing, wrong, or awkward translation.
+labels: ["type:translation", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        PitPact is built with all user-visible strings externalized from
+        day one. Translators edit files in locales/ directly. A
+        contributor who wants to *add* a new language should open a
+        "Feature idea" issue first so maintainers can confirm scope.
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options:
+        - German (de)
+        - English (en)
+        - Other / new language
+    validations:
+      required: true
+
+  - type: input
+    id: key
+    attributes:
+      label: Localization key
+      description: If you can find it. Format: "ui.menu.start", "creature.foobar.desc", etc.
+      placeholder: "ui.menu.start"
+
+  - type: input
+    id: location
+    attributes:
+      label: Where in the game
+      description: Screen, menu, creature card, advisor quote, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: source
+    attributes:
+      label: Source (English) text
+    validations:
+      required: true
+
+  - type: textarea
+    id: target
+    attributes:
+      label: Current target-language text (if any)
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Your suggested translation
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Context, tone, wordplay
+      description: PitPact is satirical; some strings lean into bureaucratic voice. Note any wordplay, idioms, or tone decisions.
+
+  - type: checkboxes
+    id: will
+    attributes:
+      label: I can help with…
+      options:
+        - label: "Editing the .po / .csv file directly"
+        - label: "Reviewing the change after it's filed"
+        - label: "Filing a follow-up if more occurrences show up"

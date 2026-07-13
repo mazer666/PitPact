@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Code of Conduct
+    url: https://github.com/mazer666/PitPact/blob/main/CODE_OF_CONDUCT.md
+    about: "How we expect everyone to behave in this community."
+  - name: Contributor guide
+    url: https://github.com/mazer666/PitPact/blob/main/CONTRIBUTING.md
+    about: "Workflow, PR rules, AI-assist disclosure, file ownership."
+  - name: PitPact discussion forum (planned)
+    url: https://github.com/mazer666/PitPact/discussions
+    about: "Long-form questions, design discussion, and play help."
+  - name: Security disclosure (private)
+    url: https://github.com/mazer666/PitPact/security/policy
+    about: "Use this for vulnerabilities, not the public bug template."

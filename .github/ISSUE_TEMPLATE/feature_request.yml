@@ -1,0 +1,75 @@
+name: Feature idea
+description: Suggest a new system, room, origin, or content category.
+labels: ["type:feature", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        PitPact is a *vertical campaign slice* first; the goal of M0-M6
+        is a complete small game, not an open-ended feature pile. Ideas
+        that help the slice land or that fit the M7+ roadmap are very
+        welcome; ideas that are large and unfocused may be parked.
+
+  - type: input
+    id: summary
+    attributes:
+      label: One-line summary
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Realm building
+        - Inhabitants / cultures
+        - Contracts / politics
+        - Research / rituals
+        - World generation
+        - Conflict / crisis
+        - UI / accessibility
+        - Audio / music
+        - Tooling / modding
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Best fit for milestone
+      description: Best guess. The maintainers will re-route.
+      options:
+        - Pre-M5 (foundational)
+        - M5 (vertical campaign completion)
+        - M6 (public release)
+        - Post-release
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is the gap?
+      description: What situation in the current game makes you want this feature?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed shape
+      description: One short paragraph: what the player does, what they get to see or feel.
+
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: Trade-offs
+      description: What does this cost? Which existing system does it interact with?
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References (optional)
+      description: If you have seen something similar in a non-protected source, name it briefly. Do not link copyrighted material.

@@ -1,0 +1,117 @@
+# PitPact — minimal CI confirmation suite.
+#
+# This is the "minimal confirmation suite" allowed by §18 of
+# docs/requirements.md. Local tests under tools/run_quality.sh remain
+# authoritative. CI is here to catch the obvious case where a
+# contributor forgot to run the local quality command before pushing.
+#
+# What CI does:
+#   1. Verifies that the M0 baseline file set is still present.
+#   2. Validates the GitHub Actions YAML itself (catches edit mistakes).
+#   3. Parses project.godot in headless mode (catches broken config).
+#   4. Discovers test files (does not run them yet — M0 has none).
+#
+# What CI deliberately does NOT do:
+#   - Run the full Godot test suite (that lands in M2).
+#   - Build distributable artifacts (M6).
+#   - Enforce a formatter (the chosen formatter lands in M0 closeout
+#     together with a written style guide).
+
+name: M0 CI confirmation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  confirm:
+    name: M0 baseline check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python (for YAML validation)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+
+      - name: Verify M0 baseline files
+        run: |
+          set -euo pipefail
+          required=(
+            AGENTS.md
+            README.md
+            LICENSE
+            CODE_OF_CONDUCT.md
+            CONTRIBUTING.md
+            docs/requirements.md
+            docs/milestones.md
+            docs/roadmap.md
+            docs/repository-structure.md
+            docs/style-bible.md
+            docs/ip-license-checklist.md
+            licenses/GPL-3.0.txt
+            licenses/CC-BY-SA-4.0.txt
+            licenses/THIRD-PARTY.md
+            project.godot
+            tools/run_quality.sh
+          )
+          missing=()
+          for f in "${required[@]}"; do
+            [ -e "${f}" ] || missing+=("${f}")
+          done
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "::error::M0 baseline files missing:"
+            for f in "${missing[@]}"; do echo "  - ${f}"; done
+            exit 1
+          fi
+          echo "M0 baseline file set is intact."
+
+      - name: Validate workflow YAML
+        run: |
+          python3 - <<'PY'
+          import pathlib, sys, yaml
+          errs = 0
+          for p in pathlib.Path(".github/workflows").glob("*.y*ml"):
+              try:
+                  with p.open() as fh:
+                      yaml.safe_load(fh)
+              except Exception as e:
+                  print(f"::error::{p}: {e}")
+                  errs += 1
+          sys.exit(errs)
+          PY
+
+      - name: Install Godot 4.3
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          godot-version: 4.3.0
+          use-dotnet: false
+          export-template-versions: ""
+
+      - name: Headless project parse
+        run: godot --headless --quit --path .
+
+      - name: Run local quality command
+        run: |
+          chmod +x tools/run_quality.sh
+          PITPACT_GODOT=godot tools/run_quality.sh
+
+      - name: Upload benchmark results (if any)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: benchmarks/results/
+          if-no-files-found: ignore

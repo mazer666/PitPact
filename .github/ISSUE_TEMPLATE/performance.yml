@@ -1,0 +1,100 @@
+name: Performance
+description: Report slowdowns, frame drops, memory growth, or long loads.
+labels: ["type:performance", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Reproducible performance reports are worth ten anecdotal ones.
+        The local benchmark is `tools/run_benchmark.sh`. The CI workflow
+        runs a sanity pass on every push.
+
+  - type: input
+    id: summary
+    attributes:
+      label: One-line summary
+      placeholder: "FPS drops to ~25 in hour 6 on a 200-inhabitant realm"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - macOS (Apple Silicon)
+        - macOS (Intel)
+        - Windows
+        - Linux
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: hardware
+    attributes:
+      label: Hardware
+      description: CPU, GPU, RAM. On macOS: "About This Mac → Overview" works.
+    validations:
+      required: true
+
+  - type: input
+    id: godot_version
+    attributes:
+      label: Godot version
+    validations:
+      required: true
+
+  - type: dropdown
+    id: build
+    attributes:
+      label: Build
+      options:
+        - Debug editor
+        - Debug export
+        - Release export
+    validations:
+      required: true
+
+  - type: input
+    id: realm_size
+    attributes:
+      label: Realm size at the time
+      description: Tile count, room count, inhabitant count, day/hour.
+
+  - type: input
+    id: seed
+    attributes:
+      label: Generator seed
+
+  - type: textarea
+    id: observation
+    attributes:
+      label: What you observed
+      description: FPS, frametime graph, memory, GC pauses — whatever you have.
+    validations:
+      required: true
+
+  - type: textarea
+    id: benchmark
+    attributes:
+      label: Benchmark output (if any)
+      description: Paste the output of `./tools/run_benchmark.sh --scenario ...` here, or describe the manual steps.
+
+  - type: textarea
+    id: profile
+    attributes:
+      label: Profile artifacts (if any)
+      description: Attach Godot's profiler CSV export, a `cltop`/`instruments` trace, or a `perf` record.
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Minor hitch
+        - Noticeable but playable
+        - Below the 60 FPS target for the reference machine
+        - Unplayable
+    validations:
+      required: true

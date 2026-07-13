@@ -1,0 +1,77 @@
+name: Balance feedback
+description: Report that something feels too strong, too weak, or unfair.
+labels: ["type:balance", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Balance feedback is most useful with a reproducible setup.
+        Please include the seed, difficulty preset, the action you took,
+        and what outcome you expected vs. what you saw.
+
+  - type: input
+    id: summary
+    attributes:
+      label: One-line summary
+      placeholder: "e.g. Workshop output dominates Hearth output by day 30"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: Difficulty preset
+      options:
+        - Narrative
+        - Balanced
+        - Challenging
+        - Custom (per-rule)
+    validations:
+      required: true
+
+  - type: input
+    id: seed
+    attributes:
+      label: Generator seed
+    validations:
+      required: true
+
+  - type: textarea
+    id: setup
+    attributes:
+      label: Setup
+      description: Realm size, day reached, rooms built, inhabitants present.
+    validations:
+      required: true
+
+  - type: textarea
+    id: observation
+    attributes:
+      label: What you observed
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: save
+    attributes:
+      label: Save / log excerpt (optional)
+      description: Paste relevant event-log lines or share a save file path.
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Cosmetic / feel
+        - Mildly off
+        - Materially affects play
+        - Feels exploitable / game-breaking
+    validations:
+      required: true
