@@ -1,0 +1,22 @@
+# Godot should not auto-import or compile-check anything under
+# locales/. The directory holds two distinct artefacts:
+#
+#   * source_strings.csv — a three-column CSV
+#     (id, source, context) used by `tools/validate_locale.sh`
+#     to author the M1 English text. Godot's CSV translation
+#     importer does not understand the third column, so
+#     auto-importing the file produces a wall of "expected
+#     2 locale(s)" errors.
+#
+#   * en.po, de.po — generated from the CSV. The PO files
+#     are the canonical translation source; a separate
+#     `tools/import_translations.sh` (lands with M5) is the
+#     single, deterministic import path. Until that exists,
+#     leaving them un-imported is the conservative choice.
+#
+# Translators and the validate_locale.sh script are
+# filesystem-only; they do not need Godot's import pipeline
+# to function. If/when we wire PO → .translation, the
+# generator will write the binary .translation files into
+# a subdirectory (e.g. locales/compiled/) that Godot does
+# auto-import; this .gdignore stays for the source files.

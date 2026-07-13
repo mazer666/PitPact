@@ -1,0 +1,28 @@
+id,source,context
+ROOM_HEARTH_NAME,Hearth,Name of the starter room (data/rooms/hearth.tres)
+ROOM_HEARTH_DESC,A communal fire-pit and gathering space where inhabitants eat, talk, and remember.,Short description of the Hearth shown in the build menu.
+RES_STONE_NAME,Stone,Display name of the stone resource category (data/resources/stone.tres).
+RES_STONE_DESC,Raw mineral dug from the walls of the realm.,Tooltip description of stone.
+RES_FUNGI_NAME,Fungi,Display name of the food/medicine resource category (data/resources/fungi.tres).
+RES_FUNGI_DESC,Farmable mushroom cultures that feed the realm and yield a few medicinal strains.,Tooltip description of fungi.
+RES_EMBER_NAME,Ember,Display name of the magical essence resource category (data/resources/ember.tres).
+RES_EMBER_DESC,A dim warmth drawn from places, events, and beings. Used in rituals and binding.,Tooltip description of ember.
+RES_MEMORY_NAME,Memory,Display name of the knowledge resource category (data/resources/memory.tres).
+RES_MEMORY_DESC,Stories, recipes, and facts remembered by the inhabitants. Spent to research.,Tooltip description of memory.
+BIOME_HOLLOW_NAME,The Hollow,Display name of the starting biome (data/biomes/hollow.tres).
+BIOME_HOLLOW_NARRATIVE,Where the rock first learns to listen.,Narrative anchor shown when the player first enters the Hollow.
+BIOME_DUSTMAZE_NAME,Dustmaze,Display name of the second biome (data/biomes/dustmaze.tres).
+BIOME_DUSTMAZE_NARRATIVE,Old roads that no longer agree on where they go.,Narrative anchor shown when the player first enters the Dustmaze.
+ORIGIN_SCHOLAR_NAME,Scholar,Display name of the Scholar Pactmaker origin (data/origins/scholar.tres).
+ORIGIN_SCHOLAR_NARRATIVE,You arrived with a library, a ledger, and a quiet certainty that every contract has a clause you have not read yet.,Narrative anchor for the Scholar origin.
+ORIGIN_WARDEN_NAME,Warden,Display name of the Warden Pactmaker origin (data/origins/warden.tres).
+ORIGIN_WARDEN_NARRATIVE,You arrived with a key-ring, a roster, and a longer list of names you are responsible for than names you trust.,Narrative anchor for the Warden origin.
+MENU_NEW_CAMPAIGN,New Campaign,Button label on the title screen to start a new campaign.
+MENU_CONTINUE,Continue,Button label on the title screen to resume the most recent save.
+MENU_QUIT,Quit,Button label on the title screen to exit the game.
+MENU_RESUME,Resume,Button label on the pause menu to return to the running campaign.
+MENU_SAVE,Save,Button label on the pause menu to write the campaign to disk.
+MENU_LOAD,Load,Button label on the title screen to load a specific save slot.
+MENU_RETURN_TO_TITLE,Return to Title,Button label on the pause menu to abandon the current campaign and return to the title screen.
+DIAG_TOGGLE,Toggle Diagnostics,Tooltip on the F3 hotkey.
+MINIMAP_TOGGLE,Toggle Minimap,Tooltip on the M hotkey.

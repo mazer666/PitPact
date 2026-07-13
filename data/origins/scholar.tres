@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="OriginDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/content/origin_def.gd" id="1_origin_def"]
+
+[resource]
+script = ExtResource("1_origin_def")
+id = &"scholar"
+display_name = &"ORIGIN_SCHOLAR_NAME"
+starting_powers = PackedStringArray("read_the_room", "ledger_rite")
+preferred_cultures = PackedStringArray("scholar_tradition", "ledger_keepers")
+weakness = &"duelist"
+narrative_anchor = &"ORIGIN_SCHOLAR_NARRATIVE"

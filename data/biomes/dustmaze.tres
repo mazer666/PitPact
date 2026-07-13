@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BiomeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/content/biome_def.gd" id="1_biome_def"]
+
+[resource]
+script = ExtResource("1_biome_def")
+id = &"dustmaze"
+display_name = &"BIOME_DUSTMAZE_NAME"
+palette_hint = &"sand_pale"
+resource_bias = {
+	&"stone": 0.3,
+	&"fungi": 0.1,
+	&"ember": 0.5,
+	&"memory": 0.2,
+}
+hazard_bias = PackedStringArray("flash_flood", "lost_paths")
+narrative_anchor = &"BIOME_DUSTMAZE_NARRATIVE"
