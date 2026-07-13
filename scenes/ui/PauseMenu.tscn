@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1m1pitpactpause01"]
+
+[ext_resource type="Script" path="res://src/ui/pause_menu.gd" id="1_pausectrl"]
+
+[node name="PauseMenu" type="CanvasLayer"]
+layer = 40
+script = ExtResource("1_pausectrl")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.0, 0.0, 0.0, 0.6)
+
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -140.0
+offset_right = 160.0
+offset_bottom = 140.0
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+theme_override_constants/separation = 8
+
+[node name="PauseHeader" type="Label" parent="Panel/VBox"]
+text = ""
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="Panel/VBox"]
+text = ""
+
+[node name="SaveButton" type="Button" parent="Panel/VBox"]
+text = ""
+
+[node name="LoadButton" type="Button" parent="Panel/VBox"]
+text = ""
+
+[node name="QuitToTitleButton" type="Button" parent="Panel/VBox"]
+text = ""

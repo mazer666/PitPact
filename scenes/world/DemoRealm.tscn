@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://b1m1pitpactdemo01"]
 
 [ext_resource type="Script" path="res://src/world/tile_map.gd" id="1_tile_map"]
 [ext_resource type="Script" path="res://src/world/zone_painter.gd" id="2_painter"]
@@ -19,11 +19,11 @@ offset_left = 8.0
 offset_top = 8.0
 offset_right = 88.0
 offset_bottom = 36.0
-text = "Save"
+text = ""
 
 [node name="LoadButton" type="Button" parent="DemoToolbar"]
 offset_left = 96.0
 offset_top = 8.0
 offset_right = 176.0
 offset_bottom = 36.0
-text = "Load"
+text = ""

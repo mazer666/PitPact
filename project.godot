@@ -21,6 +21,7 @@ config_version=5
 
 config/name="PitPact"
 config/description="Pact & Pit — An Underworld of Terms and Terrors"
+run/main_scene="res://scenes/main/Main.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 
 ; This tempdata/ is created automatically on first run. We ignore it via
@@ -47,9 +48,74 @@ window/size/viewport_height=720
 
 [input]
 
-; Touch-aware interactions are required from day one (§4.1). Mouse
-; emulation is the default, but a placeholder action is reserved here
-; so M1+ can bind a touch action without a project.godot rewrite.
+; Touch-aware interactions are required from day one (§4.1 of
+; docs/requirements.md). Every UI action has at least one keyboard /
+; mouse binding AND at least one touch binding so the same scenes
+; serve the desktop and the iPadOS port without a project.godot
+; rewrite.
+;
+; The actions below are owned by src/ui/ and read by
+; src/ui/isometric_camera.gd, src/ui/main.gd, the title screen,
+; the pause menu, the diagnostics overlay, and the minimap.
+
+ui_pan={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"button_index":2,"pressed":true,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_mask":0,"canceled":false,"script":null)
+, Object(InputEventScreenTouch,"index":-1,"position":Vector2(0, 0),"pressed":true,"double_tap":false,"script":null)
+]
+}
+ui_zoom_in={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"button_index":4,"pressed":true,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_mask":0,"canceled":false,"script":null)
+, Object(InputEventScreenTouch,"index":0,"position":Vector2(0, 0),"pressed":true,"double_tap":false,"script":null)
+]
+}
+ui_zoom_out={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"button_index":5,"pressed":true,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_mask":0,"canceled":false,"script":null)
+, Object(InputEventScreenTouch,"index":1,"position":Vector2(0, 0),"pressed":true,"double_tap":false,"script":null)
+]
+}
+ui_paint={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"button_index":1,"pressed":true,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_mask":0,"canceled":false,"script":null)
+, Object(InputEventKey,"physical_keycode":0,"keycode":32,"unicode":0,"location":0,"echo":false,"pressed":true,"script":null)
+, Object(InputEventScreenTouch,"index":2,"position":Vector2(0, 0),"pressed":true,"double_tap":false,"script":null)
+]
+}
+ui_toggle_diagnostics={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":4194336,"keycode":4194336,"unicode":0,"location":0,"echo":false,"pressed":true,"script":null)
+]
+}
+ui_toggle_minimap={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":77,"keycode":77,"unicode":109,"location":0,"echo":false,"pressed":true,"script":null)
+]
+}
+ui_pause={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":4194305,"keycode":4194305,"unicode":0,"location":0,"echo":false,"pressed":true,"script":null)
+, Object(InputEventKey,"physical_keycode":80,"keycode":80,"unicode":112,"location":0,"echo":false,"pressed":true,"script":null)
+]
+}
+ui_zoom_pinch={
+"deadzone": 0.5,
+"events": [Object(InputEventScreenDrag,"index":0,"position":Vector2(0, 0),"relative":Vector2(0, 0),"screen_drag":true,"script":null)
+, Object(InputEventScreenDrag,"index":1,"position":Vector2(0, 0),"relative":Vector2(0, 0),"screen_drag":true,"script":null)
+]
+}
+ui_pan_trackpad={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseMotion,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"relative":Vector2(0, 0),"screen_relative":Vector2(0, 0),"pressure":0.0,"pen_inverted":false,"tilt":Vector2(0, 0),"script":null)
+, Object(InputEventScreenDrag,"index":0,"position":Vector2(0, 0),"relative":Vector2(0, 0),"screen_drag":true,"script":null)
+]
+}
+ui_focus_realm={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":4194309,"keycode":4194309,"unicode":0,"location":0,"echo":false,"pressed":true,"script":null)
+]
+}
 
 [layer_names]
 

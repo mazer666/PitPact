@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1m1pitpactmmap01"]
+
+[ext_resource type="Script" path="res://src/ui/minimap.gd" id="1_minimapctrl"]
+
+[node name="Minimap" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_minimapctrl")
+
+[node name="Backdrop" type="Panel" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -72.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 96.0
+
+[node name="VBox" type="VBoxContainer" parent="Backdrop"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+theme_override_constants/separation = 2
+
+[node name="MinimapHeader" type="Label" parent="Backdrop/VBox"]
+text = ""
+
+[node name="MinimapDraw" type="Control" parent="Backdrop/VBox"]
+custom_minimum_size = Vector2(48, 48)

@@ -136,10 +136,21 @@ for module in core content audit save world sim realm ui; do
       if [ "${target}" = "${module}" ]; then
         continue  # self-imports are fine
       fi
-      if ! echo "${target}" | grep -qE "^${allowed_re}$"; then
-        echo "VIOLATION ${f}: imports from src/${target}/ (not allowed from src/${module}/)" >&2
-        violations=$((violations + 1))
-      fi
+      # The allowed set is the bare module names (e.g.
+      # `core content` for `world`). Compare the bare
+      # target name against the allowed set, not against
+      # a regex that expects `src/<module>/` path
+      # fragments — the previous form missed bare-name
+      # matches and produced false positives for legal
+      # imports like `load("res://src/core/rng.gd")` from
+      # a module that is allowed to depend on `core`.
+      for a in ${allowed} ${module}; do
+        if [ "${target}" = "${a}" ]; then
+          continue 2
+        fi
+      done
+      echo "VIOLATION ${f}: imports from src/${target}/ (not allowed from src/${module}/)" >&2
+      violations=$((violations + 1))
     done < <(grep -oE 'res://src/[A-Za-z0-9_]+(/[^"'"'"' ]*)?' "${f}" 2>/dev/null || true)
 
     # 2. Find every reference to a src/ui/ class_name.
@@ -147,6 +158,14 @@ for module in core content audit save world sim realm ui; do
     #    Godot's global class table; referencing a UI
     #    class_name from a game-domain module is a
     #    violation of the load-bearing rule.
+    #
+    #    Same-module references (UI -> UI) are always
+    #    fine; the rule is one-directional. Skip the
+    #    class_name check entirely for files inside
+    #    `src/ui/`.
+    if [ "${module}" = "ui" ]; then
+      continue
+    fi
     for cn in "${UI_CLASSNAMES[@]}"; do
       if grep -qE "\b${cn}\b" "${f}" 2>/dev/null; then
         # The `class_name` line itself is the declaration;
