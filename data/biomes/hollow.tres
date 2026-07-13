@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BiomeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/content/biome_def.gd" id="1_biome_def"]
+
+[resource]
+script = ExtResource("1_biome_def")
+id = &"hollow"
+display_name = &"BIOME_HOLLOW_NAME"
+palette_hint = &"stone_dark"
+resource_bias = {
+	&"stone": 1.0,
+	&"fungi": 0.4,
+	&"ember": 0.1,
+	&"memory": 0.0,
+}
+hazard_bias = PackedStringArray("cave_in", "low_oxygen")
+narrative_anchor = &"BIOME_HOLLOW_NARRATIVE"

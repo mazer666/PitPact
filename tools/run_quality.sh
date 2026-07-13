@@ -253,4 +253,11 @@ if [ "${SKIP_BENCH}" != "1" ]; then
   fi
 fi
 
+# --- 10. Locale validation (M1 Track C, §15 + §18) ---
+if [ -x tools/validate_locale.sh ]; then
+  run_step "locale validation" tools/validate_locale.sh
+else
+  warn "tools/validate_locale.sh missing or not executable; skipping"
+fi
+
 log "ALL CHECKS PASSED ✓"

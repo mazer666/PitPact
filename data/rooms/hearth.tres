@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RoomDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/content/room_def.gd" id="1_room_def"]
+
+[resource]
+script = ExtResource("1_room_def")
+id = &"hearth"
+display_name = &"ROOM_HEARTH_NAME"
+build_time_days = 3
+labour_cost = 12
+materials_cost = {
+	&"stone": 8,
+	&"ember": 1,
+}
+capacity = 6
+tags = PackedStringArray("starter", "social", "core")

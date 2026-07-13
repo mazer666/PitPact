@@ -174,6 +174,31 @@ func restore(state: PackedByteArray) -> void:
 	_state = state.duplicate()
 
 
+## Save-state alias. Returns the same `PackedByteArray` as
+## `snapshot()` but with a name that reads naturally at the
+## call site in `src/save/realm_serializer.gd`. The two
+## methods exist so the rest of the code can use whichever
+## verb fits the context ("snapshot the RNG" vs. "save the
+## RNG state to the realm body").
+##
+## Determinism contract: round-tripping a state through
+## `save_state` → `load_state` must reproduce the exact same
+## sequence of `next_u64()` calls. This is the property the
+## `tests/integration/test_save_roundtrip.gd` integration
+## test depends on (Track C, ADR-0003).
+func save_state() -> PackedByteArray:
+	return snapshot()
+
+
+## Load-state alias. Mirror of `restore(state)`. The name
+## reads naturally at the call site: "load the RNG state
+## from the realm body". The two methods are functionally
+## identical; both reject malformed states (not 8 bytes) with
+## `push_error`.
+func load_state(state: PackedByteArray) -> void:
+	restore(state)
+
+
 # --- 8-byte unsigned-arithmetic helpers --------------------------------
 #
 # The helpers below are deliberately verbose and obviously correct.
