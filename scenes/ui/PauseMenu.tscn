@@ -31,17 +31,17 @@ offset_bottom = -16.0
 theme_override_constants/separation = 8
 
 [node name="PauseHeader" type="Label" parent="Panel/VBox"]
-text = "Paused"
+text = ""
 horizontal_alignment = 1
 
 [node name="ResumeButton" type="Button" parent="Panel/VBox"]
-text = "Resume"
+text = ""
 
 [node name="SaveButton" type="Button" parent="Panel/VBox"]
-text = "Save"
+text = ""
 
 [node name="LoadButton" type="Button" parent="Panel/VBox"]
-text = "Load"
+text = ""
 
 [node name="QuitToTitleButton" type="Button" parent="Panel/VBox"]
-text = "Quit to Title"
+text = ""

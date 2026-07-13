@@ -27,23 +27,23 @@ offset_bottom = -8.0
 theme_override_constants/separation = 4
 
 [node name="DiagnosticsHeader" type="Label" parent="Backdrop/VBox"]
-text = "Diagnostics"
+text = ""
 
 [node name="CameraTargetLabel" type="Label" parent="Backdrop/VBox"]
-text = "Camera target: -"
+text = ""
 
 [node name="ZoomLabel" type="Label" parent="Backdrop/VBox"]
-text = "Zoom: -"
+text = ""
 
 [node name="WorldTimeLabel" type="Label" parent="Backdrop/VBox"]
-text = "World time: 0"
+text = ""
 
 [node name="InhabitantCountLabel" type="Label" parent="Backdrop/VBox"]
-text = "Inhabitants: 0"
+text = ""
 
 [node name="RoomCountLabel" type="Label" parent="Backdrop/VBox"]
-text = "Rooms: 0"
+text = ""
 
 [node name="EventLogLabel" type="Label" parent="Backdrop/VBox"]
-text = "Event log:"
+text = ""
 autowrap_mode = 2

@@ -25,7 +25,7 @@ offset_bottom = -4.0
 theme_override_constants/separation = 2
 
 [node name="MinimapHeader" type="Label" parent="Backdrop/VBox"]
-text = "Map"
+text = ""
 
 [node name="MinimapDraw" type="Control" parent="Backdrop/VBox"]
 custom_minimum_size = Vector2(48, 48)

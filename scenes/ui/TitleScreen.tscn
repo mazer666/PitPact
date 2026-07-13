@@ -23,14 +23,14 @@ offset_bottom = 120.0
 theme_override_constants/separation = 12
 
 [node name="TitleLabel" type="Label" parent="Center"]
-text = "Pact & Pit"
+text = ""
 horizontal_alignment = 1
 
 [node name="NewCampaignButton" type="Button" parent="Center"]
-text = "New Campaign"
+text = ""
 
 [node name="ContinueButton" type="Button" parent="Center"]
-text = "Continue"
+text = ""
 
 [node name="QuitButton" type="Button" parent="Center"]
-text = "Quit"
+text = ""
