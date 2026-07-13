@@ -31,6 +31,9 @@ You do **not** need an ADR for:
 | Number | Title | Status | Date |
 |-------:|-------|--------|------|
 | [0001](0001-record-architecture-decisions.md) | Record architecture decisions | accepted | 2026-07-13 |
+| [0002](0002-module-boundaries.md) | Module boundaries and data flow | accepted | 2026-07-13 |
+| [0003](0003-save-format.md) | Save format and versioning | accepted | 2026-07-13 |
+| [0004](0004-spatial-model.md) | Spatial model | accepted | 2026-07-13 |
 
 ## Conventions
 

@@ -1,0 +1,564 @@
+# PitPact — M0 closeout + M1 Foundation + M1 Vertical Slice
+#
+# This plan executes the strategic plan we agreed on:
+#   Phase 0: M0 closeout (push 4 commits) + Architectural Foundation
+#   Phase 1: Three parallel M1 tracks (spatial, camera+ui, content+save+locale)
+#   Phase 2: M1 smoke-test integration gate
+#
+# Cycles:
+#   Cycle 1: Foundation (single coder + verifier). Output: ADRs, module stubs,
+#            GUT framework, formatter/linter, extended run_quality.sh, branch
+#            feature/foundation. Owner merges to main and pushes at the end of
+#            this cycle.
+#   Cycle 2: Three parallel M1 tracks. Each produces a working vertical slice
+#            (no fake stubs), tested, with branch feature/m1-<track>.
+#   Cycle 3: M1 smoke-test integration gate. Headless end-to-end test of the
+#            whole vertical slice. If anything fails, that track is sent back
+#            for cycle 4.
+#
+# The team plan uses the existing roster: Coder (producer), Verifier (adversarial
+# review), General (broad research / cross-track glue if needed).
+
+version: 1
+plan:
+  name: 'PitPact M0-Closeout + M1-Foundation + M1-Vertical-Slice'
+  max_concurrency: 4
+  max_consecutive_failures: 2
+  max_cycles: 8
+  auto_reject_retries: 1
+
+tasks:
+  # ============================================================
+  # CYCLE 1 — Foundation (single producer, single verifier)
+  # ============================================================
+
+  - id: foundation
+    title: 'M1-Architektur-Foundation: ADRs, Modul-Stubs, GUT, Linter, erweitertes run_quality.sh'
+    assigned_to: coder
+    timeout_ms: 1800000
+    prompt: |
+      You are working on the PitPact repository (GDScript / Godot 4.3, see
+      project.godot and AGENTS.md in the repo). Read both before doing anything.
+
+      The M0 foundation is already merged to main (commits 6472af4, c82f655,
+      facbfdf, 1fcf27e) — your job is to lay the architectural ground for M1
+      ("Playable realm core" per docs/milestones.md). Do NOT touch gameplay
+      content; that lands in Cycle 2.
+
+      Work in branch `feature/foundation`. Do not commit to main.
+
+      ## Deliverables (all on the same branch, sequenced as separate commits)
+
+      1. **ADR-0002 — Modulgrenzen und Datenfluss** (docs/adrs/0002-module-boundaries.md)
+         - Define the public surface of: src/core, src/world, src/sim, src/realm,
+           src/content, src/save, src/ui, src/audit.
+         - For each module: purpose, responsibility, public entry point,
+           main dependencies, and an explicit "must NOT depend on" list.
+         - Specify the data-flow rule: deterministic game-domain modules
+           (src/core, src/world, src/sim, src/realm, src/content, src/save) MUST
+           NOT import from src/ui. UI imports game-domain modules; never the
+           other way. State this as a load-bearing rule.
+         - Cross-cutting module dependencies (e.g. ui → sim, sim → world,
+           save → core) must be enumerated.
+         - MADR 4.x format, see docs/adrs/0001 for the template.
+
+      2. **ADR-0003 — Save-Format-Versionierung** (docs/adrs/0003-save-format.md)
+         - Pick a concrete format (recommend: human-readable JSON with a
+           top-level "format_version" int and a "save_version" int; a SHA-256
+           over the canonical body for tamper detection; an explicit
+           "engine_version" string for migration support).
+         - Define the migration contract: every save-load must be migration-tested
+           in the regression suite (§16.2 of docs/requirements.md).
+         - State that the save body is content-agnostic: it must not know about
+           Godot Resource internals; concrete types live behind a serialization
+           layer in src/save.
+         - Reject: any binary-only format, any format without explicit
+           versioning, any format that requires Godot to read.
+
+      3. **ADR-0004 — Räumliches Modell** (docs/adrs/0004-spatial-model.md)
+         - Isometric grid (diamond tiles, 64x32 px screen-space or similar).
+         - World coordinates vs. tile coordinates vs. screen coordinates —
+           define the conversion functions and where they live.
+         - Camera orientation is fixed (per §8); free zoom only.
+         - A "Zone" is a maximal connected set of tiles of the same purpose.
+         - A "Room" is a Zone that has been promoted (named, with state,
+           inhabitant interactions). Promotion is a one-way state change.
+         - Reject: any model that requires three.js-style 3D math;
+           any model that conflates tile and room state.
+
+      4. **Modul-Stubs** (src/<module>/README.md + src/<module>/<module>.gd with
+         a static placeholder class — but each module's README must follow
+         §17 of docs/requirements.md: "purpose, responsibility, public entry
+         point, main dependencies").
+         - src/core/   — primitives (RNG seeded by SplitMix64, time, math
+           helpers, event IDs). NO Godot scene types.
+         - src/world/  — tile grid, zones, rooms (lifecycle), spatial queries.
+         - src/sim/    — inhabitants, needs, contracts, tasks, relationships,
+           event memory. Deterministic, tick-based.
+         - src/realm/  — façade combining world + sim for the player-visible
+           "realm" view; the API the UI uses to inspect the state.
+         - src/content/ — data-driven definitions (rooms, resources, biomes,
+           events, contracts, research, origins). Pure data adapters over
+           src/core.
+         - src/save/   — versioned save/load + migration scaffolding.
+         - src/ui/     — Godot scenes, controllers, input map. Imports from
+           realm/sim/content; never the other way (cross-check via
+           tools/check_module_dependencies.sh which you will create).
+         - src/audit/  — event log, diagnostic snapshots, replay/seed
+           manifests. Read-only on the simulation.
+
+      5. **GUT 9 (Godot Unit Test) einrichten** in tests/
+         - Place a pinned copy of GUT 9 at tests/gut/ (use git subtree or a
+           vendored copy with a pinned tag). It is allowed under the project
+           license per its MIT license; record it in licenses/THIRD-PARTY.md
+           with the pinned commit.
+         - tests/_smoke/test_smoke.gd — first passing test: a trivial
+           assert_eq(2+2, 4) on src/core/rng.gd::SplitMix64.
+         - tests/_smoke/test_runner.gd — entry point invoked by
+           tools/run_quality.sh.
+         - tests/README.md updated with the actual run command.
+
+      6. **Formatter + Linter** in tools/
+         - tools/format.sh — runs gdformat over src/ and tests/. Idempotent.
+         - tools/lint.sh   — runs gdlint over src/ and tests/. Fails on warnings.
+         - tools/check_module_dependencies.sh — parses the static type
+           references in src/<x>/*.gd and asserts the rule from ADR-0002
+           (game-domain MUST NOT import from src/ui). Run from CI.
+
+      7. **src/core/rng.gd** — SplitMix64 deterministic RNG with seed and
+         state-snapshot (must produce identical sequences from identical seeds
+         across runs). Self-tested by tests/_smoke/test_smoke.gd.
+
+      8. **Erweitertes tools/run_quality.sh** to include the new tools:
+         run format.sh, lint.sh, check_module_dependencies.sh, then the GUT
+         test runner via godot --headless. Keep exit codes meaningful.
+
+      9. **Update docs/repository-structure.md and CHANGELOG.md** to reflect
+         the new src/ subdirectory layout and the new tooling.
+
+      10. **Open a PR** (or commit and push) on branch feature/foundation.
+          In the PR description, link the three ADRs and the GUT setup.
+
+      ## Hard rules
+      - No game content (no hearth, no room, no inhabitant). That is Cycle 2.
+      - The GUT setup must be reproducible from a fresh clone with
+        `./tools/run_quality.sh` only — no manual editor steps.
+      - The module-dependency check must be part of the local quality suite.
+      - All public functions/classes get a docstring per §17.
+      - All commits use Conventional Commits per CONTRIBUTING.md.
+      - SPDX header `SPDX-License-Identifier: GPL-3.0-or-later` on every
+        new GDScript file.
+
+      ## Reporting
+      At the end, write deliverable.md at the repo root (do not commit
+      it; it is for the verifier) with:
+      - The branch name and the final commit hash.
+      - The list of files added/modified per deliverable.
+      - The exact command(s) to verify each deliverable.
+      - Any deviations from this prompt and the reason.
+    verified_by: verifier
+    verify_prompt: |
+      You are an adversarial reviewer for the PitPact foundation branch.
+      Do NOT trust the producer's deliverable.md — re-derive.
+
+      The branch is `feature/foundation` in the repo at the current working
+      directory. The producer's work covers: 3 ADRs, src/ module stubs,
+      GUT 9 setup, formatter/linter, SplitMix64 RNG, expanded run_quality.sh.
+
+      ## Hard checks (PASS only if every item holds)
+
+      1. **ADR quality.** Read ADR-0002, 0003, 0004 in full. Each must:
+         - follow the MADR 4.x format (compare to ADR-0001),
+         - state explicit non-goals / "must NOT" lists,
+         - record the alternatives considered and the reason for the choice,
+         - be self-contained: a new contributor must be able to act on it
+           without reading the producer's notes.
+         FAIL if any of these is missing, or if an ADR is just a stub.
+
+      2. **Module stubs.** For each of the 8 modules (core, world, sim,
+         realm, content, save, ui, audit) verify:
+         - a README.md exists and follows §17 (purpose, responsibility,
+           public entry point, main dependencies),
+         - a <module>.gd placeholder exists with at least one
+           public class, docstring, and SPDX header,
+         - the module does not import Godot's scene types unless it is
+           src/ui or src/realm (and even then, with justification).
+         Use a manual `rg "extends Node" src/<module>/` check to confirm.
+
+      3. **GUT 9 setup.** Re-run from a clean state:
+         ```
+         godot --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
+         ```
+         (or whatever the GUT 9 CLI command is — verify by reading
+         tests/gut/README.md or the GUT docs). Confirm at least one test
+         passes. FAIL if GUT cannot be invoked headlessly, or if the test
+         runner is a TODO.
+
+      4. **Module-dependency rule.** Run tools/check_module_dependencies.sh.
+         It must PASS — i.e. confirm that src/<game-domain>/ files do not
+         import from src/ui. Try to BREAK it: temporarily inject a
+         `extends Control` reference into src/world/something.gd, re-run
+         the check, confirm it FAILS. Then revert. Report your probe result.
+
+      5. **Determinism.** Write a 10-line GDScript test that calls
+         SplitMix64.next() 1000 times with a fixed seed, then again. The
+         two sequences must be byte-identical. Run it via the GUT runner.
+         Add the test to tests/_smoke/test_rng_determinism.gd and confirm
+         it passes. FAIL if the sequences diverge.
+
+      6. **run_quality.sh.** From a clean tree, run
+         `./tools/run_quality.sh`. It must exit 0 and run: format, lint,
+         module-dep check, GUT smoke tests, plus the M0 baseline file
+         presence check. FAIL if it silently skips a step.
+
+      7. **License posture.** Every new GDScript file in src/ and tests/
+         starts with `SPDX-License-Identifier: GPL-3.0-or-later`. Verify
+         with `rg -L "SPDX-License-Identifier: GPL-3.0-or-later" src/ tests/`.
+         The vendored GUT license is in licenses/THIRD-PARTY.md and
+         licenses/MIT.txt (or whatever GUT's license filename is).
+
+      8. **No game content.** FAIL the review if any new file under
+         data/rooms/, data/cultures/, data/biomes/, or any .gd file under
+         src/world/, src/sim/, src/realm/ contains concrete game content
+         (a named Hearth, a named culture, a real biome). This cycle is
+         architecture, not content.
+
+      ## Output
+      Write your verdict and the exact commands you ran to deliverable-verify.md
+      at the repo root (do not commit). If FAIL, list the precise items the
+      producer must fix. If PASS, list the strongest attack you tried that
+      did not break it (and what you would try next time).
+
+  # ============================================================
+  # CYCLE 2 — Three parallel M1 tracks
+  # ============================================================
+
+  - id: m1-spatial
+    title: 'M1 Track A: Spatial-Modell, Tile-Layer, Zone-Painter, Hearth-Lifecycle'
+    assigned_to: coder
+    depends_on: [foundation]
+    timeout_ms: 1800000
+    prompt: |
+      You are working on PitPact. The M1 foundation (ADRs 0002/0003/0004,
+      src/ module stubs, GUT setup, run_quality.sh) is merged to main. Read
+      AGENTS.md, the four ADRs, and src/world/README.md before doing
+      anything.
+
+      This task is **Track A** of M1 (Spatial + Tile + Zoning + Hearth).
+      Work in branch `feature/m1-spatial`. Do not commit to main.
+
+      ## What to build (in this priority order — every layer must compile
+      ## and be tested, do not skip ahead)
+
+      1. **src/world/grid.gd** — the world-coordinate tile grid, built
+         on ADR-0004. Use a fixed-size 2D array of tile structs
+         (id, biome, surface_meta). Provide bounds-checked accessors
+         and a `from_seed(seed: int, w: int, h: int)` factory that
+         uses src/core/rng.gd for determinism.
+
+      2. **scenes/world/TileMapLayer.tscn + src/world/tile_map.gd** —
+         the Godot TileMapLayer-based renderer for the grid. Use
+         Godot 4.3's TileMapLayer API, not the legacy TileMap. Provide
+         a `set_grid(grid: Grid)` method that updates the layer
+         atomically. The layer must be visible behind the UI shell.
+
+      3. **src/world/zone.gd** — a Zone is a maximal connected set of
+         tiles of the same purpose (see ADR-0004). Provide
+         `paint(grid, rect, purpose)` and `find_zones(grid, purpose)`.
+         Painted Zones are an in-memory data structure; they are NOT yet
+         Rooms.
+
+      4. **scenes/world/ZonePainter.tscn + src/world/zone_painter.gd** —
+         a tool that lets the player drag-paint a rectangular zone with
+         the mouse. The tool must snap to tile boundaries and show a
+         translucent overlay while painting. Use `src/ui/InputMap`
+         (registered in foundation) for the input.
+
+      5. **src/realm/room.gd + src/realm/hearth.gd** — a Room is a
+         promoted Zone (see ADR-0004). The Hearth is the first Room.
+         Implement the lifecycle: PLANNED → CONSTRUCTING → ACTIVE →
+         DECAYING → ABANDONED. Transitions are state-machine driven
+         (no string-matching). Provide a `tick(delta)` method that
+         advances construction and decay deterministically.
+
+      6. **data/rooms/hearth.tres** — the data-driven definition of a
+         Hearth: build_time_days, labour_cost, materials_cost, capacity.
+         The runtime reads this; do not hard-code values in
+         src/realm/hearth.gd.
+
+      7. **src/save/realm_serializer.gd** — implement save/load for the
+         current grid + zones + rooms per ADR-0003. Use format_version=1,
+         save_version incremented on incompatible change. Add a checksum
+         (SHA-256) of the canonical body.
+
+      8. **tests/integration/test_hearth_lifecycle.gd** — GUT integration
+         test: empty realm → paint Hearth zone → tick 1 day → Hearth
+         transitions PLANNED → CONSTRUCTING → ACTIVE. Plus a save/load
+         roundtrip test that confirms identical state.
+
+      9. **demo scenes/world/DemoRealm.tscn** — a minimal scene that
+         drops the TileMapLayer, the ZonePainter tool, and one Hearth
+         zone on a 12x12 grid. Pressing F5 in the editor runs the demo.
+         Add a "Save" / "Load" toolbar button.
+
+      ## Hard rules
+      - All code follows ADR-0002 module boundaries. No src/world/*.gd
+        imports from src/ui/*.gd.
+      - All randomness goes through src/core/rng.gd.
+      - All gameplay strings go through tr()/Locale. No hard-coded English
+        in .gd files.
+      - All save/load paths use src/save/realm_serializer.gd.
+      - Run `./tools/run_quality.sh` before declaring done. It must pass.
+      - Every new GDScript file has the SPDX header.
+
+      ## Reporting
+      Write deliverable.md at the repo root (not committed) with: branch
+      name, final commit hash, demo scene path, the GUT command to run
+      tests, and a 5-line summary of what works.
+
+  - id: m1-camera-ui
+    title: 'M1 Track B: Camera, Input, UI-Shell, Diagnostics-Overlay, Minimap'
+    assigned_to: coder
+    depends_on: [foundation]
+    timeout_ms: 1800000
+    prompt: |
+      You are working on PitPact. The M1 foundation is merged to main.
+      Read AGENTS.md, ADR-0004 (spatial model), and src/ui/README.md
+      before doing anything.
+
+      This task is **Track B** of M1 (Camera + Input + UI-Shell +
+      Diagnostics). Work in branch `feature/m1-camera-ui`. Do not
+      commit to main.
+
+      ## What to build
+
+      1. **scenes/main/Main.tscn + src/ui/main.gd** — the main scene.
+         Adds the TileMapLayer (from Track A; if Track A has not landed
+         yet, add a placeholder 12x12 grid using
+         scenes/world/TileMapLayer.tscn or a temporary solid colour).
+         The Main scene composes: Camera2D, UI shell, debug overlay,
+         minimap.
+
+      2. **src/ui/isometric_camera.gd** — a Camera2D controller that
+         provides free zoom (mouse wheel, pinch) and pan (right-mouse
+         drag, two-finger trackpad drag). Fixed orientation per §8.
+         Provide programmatic `zoom_to(value)` and `center_on(world_pos)`
+         methods so the rest of the UI can drive the camera.
+
+      3. **Input map** in project.godot: register ui_pan,
+         ui_zoom_in, ui_zoom_out, ui_paint, ui_toggle_diagnostics,
+         ui_toggle_minimap. Wire to mouse, keyboard, and touch.
+
+      4. **scenes/ui/TitleScreen.tscn + src/ui/title_screen.gd** — the
+         title screen. "New Campaign" button, "Continue" button (loads
+         the latest save if any), "Quit". Externalised strings.
+
+      5. **scenes/ui/PauseMenu.tscn + src/ui/pause_menu.gd** — pause
+         menu. Resumes, saves, quits to title. F3 toggles the
+         diagnostics overlay.
+
+      6. **scenes/ui/DiagnosticsOverlay.tscn + src/ui/diagnostics_overlay.gd**
+         — a translucent panel showing the current camera target,
+         zoom level, world time, inhabitant count, room count, event
+         log tail. Toggled with F3. Externalised strings.
+
+      7. **scenes/ui/Minimap.tscn + src/ui/minimap.gd** — top-right
+         minimap. Renders the explored grid. Click-to-jump center.
+         Toggle with M.
+
+      8. **tests/integration/test_camera_input.gd** — GUT test: simulate
+         a scroll-up event, assert the camera zoom_increased. Simulate
+         a touch-pinch, assert the same. Save/load does NOT touch the
+         camera state; verify in a separate test.
+
+      9. **scenes/world/DemoRealm.tscn** — if Track A is not yet
+         landed, add a stand-alone DemoRealm.tscn that uses a
+         placeholder grid. The full integration is verified in the
+         M1 smoke-test cycle.
+
+      ## Hard rules
+      - src/ui/* may import from src/realm, src/world, src/core.
+        It MUST NOT be imported by them (cross-checked by
+        tools/check_module_dependencies.sh).
+      - Touch input works from day one (§4.1 of requirements spec).
+      - All UI strings go through tr().
+      - Reduced motion: a `ui_reduced_motion` setting that disables
+        any non-essential animation. Stub for now (M5 closes it out).
+      - Run `./tools/run_quality.sh`. It must pass.
+
+      ## Reporting
+      Write deliverable.md (not committed) with: branch name, final
+      commit hash, scene list, input map summary, GUT test command.
+
+  - id: m1-content-save
+    title: 'M1 Track C: Content-Data, Locale-Externalization, Save/Load, Migration-Scaffold'
+    assigned_to: coder
+    depends_on: [foundation]
+    timeout_ms: 1800000
+    prompt: |
+      You are working on PitPact. The M1 foundation is merged to main.
+      Read AGENTS.md, ADR-0003 (save format), and
+      src/content/README.md before doing anything.
+
+      This task is **Track C** of M1 (Content-Data + Save/Load + Locale).
+      Work in branch `feature/m1-content-save`. Do not commit to main.
+
+      ## What to build
+
+      1. **data/rooms/hearth.tres** — the Hearth definition, consumed
+         by Track A's src/realm/hearth.gd. (If Track A's Hearth does
+         not yet exist, define the schema and a placeholder; the field
+         set must be exactly what ADR-0003 §"save body" requires.)
+         - Fields: id (StringName), display_name (LocalizedString),
+           build_time_days (int), labour_cost (int), materials_cost
+           (Dictionary[StringName, int]), capacity (int),
+           tags (PackedStringArray).
+
+      2. **data/resources/stone.tres, fungi.tres, ember.tres, memory.tres** —
+         the four resource categories from §10.1 (stone, food/medicine,
+         knowledge, magical essence). Each with display_name,
+         category, base_value, decay_rate, tags. Externalised strings.
+
+      3. **data/biomes/hollow.tres, dustmaze.tres** — the two biomes
+         required by §3.1. Each with display_name, palette hint,
+         resource_bias (Dictionary), hazard_bias (PackedStringArray),
+         narrative_anchor (LocalizedString).
+
+      4. **data/origins/scholar.tres, warden.tres** — two Pactmaker
+         origins. Each with starting_powers (PackedStringArray),
+         preferred_cultures (PackedStringArray), weakness (StringName),
+         narrative_anchor (LocalizedString). (Naming is provisional;
+         final names land with the M5 cultures pass.)
+
+      5. **locales/source_strings.csv** — single CSV with
+         id,source (English),context columns. The Hearth, resources,
+         biomes, origins, and the M0 menu strings are present. This
+         is the single source of truth for the M1 English text.
+
+      6. **locales/en.po, locales/de.po** — generated from
+         source_strings.csv. The German translations are
+         machine-draft quality at this stage; they MUST be valid
+         PO files and the validation script must pass. Real
+         translations are an M5 task.
+
+      7. **tools/validate_locale.sh** — uses msgfmt and a small
+         Python check to: confirm every key in source_strings.csv is
+         present in en.po and de.po, every placeholder {x} is
+         preserved, and there are no concatenated-fragment patterns.
+         Wire into tools/run_quality.sh.
+
+      8. **src/save/save_format.gd + src/save/realm_serializer.gd** —
+         implement ADR-0003. Top-level JSON with format_version=1,
+         save_version, engine_version, a SHA-256 of the canonical
+         body, and the body. Migrations are a list of
+         (from_version, to_version, function) registered in
+         src/save/migrations.gd. M1 ships ONE migration as a
+         smoke-test (no-op for version 1→1, but the registry
+         must be live).
+
+      9. **src/core/rng.gd::save_state() / load_state()** — used by
+         src/save/realm_serializer.gd to snapshot the deterministic
+         RNG state. Roundtrip must produce identical sequences
+         (covered by tests/_smoke/test_rng_determinism.gd from
+         foundation; do not duplicate it).
+
+      10. **tests/integration/test_save_roundtrip.gd** — GUT test:
+          build a tiny realm, save it to a temp file, load it back,
+          assert deep-equal on grid + zones + rooms + RNG state.
+
+      11. **tests/integration/test_locale_validation.gd** — GUT test:
+          run tools/validate_locale.sh, assert it exits 0 and the
+          generated en.po and de.po are non-empty.
+
+      ## Hard rules
+      - All content lives under data/ as versioned .tres files.
+        No in-script constants for game data.
+      - All save logic in src/save/. Game-domain modules do not
+        know about Godot's ResourceSaver; they call the realm
+        serializer which in turn uses it.
+      - All locale strings in locales/. No tr("...") with an
+        English literal in .gd files.
+      - Run `./tools/run_quality.sh`. It must pass.
+
+      ## Reporting
+      Write deliverable.md (not committed) with: branch name, final
+      commit hash, list of .tres files, GUT test command, locale
+      validation command, save roundtrip test output excerpt.
+
+  # ============================================================
+  # CYCLE 3 — M1 Smoke-Test integration gate
+  # ============================================================
+
+  - id: m1-smoke
+    title: 'M1-Smoke-Test: headless end-to-end verification der vertical slice'
+    assigned_to: verifier
+    depends_on: [m1-spatial, m1-camera-ui, m1-content-save]
+    timeout_ms: 1800000
+    prompt: |
+      You are running the M1 acceptance gate for PitPact. The three M1
+      tracks have been merged into main by the owner; you are verifying
+      the integrated whole.
+
+      ## Headless end-to-end test
+
+      Write and run a single GDScript headless test (no Godot editor UI
+      required) that performs the following, in order, with a fixed
+      seed=42:
+
+      1. **Boot the main scene headlessly.**
+         ```
+         godot --headless --path . res://scenes/main/Main.tscn
+         ```
+         (or whatever the documented headless boot is; the project
+         has a tools/run_quality.sh that you can extend for this.)
+
+      2. **Generate a 12x12 realm** with seed=42 using
+         src/world/grid.gd::from_seed. Confirm the realm is
+         deterministic: regenerate with the same seed and assert
+         deep-equal.
+
+      3. **Paint a Hearth zone** at a fixed rect (e.g. tiles [2,2]..[5,5])
+         using src/world/zone.gd::paint.
+
+      4. **Promote the zone to a Hearth** room and tick the realm by
+         3 simulated days. Confirm the Hearth transitions
+         PLANNED → CONSTRUCTING → ACTIVE.
+
+      5. **Save the realm** to a temp file using
+         src/save/realm_serializer.gd. Confirm the file is valid JSON
+         with format_version=1 and a non-zero SHA-256 checksum.
+
+      6. **Quit and reload** by reading the save back through
+         src/save/realm_serializer.gd. Assert deep-equal of the
+         full state (grid, zones, rooms, RNG state).
+
+      7. **Switch locale** to de, assert that the Hearth's
+         display_name is the German string (not the English fallback).
+
+      8. **Diagnostics overlay** must be toggleable programmatically
+         without a keyboard event: call
+         src/ui/diagnostics_overlay.gd::toggle() and confirm the
+         panel becomes visible.
+
+      9. **Minimap** must render to an image without errors. Capture
+         a small viewport screenshot via the headless test
+         (godot --headless --write-movie or a custom render-to-image
+         helper) and save it to benchmarks/results/m1-smoke.png.
+
+      ## Reporting
+
+      Write a single deliverable-smoke.md at the repo root (not
+      committed) with:
+      - A pass/fail table for the 9 steps above.
+      - The exact godot commands you ran, with exit codes and
+        last 20 lines of output for each.
+      - The path to the smoke screenshot.
+      - Any deviations from the prompt and why.
+      - A recommended next-cycle scope if anything failed.
+
+    verified_by: verifier
+    verify_prompt: |
+      Re-run the M1 smoke test on a clean checkout of main. Do not
+      trust deliverable-smoke.md. Run the test from scratch and
+      confirm the 9 steps. PASS only if all 9 pass and the
+      screenshot is non-empty.
