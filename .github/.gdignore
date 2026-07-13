@@ -1,0 +1,2 @@
+# GitHub Actions workflows and issue templates are YAML / Markdown.
+# Godot does not need to scan them.

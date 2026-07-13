@@ -1,0 +1,66 @@
+; Engine configuration file.
+; PitPact — Pact & Pit: An Underworld of Terms and Terrors
+;
+; This file is the authoritative project root for the Godot 4 editor and
+; the headless build/quality pipeline. It's safe to edit by hand for the
+; M0/M1 bootstrap, but new settings should normally be set via the
+; editor so the parameter list stays in sync with the engine version.
+;
+; See:
+;   - AGENTS.md                  (contributor rules, engine conventions)
+;   - docs/roadmap.md            (M0/M1 sequencing)
+;   - docs/style-bible.md        (presentation/UX tone — drives input hints)
+;
+; Format:
+;   [section]          ; section goes between []
+;   param=value        ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="PitPact"
+config/description="Pact & Pit — An Underworld of Terms and Terrors"
+config/features=PackedStringArray("4.3", "Forward Plus")
+
+; This tempdata/ is created automatically on first run. We ignore it via
+; .gitignore; the path is centralised here so the editor and headless
+; tools agree on a location.
+config/temp_folder="user://tmp"
+
+[debug]
+
+; Keep stdout free of editor noise during tests and benchmarks.
+settings/stdout/print_fps=false
+settings/stdout/print_gpu_profile=false
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+
+[dotnet]
+
+; PitPact is GDScript-first (see §16.1 of the requirements spec). The
+; .NET runtime is intentionally disabled so contributors do not pull
+; in a Mono toolchain by accident. Re-enable only after an ADR is filed.
+
+[input]
+
+; Touch-aware interactions are required from day one (§4.1). Mouse
+; emulation is the default, but a placeholder action is reserved here
+; so M1+ can bind a touch action without a project.godot rewrite.
+
+[layer_names]
+
+; Reserved for M1. The realm/sim/UI layer naming convention will be
+; defined in the camera/UI shell PR.
+
+[rendering]
+
+; Forward+ is appropriate for the reference MacBook Air M5 (Metal) and
+; desktop targets. The mobile renderer switch for iPadOS will be filed
+; as an ADR before the iPadOS port milestone.
+renderer/rendering_method="forward_plus"
+renderer/rendering_method.mobile="mobile"
+textures/vram_compression/import_etc2_astc=true

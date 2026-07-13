@@ -1,0 +1,5 @@
+# Godot should not import or compile-check files under tests/.
+# Tests are loaded explicitly by the headless test runner
+# (see tools/run_quality.sh) so the editor does not need to know about
+# them. This also keeps the editor's "errors on save" loop from being
+# polluted by deliberately failing fixture files.

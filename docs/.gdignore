@@ -1,0 +1,2 @@
+# docs/ holds Markdown, ADRs, and architecture diagrams only. Godot
+# should not scan it; there is no executable content here.

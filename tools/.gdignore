@@ -1,0 +1,3 @@
+# tools/ is for shell / Python / helper scripts. Godot should not try
+# to import or compile-check anything here. GDScript helper modules that
+# need to be importable from game code belong in src/ instead.

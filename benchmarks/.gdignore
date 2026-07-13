@@ -1,0 +1,3 @@
+# Benchmark scenarios and recorded results. Godot does not need to
+# scan it; benchmarks are run by tools/run_benchmark.sh against the
+# compiled game binary or a headless editor instance.

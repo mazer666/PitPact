@@ -1,0 +1,2 @@
+# archive/ holds intentionally-retained superseded public documents.
+# Godot does not need to scan it. The contents are read-only references.
