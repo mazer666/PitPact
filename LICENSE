@@ -1,0 +1,29 @@
+SPDX-License-Identifier: GPL-3.0-or-later
+
+PitPact — Pact & Pit: An Underworld of Terms and Terrors
+Copyright (C) 2026 The PitPact Contributors
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
+
+The full text of the GNU General Public License version 3 is provided
+in `licenses/GPL-3.0.txt`.
+
+Note on split licensing:
+- Original source code in this repository is licensed under
+  GPL-3.0-or-later (this file).
+- Original art, audio, writing, and data files are licensed under
+  Creative Commons Attribution-ShareAlike 4.0 International
+  (CC BY-SA 4.0) — see `licenses/CC-BY-SA-4.0.txt`.
+- Third-party assets retain their respective licenses; see
+  `licenses/THIRD-PARTY.md` and the asset manifest in `assets/`.

@@ -1,0 +1,154 @@
+# --- Godot 4+ ---
+# Godot 4+ specific ignores
+.godot/
+.import/
+export.cfg
+export_presets.cfg
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+
+# Godot cache and editor metadata
+.cache/
+*.tmp
+
+# Per-project editor settings (override project-level editor settings)
+.editorconfig
+
+# --- Python (tooling helpers, benchmarks) ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+env/
+ENV/
+.nox/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Node / Frontend Tooling (future web tools) ---
+node_modules/
+.npm
+.yarn
+.pnp.*
+
+# --- IDEs & Editors ---
+# JetBrains
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+!.vscode/settings.json.example
+!.vscode/extensions.json
+
+# Cursor
+.cursor/
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+# Vim / Emacs
+*.swp
+*.swo
+*~
+.#*
+\#*\#
+.\#*
+
+# --- OS ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- Secrets & local config ---
+.env
+.env.*
+!.env.example
+*.local
+*.key
+*.pem
+secrets/
+config/local.*
+config/*.local.*
+
+# --- Build artifacts ---
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.7z
+*.dmg
+*.exe
+*.msi
+*.AppImage
+*.snap
+*.deb
+*.rpm
+build_artifacts/
+release/
+
+# --- Logs ---
+*.log
+logs/
+benchmark-results/
+crashdumps/
+*.stackdump
+core.*
+
+# --- Coverage / Test reports ---
+coverage/
+*.cover
+.coverage
+htmlcov/
+lcov.info
+*.lcov
+test-results/
+test-reports/
+gut_editor_config.json
+
+# --- Godot-Unit-Test (GUT) ---
+.gut/
+addons/gut/
+
+# --- Generated / cache content by our own tools ---
+# Generated saves from manual playtesting (keep template, ignore user saves)
+saves/local/
+saves/playtest/
+.cache_*/
+
+# --- Benchmark data ---
+benchmarks/results/
+benchmarks/.lock
