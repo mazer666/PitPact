@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1m1pitpactdiag01"]
+
+[ext_resource type="Script" path="res://src/ui/diagnostics_overlay.gd" id="1_diagctrl"]
+
+[node name="Diagnostics" type="CanvasLayer"]
+layer = 20
+script = ExtResource("1_diagctrl")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 360.0
+offset_bottom = 220.0
+color = Color(0.0, 0.0, 0.0, 0.6)
+
+[node name="VBox" type="VBoxContainer" parent="Backdrop"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+theme_override_constants/separation = 4
+
+[node name="DiagnosticsHeader" type="Label" parent="Backdrop/VBox"]
+text = "Diagnostics"
+
+[node name="CameraTargetLabel" type="Label" parent="Backdrop/VBox"]
+text = "Camera target: -"
+
+[node name="ZoomLabel" type="Label" parent="Backdrop/VBox"]
+text = "Zoom: -"
+
+[node name="WorldTimeLabel" type="Label" parent="Backdrop/VBox"]
+text = "World time: 0"
+
+[node name="InhabitantCountLabel" type="Label" parent="Backdrop/VBox"]
+text = "Inhabitants: 0"
+
+[node name="RoomCountLabel" type="Label" parent="Backdrop/VBox"]
+text = "Rooms: 0"
+
+[node name="EventLogLabel" type="Label" parent="Backdrop/VBox"]
+text = "Event log:"
+autowrap_mode = 2
