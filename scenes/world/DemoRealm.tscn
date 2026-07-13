@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/world/tile_map.gd" id="1_tile_map"]
+[ext_resource type="Script" path="res://src/world/zone_painter.gd" id="2_painter"]
+
+[node name="DemoRealm" type="Node2D"]
+
+[node name="WorldTileMapLayer" type="TileMapLayer" parent="."]
+script = ExtResource("1_tile_map")
+
+[node name="ZonePainter" type="Node2D" parent="."]
+script = ExtResource("2_painter")
+
+[node name="DemoToolbar" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="SaveButton" type="Button" parent="DemoToolbar"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 88.0
+offset_bottom = 36.0
+text = "Save"
+
+[node name="LoadButton" type="Button" parent="DemoToolbar"]
+offset_left = 96.0
+offset_top = 8.0
+offset_right = 176.0
+offset_bottom = 36.0
+text = "Load"
