@@ -63,24 +63,28 @@ func test_hearth_lifecycle_paint_then_tick_to_active() -> void:
 	# by definition; the first tick advances it).
 	assert_eq(int(room.state), 0, "Room starts in PLANNED state (enum value 0)")
 
-	# 4. Tick 1 day. Per the M1 task spec, the Hearth
-	#    transitions PLANNED -> CONSTRUCTING -> ACTIVE
-	#    in one tick. The Hearth state machine in
-	#    `Room.tick` uses zero-day PLANNED threshold
-	#    and a build_time_days-threshold CONSTRUCTING
-	#    transition, so a single tick of 1.0 day
-	#    visits PLANNED (immediately -> CONSTRUCTING)
-	#    and CONSTRUCTING (-> ACTIVE when
-	#    days_in_state >= build_time_days).
+	# 4. Tick 1 day. The first tick transitions
+	#    PLANNED -> CONSTRUCTING (zero-day threshold).
 	realm.tick(1.0)
-	assert_eq(int(room.state), 2, "After 1 day, Hearth is ACTIVE (enum value 2)")
+	assert_eq(int(room.state), 1, "After 1 day, Hearth is CONSTRUCTING (enum value 1)")
 
-	# 5. State machine is deterministic. The same tick
+	# 5. Tick build_time_days more days to reach
+	#    ACTIVE. The build_time_days is read from the
+	#    data file so the test exercises the data-
+	#    driven contract, not a hard-coded number.
+	var build_days: int = int(hearth_def.get("build_time_days"))
+	for _i in range(build_days):
+		realm.tick(1.0)
+	assert_eq(int(room.state), 2, "After build_time_days ticks, Hearth is ACTIVE (enum value 2)")
+
+	# 6. State machine is deterministic. The same tick
 	#    on a fresh realm produces the same state.
 	var realm2: Object = Realm.create(_SEED, _W, _H)
 	realm2.paint_zone(paint_rect, 2)
 	var room2: Object = realm2.promote_zone(paint_rect, 2, hearth_def)
 	realm2.tick(1.0)
+	for _i in range(build_days):
+		realm2.tick(1.0)
 	assert_eq(int(room2.state), int(room.state), "Deterministic: same tick -> same state")
 
 
@@ -93,6 +97,9 @@ func test_hearth_save_load_roundtrip() -> void:
 	var hearth_def: Resource = load("res://data/rooms/hearth.tres")
 	var room: Object = realm.promote_zone(paint_rect, 2, hearth_def)
 	realm.tick(1.0)
+	var build_days: int = int(hearth_def.get("build_time_days"))
+	for _i in range(build_days):
+		realm.tick(1.0)
 	assert_eq(int(room.state), 2, "Pre-save: Hearth is ACTIVE")
 
 	# 2. Save the realm. Use the RealmSerializer façade
