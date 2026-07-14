@@ -41,7 +41,7 @@ hold before the next one opens. The milestones, in order:
 |---|-----------|------------------------|
 | M0 | Foundation | **Done** — see [`CHANGELOG.md`](../CHANGELOG.md). |
 | M1 | Playable realm core | **Done** — foundation and first vertical slice merged; 32/32 GUT tests passing on Godot 4.3 headless; the local quality command is green end-to-end. |
-| M2 | Simulation core | Next. Inhabitant needs, contracts, tasks, relationships, memory, event log, resources. |
+| M2 | Simulation core | **Done** — see the M2-Closeout entry in [`CHANGELOG.md`](../CHANGELOG.md); 69/69 GUT tests passing in ~0.42s on Godot 4.3 headless. |
 | M3 | World and campaign | Constrained generator, two biomes, exploration, fixed narrative anchors, branching events. |
 | M4 | Knowledge and crisis | Research/ritual progression, Pactmaker powers, autonomous conflict, two crises, difficulty/settings. |
 | M5 | Vertical campaign completion | Six cultures, ten rooms, fifteen events, complete success/failure/restart loop, English/German, audio pass. |
@@ -107,8 +107,8 @@ plan.
 
 ## How this roadmap evolves
 
-- M0 is done. M1 is done. The M2-Closeout commit will add a
-  new section here that reflects the M2 state.
+- M0 is done. M1 is done. M2 is done. The M3-Closeout commit
+  will add a new section here that reflects the M3 state.
 - Each milestone closeout adds a section below; the older sections
   stay as historical record.
 - Architectural changes to the milestone plan itself (e.g. adding

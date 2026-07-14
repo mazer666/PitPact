@@ -8,17 +8,18 @@
 > merged changes. After M6, a "Release notes" file is generated from
 > the entries below and the GitHub Release.
 
-## [Unreleased] — M2 Simulation core in progress
+## [Unreleased] — M3 (Polishing + Late-game) in progress
 
-M0 Foundation is **complete**. M1 Playable realm core is
-**complete** and the documented local quality command
-(`./tools/run_quality.sh`) is green end-to-end, including
-**32/32 GUT tests passing in ~0.27s on Godot 4.3 headless**.
-See the M1-Closeout entry below for the closeout details.
+M0 Foundation, M1 Playable realm core, and **M2 Simulation
+core** are all **complete** on `main`. The local quality
+command (`./tools/run_quality.sh`) is green end-to-end on
+Godot 4.3 headless, with **69/69 GUT tests passing in
+~0.42s** covering the integrated M0-M2 whole. See the
+M0-Closeout, M1-Closeout, and M2-Closeout entries below for
+the detailed histories.
 
-The next milestone is M2 (Simulation core: inhabitant needs,
-contracts, tasks, relationships, memory, event log, resources).
-M2-Closeout entries will be added when M2 lands.
+The next milestone is M3 (polishing + late-game).
+M3-Closeout entries will be added when M3 lands.
 
 ### Added (M1-Closeout)
 
@@ -59,6 +60,88 @@ M2-Closeout entries will be added when M2 lands.
   dry-run, and locale validation all pass.
 - **GUT test results (headless, Godot 4.3.0 + GUT 9.2.1):**
   7 scripts, 32 tests, 299 asserts, 0 failures, ~0.27s.
+
+## [Unreleased] — M2 Simulation core in progress (superseded)
+
+### Added (M2-Closeout)
+
+- **ADR-0005 — Sim-Tick-Determinismus.** The sim façade
+  is the single owner of the per-tick RNG state.
+  `Sim.tick(delta_days, inhabitants, events)` is a pure
+  function: identical seed + identical inputs produce
+  identical state at every tick.
+- **`src/sim/sim.gd` — Sim façade.** Eight-step
+  per-tick pipeline: RNG draw, needs decay, task
+  progress, event-memory recording, relationships update,
+  contract evaluation, crisis evaluation, event-log
+  append. All eight steps wired in M2-Track-A and
+  M2-Track-B.
+- **Inhabitant simulation (`src/sim/inhabitant.gd`,
+  `src/sim/needs.gd`, `src/sim/morale.gd`,
+  `src/sim/event_memory.gd`, `src/sim/relationships.gd`,
+  `src/sim/morale.gd`, `src/sim/cultures/*.gd`).**
+  The `Inhabitant` data carrier plus four needs
+  (food, rest, safety, recognition), a `Morale` value
+  object (morale + stress), an `EventMemory` with
+  per-tick halflife decay, and a `Relationship` graph
+  keyed by canonical `(a, b)` edge ids.
+- **Six cultures.** `lanternbearer` is the first
+  culture in depth (body form, movement, values,
+  profession, social expectations, conflict pattern).
+  `bellows`, `ledger`, `tide`, `ember`, `silvershroud`
+  are stubs for the M5 cultures pass. Each culture has
+  a data-driven `.tres` definition under
+  `data/cultures/`.
+- **Contracts (`src/sim/contract.gd`,
+  `data/contracts/standard_pact.tres`).** One-inhabitant-
+  per-contract model with content-defined terms
+  dictionary; `breach()`, `is_active()`, `terms_for()`.
+  Standard pact pins lodging, food_share,
+  labour_hours_per_day, breach_consequence.
+- **Tasks (`src/sim/tasks.gd`).** Per-inhabitant
+  task assignment, progress advance, completion event
+  on `progress >= 1.0`.
+- **Event log (`src/sim/event_log.gd`).** Append-only
+  by design (no remove / no edit methods). Supports
+  `entries_in_range`, `entries_involving(id)`, `latest(n)`.
+- **Crises (`src/sim/crisis.gd`,
+  `data/events/first_inspection.tres`).** `Crisis`
+  wraps a `Condition` Callable and a list of `Choice`
+  dicts. The first crisis is `FirstInspection`
+  (triggers at day 7) with three choices:
+  `receive_inspector`, `evade_inspector`,
+  `confront_inspector`. The data-driven schema is
+  in `src/content/crisis_def.gd`.
+- **Content adapters (`src/content/culture_def.gd`,
+  `src/content/contract_def.gd`,
+  `src/content/crisis_def.gd`).** The `.tres` file
+  format is pinned by these data carriers.
+- **Locale additions (en.po, de.po,
+  source_strings.csv).** 9 new keys: 3 culture
+  names, 3 contract terms, 3 crisis strings, all
+  with English + German translations.
+- **Tests.** 7 new integration test files:
+  `test_inhabitant_lifecycle.gd` (6 tests), the M2
+  Track B `test_contract_lifecycle.gd` (5),
+  `test_crisis_trigger.gd` (4), `test_event_log.gd`
+  (4), plus the M2 end-to-end smoke test
+  `test_m2_smoke.gd` (1).
+
+### Local quality status (M2-Closeout)
+
+- `tools/run_quality.sh` runs end-to-end and is fully green.
+- **GUT test results (headless, Godot 4.3.0 + GUT 9.2.1):**
+  13 scripts, 69 tests, 540 asserts, 0 failures, ~0.42s.
+- The M2 smoke test exercises the integrated whole
+  end-to-end: 12×12 realm with a 3×3 Hearth, 3
+  inhabitants (1 Lanternbearer + 2 generics), 10 days
+  of ticks, the `FirstInspection` crisis firing at
+  day 7 and resolving with `receive_inspector`, the
+  `de.po` translation for the crisis name differing
+  from the `en.po` fallback, a synthetic event
+  appended, and a deterministic-replay check that
+  two sims with the same seed produce identical
+  event-log sizes.
 
 ## [Unreleased] — M0 Foundation in progress (superseded)
 
