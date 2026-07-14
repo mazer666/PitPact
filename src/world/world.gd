@@ -21,6 +21,12 @@
 class_name WorldState
 extends RefCounted
 
+## Cached reference to `src/world/zone.gd` so we don't
+## call `load(...)` on every paint/lookup. Loading
+## repeatedly is the kind of thing gdlint flags as
+## `duplicated-load`.
+const ZoneOpsClass: Script = preload("res://src/world/zone.gd")
+
 ## The realm's tile grid.
 var grid: Grid
 
@@ -39,7 +45,6 @@ var version: int = 0
 func _init(p_seed: int, p_w: int, p_h: int) -> void:
 	seed = p_seed
 	grid = Grid.from_seed(p_seed, p_w, p_h)
-	var ZoneOpsClass := load("res://src/world/zone.gd")
 	zone_grid = ZoneOpsClass.ZoneGrid.new(p_w, p_h)
 	version = 0
 
@@ -54,7 +59,6 @@ static func create(p_seed: int, p_w: int, p_h: int) -> RefCounted:
 func paint_zone(rect: Rect2i, purpose: int) -> Array:
 	if zone_grid == null:
 		return []
-	var ZoneOpsClass := load("res://src/world/zone.gd")
 	var zones: Array = ZoneOpsClass.paint(zone_grid, rect, purpose)
 	version += 1
 	return zones
@@ -64,7 +68,6 @@ func paint_zone(rect: Rect2i, purpose: int) -> Array:
 func find_zones(purpose: int) -> Array:
 	if zone_grid == null:
 		return []
-	var ZoneOpsClass := load("res://src/world/zone.gd")
 	return ZoneOpsClass.find_zones(zone_grid, purpose)
 
 
@@ -105,7 +108,6 @@ static func from_dict(d: Dictionary) -> RefCounted:
 	if d.has("grid") and d["grid"] is Dictionary:
 		ws.grid = Grid.from_dict(d["grid"])
 	if d.has("zone_grid") and d["zone_grid"] is Dictionary:
-		var ZoneOpsClass := load("res://src/world/zone.gd")
 		ws.zone_grid = ZoneOpsClass.ZoneGrid.from_dict(d["zone_grid"])
 	if d.has("version"):
 		ws.version = int(d["version"])

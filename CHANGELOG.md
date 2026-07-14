@@ -8,11 +8,59 @@
 > merged changes. After M6, a "Release notes" file is generated from
 > the entries below and the GitHub Release.
 
-## [Unreleased] — M1 Playable realm core in progress
+## [Unreleased] — M2 Simulation core in progress
 
-M0 Foundation is **complete** on `main`. See the prior `[Unreleased]`
-entry below for the M0-Closeout details. M1 is in progress; the
-M1-Closeout entry will be added when M1 lands.
+M0 Foundation is **complete**. M1 Playable realm core is
+**complete** and the documented local quality command
+(`./tools/run_quality.sh`) is green end-to-end, including
+**32/32 GUT tests passing in ~0.27s on Godot 4.3 headless**.
+See the M1-Closeout entry below for the closeout details.
+
+The next milestone is M2 (Simulation core: inhabitant needs,
+contracts, tasks, relationships, memory, event log, resources).
+M2-Closeout entries will be added when M2 lands.
+
+### Added (M1-Closeout)
+
+- M1 vertical slice is on `main`. The three parallel tracks
+  (Track A spatial, Track B camera+UI, Track C
+  content+save+locale) and the architectural foundation
+  (ADRs 0002/0003/0004, src/ module stubs, GUT 9.2.1 setup,
+  SplitMix64 RNG, expanded run_quality.sh) are merged.
+- M1-Closeout local quality: 32/32 GUT tests passing in
+  ~0.27s on Godot 4.3 headless, plus format, lint, and
+  module-dependency checks all green. The M1 acceptance
+  criteria from `docs/milestones.md` — camera/UI shell,
+  tile map, zoning, one room lifecycle, local saving,
+  diagnostics — are met on the integrated whole.
+
+### Changed (M1-Closeout)
+
+- `tools/run_quality.sh` now prefers GUT 9's own `gut_cmdln.gd`
+  CLI over the custom SceneTree runner at
+  `tests/_smoke/test_runner.gd`. The custom runner had a
+  known issue where GUT's internal `_test_the_scripts` calls
+  `get_tree()` on a Node before that Node is attached to the
+  SceneTree, which crashes under `--script` mode but works
+  fine under the GUT CLI. The custom runner is preserved as
+  a fallback and as documentation of intent but is no
+  longer the default.
+- 11 pre-existing lint issues in M1 source files fixed
+  (mechanical: `duplicated-load` caches, `class_name`
+  PascalCase for one test variable, `class-definitions-order`
+  in `zone_painter.gd`, two `max-returns` refactors in
+  `realm.gd` and `tile.gd`).
+
+### Local quality status (M1-Closeout)
+
+- `tools/run_quality.sh` runs end-to-end and is fully green.
+  Format check, license-header scan, workflow YAML validation,
+  module-dependency check, GUT headless tests, benchmark
+  dry-run, and locale validation all pass.
+- **GUT test results (headless, Godot 4.3.0 + GUT 9.2.1):**
+  7 scripts, 32 tests, 299 asserts, 0 failures, ~0.27s.
+
+## [Unreleased] — M0 Foundation in progress (superseded)
 
 ### Added (M0-Closeout, documentation pass)
 
@@ -55,12 +103,24 @@ M1-Closeout entry will be added when M1 lands.
   `assets/MANIFEST.md`. Until the asset count justifies the
   split, the authoritative inventory is
   `licenses/THIRD-PARTY.md`.
+- `src/save/save.gd` and `tests/integration/test_hearth_lifecycle.gd`
+  reformatted with `gdformat`. Mechanical, no semantic change.
+
+### Local quality status
+
+- `tools/run_quality.sh` runs end-to-end on the M0-Closeout
+  state. Format check, license-header scan, workflow YAML
+  validation, and M0 baseline file presence are all green.
+- The lint step reports 11 pre-existing issues in M1 source
+  files. These are M1-Closeout concerns and are resolved by
+  the M1-Closeout entry above.
 
 ### Notes
 
-- M0-Closeout is documentation-only. No game mechanics, no
-  scenes, no `project.godot`, and no existing requirements
-  were modified.
+- M0-Closeout is documentation-only plus the two mechanical
+  reformat lines. No game mechanics, no scenes, no
+  `project.godot`, and no existing requirements were
+  modified.
 
 ## [Unreleased] — M0 Foundation in progress
 

@@ -40,7 +40,7 @@ hold before the next one opens. The milestones, in order:
 | # | Milestone | Status (this roadmap) |
 |---|-----------|------------------------|
 | M0 | Foundation | **Done** — see [`CHANGELOG.md`](../CHANGELOG.md). |
-| M1 | Playable realm core | In progress — foundation and first vertical slice merged; smoke-test integration gate pending. |
+| M1 | Playable realm core | **Done** — foundation and first vertical slice merged; 32/32 GUT tests passing on Godot 4.3 headless; the local quality command is green end-to-end. |
 | M2 | Simulation core | Next. Inhabitant needs, contracts, tasks, relationships, memory, event log, resources. |
 | M3 | World and campaign | Constrained generator, two biomes, exploration, fixed narrative anchors, branching events. |
 | M4 | Knowledge and crisis | Research/ritual progression, Pactmaker powers, autonomous conflict, two crises, difficulty/settings. |
@@ -51,7 +51,7 @@ Post-release work (balancing, additional content, mod/content
 interfaces, iPadOS preparation, eventual co-op) is out of scope for
 M0-M6 and tracked separately.
 
-## What "in progress" means for M1
+## What "done" means for M1
 
 The M1 Definition-of-Done is in [`docs/milestones.md`](milestones.md).
 At a glance, M1 needs:
@@ -59,11 +59,14 @@ At a glance, M1 needs:
 - Camera/UI shell, isometric tile map, zoning, one room lifecycle,
   local saving, diagnostics.
 
-M1 is being built in three parallel vertical slices (spatial,
-camera+UI, content+save+locale) on top of the architectural
-foundation. The smoke-test integration gate verifies the integrated
-whole. See the M1-Closeout entry in `CHANGELOG.md` for the detailed
-status when M1 lands.
+M1 is **done** on `main`. The three parallel vertical slices
+(spatial, camera+UI, content+save+locale) and the architectural
+foundation (ADRs 0002/0003/0004, src/ module stubs, GUT 9.2.1
+setup, SplitMix64 RNG, expanded run_quality.sh) are merged. The
+local quality command `./tools/run_quality.sh` runs end-to-end
+and is fully green: 7 scripts, 32 tests, 299 asserts, 0 failures,
+~0.27s. See the M1-Closeout entry in `CHANGELOG.md` for the
+detailed status.
 
 ## What the M0-Closeout delivers
 
@@ -104,8 +107,8 @@ plan.
 
 ## How this roadmap evolves
 
-- M0 is done. M1 is in progress. The M1-Closeout commit will add a
-  new section here that reflects the M1 state.
+- M0 is done. M1 is done. The M2-Closeout commit will add a
+  new section here that reflects the M2 state.
 - Each milestone closeout adds a section below; the older sections
   stay as historical record.
 - Architectural changes to the milestone plan itself (e.g. adding

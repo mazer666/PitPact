@@ -21,10 +21,19 @@
 class_name ZonePainterTool
 extends Node2D
 
+## Overlay colour while painting.
+const _OVERLAY_COLOR: Color = Color(0.9, 0.5, 0.2, 0.35)
+
 ## The realm façade this tool paints into. Set via
 ## `bind_realm`. The tool is inert until a realm is
 ## bound.
 var realm: RefCounted
+
+## The `TileMapLayer` this tool queries for tile
+## coordinates. The tool needs the layer's
+## `screen_to_tile` to convert mouse events to tiles.
+## `null` until `bind_tile_map` is called.
+var tile_map: RefCounted
 
 ## The zone purpose the tool paints. The M1 minimum is
 ## `ZonePurpose.HEARTH`; the painter defaults to that.
@@ -33,19 +42,13 @@ var purpose: int = 2  # ZoneOps.ZonePurpose.HEARTH
 ## The current drag rect in tile coordinates. The
 ## overlay is drawn from this rect.
 var _drag_start: Vector2i = Vector2i(-1, -1)
+
+## End corner of the current drag rect in tile
+## coordinates. See `_drag_start`.
 var _drag_end: Vector2i = Vector2i(-1, -1)
 
 ## True while a drag is in progress.
 var _is_painting: bool = false
-
-## The `TileMapLayer` this tool queries for tile
-## coordinates. The tool needs the layer's
-## `screen_to_tile` to convert mouse events to tiles.
-## `null` until `bind_tile_map` is called.
-var tile_map: RefCounted
-
-## Overlay colour while painting.
-const _OVERLAY_COLOR: Color = Color(0.9, 0.5, 0.2, 0.35)
 
 
 ## Bind the realm façade. The tool is inert until a

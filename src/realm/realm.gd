@@ -176,15 +176,9 @@ func _rects_overlap(a: Rect2i, b: Rect2i) -> bool:
 	var a_y2: int = a.position.y + a.size.y
 	var b_x2: int = b.position.x + b.size.x
 	var b_y2: int = b.position.y + b.size.y
-	if a_x2 <= b.position.x:
-		return false
-	if b_x2 <= a.position.x:
-		return false
-	if a_y2 <= b.position.y:
-		return false
-	if b_y2 <= a.position.y:
-		return false
-	return true
+	var separated: bool = a_x2 <= b.position.x or b_x2 <= a.position.x
+	separated = separated or a_y2 <= b.position.y or b_y2 <= a.position.y
+	return not separated
 
 
 static func module_version() -> String:

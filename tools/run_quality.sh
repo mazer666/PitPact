@@ -225,16 +225,35 @@ if command -v "${GODOT_BIN}" >/dev/null 2>&1; then
     env PITPACT_VERBOSE="${VERBOSE}" "${GODOT_BIN}" --headless --import --path "${REPO_ROOT}"
 
   # 8c. The headless test run.
+  #
+  # We prefer GUT 9's own `gut_cmdln.gd` CLI over the
+  # custom SceneTree runner at `tests/_smoke/test_runner.gd`.
+  # GUT's CLI is well-tested in headless mode across the
+  # project's Godot version; the custom runner has a known
+  # issue where GUT's internal `_test_the_scripts` calls
+  # `get_tree()` on a Node before that Node is attached to
+  # the SceneTree, which crashes in `--script` mode but
+  # works fine under the GUT CLI. The custom runner is kept
+  # as a fallback (and as documentation of intent) but the
+  # default is the GUT CLI.
   if [ "${SKIP_TESTS}" = "1" ]; then
     warn "PITPACT_SKIP_TESTS=1; skipping GUT 9 test run"
+  elif [ -f addons/gut/gut_cmdln.gd ]; then
+    log "→ godot --headless GUT 9 test run (gut_cmdln.gd)"
+    run_step "gut headless tests" \
+      env PITPACT_VERBOSE="${VERBOSE}" "${GODOT_BIN}" \
+        --headless --path "${REPO_ROOT}" \
+        -s res://addons/gut/gut_cmdln.gd \
+        -gdir=res://tests/_smoke,res://tests/unit,res://tests/integration \
+        -gexit
   elif [ -f tests/_smoke/test_runner.gd ]; then
-    log "→ godot --headless GUT 9 test run (tests/_smoke/test_runner.gd)"
+    log "→ godot --headless GUT 9 test run (tests/_smoke/test_runner.gd fallback)"
     run_step "gut headless tests" \
       env PITPACT_VERBOSE="${VERBOSE}" "${GODOT_BIN}" \
         --headless --path "${REPO_ROOT}" \
         --script res://tests/_smoke/test_runner.gd
   else
-    warn "tests/_smoke/test_runner.gd missing; skipping GUT 9 test run"
+    warn "no GUT runner available; skipping GUT 9 test run"
   fi
 else
   warn "godot binary not on PATH (set PITPACT_GODOT); skipping engine checks"

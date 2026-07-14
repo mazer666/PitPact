@@ -23,6 +23,11 @@ const _SEED: int = 0xCAFE5_0BA
 const _W: int = 12
 const _H: int = 12
 
+## Cached Hearth data resource. `gdlint` flags repeated
+## `load(...)` calls as `duplicated-load`; cache the
+## reference at module load.
+const HEARTH_RES: Resource = preload("res://data/rooms/hearth.tres")
+
 ## The Hearth's data-driven build_time_days. Read from
 ## the .tres file at runtime; the test fails if the
 ## value is zero (a build of zero days is meaningless).
@@ -33,9 +38,8 @@ func _ready() -> void:
 	# Read the Hearth's build_time_days from the data
 	# file so the test asserts the contract, not a
 	# hard-coded number.
-	var hearth_def: Resource = load("res://data/rooms/hearth.tres")
-	if hearth_def != null and "build_time_days" in hearth_def:
-		_build_time_days = int(hearth_def.get("build_time_days"))
+	if HEARTH_RES != null and "build_time_days" in HEARTH_RES:
+		_build_time_days = int(HEARTH_RES.get("build_time_days"))
 
 
 func test_hearth_lifecycle_paint_then_tick_to_active() -> void:
@@ -55,8 +59,7 @@ func test_hearth_lifecycle_paint_then_tick_to_active() -> void:
 
 	# 3. Promote the zone to a Hearth room. Use the
 	#    data-driven Hearth factory.
-	var hearth_def: Resource = load("res://data/rooms/hearth.tres")
-	var room: Object = realm.promote_zone(paint_rect, 2, hearth_def)
+	var room: Object = realm.promote_zone(paint_rect, 2, HEARTH_RES)
 	assert_not_null(room, "Hearth was promoted from the zone")
 	# The room is in PLANNED on the same frame as
 	# promotion (the state machine starts at PLANNED
@@ -72,7 +75,7 @@ func test_hearth_lifecycle_paint_then_tick_to_active() -> void:
 	#    ACTIVE. The build_time_days is read from the
 	#    data file so the test exercises the data-
 	#    driven contract, not a hard-coded number.
-	var build_days: int = int(hearth_def.get("build_time_days"))
+	var build_days: int = int(HEARTH_RES.get("build_time_days"))
 	for _i in range(build_days):
 		realm.tick(1.0)
 	assert_eq(int(room.state), 2, "After build_time_days ticks, Hearth is ACTIVE (enum value 2)")
@@ -81,7 +84,7 @@ func test_hearth_lifecycle_paint_then_tick_to_active() -> void:
 	#    on a fresh realm produces the same state.
 	var realm2: Object = Realm.create(_SEED, _W, _H)
 	realm2.paint_zone(paint_rect, 2)
-	var room2: Object = realm2.promote_zone(paint_rect, 2, hearth_def)
+	var room2: Object = realm2.promote_zone(paint_rect, 2, HEARTH_RES)
 	realm2.tick(1.0)
 	for _i in range(build_days):
 		realm2.tick(1.0)
@@ -94,10 +97,9 @@ func test_hearth_save_load_roundtrip() -> void:
 	var realm: Object = Realm.create(_SEED, _W, _H)
 	var paint_rect: Rect2i = Rect2i(Vector2i(4, 4), Vector2i(3, 3))
 	realm.paint_zone(paint_rect, 2)
-	var hearth_def: Resource = load("res://data/rooms/hearth.tres")
-	var room: Object = realm.promote_zone(paint_rect, 2, hearth_def)
+	var room: Object = realm.promote_zone(paint_rect, 2, HEARTH_RES)
 	realm.tick(1.0)
-	var build_days: int = int(hearth_def.get("build_time_days"))
+	var build_days: int = int(HEARTH_RES.get("build_time_days"))
 	for _i in range(build_days):
 		realm.tick(1.0)
 	assert_eq(int(room.state), 2, "Pre-save: Hearth is ACTIVE")

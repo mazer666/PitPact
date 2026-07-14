@@ -115,12 +115,12 @@ func equals(other: Tile) -> bool:
 		return false
 	if surface_meta.size() != other.surface_meta.size():
 		return false
+	var surface_match: bool = true
 	for k in surface_meta.keys():
-		if not other.surface_meta.has(k):
-			return false
-		if str(surface_meta[k]) != str(other.surface_meta[k]):
-			return false
-	return true
+		if not other.surface_meta.has(k) or str(surface_meta[k]) != str(other.surface_meta[k]):
+			surface_match = false
+			break
+	return surface_match
 
 
 # --- helpers ----------------------------------------------------------
