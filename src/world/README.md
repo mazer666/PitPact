@@ -38,10 +38,17 @@ time, and does **not** read or write the UI scene tree.
 loaded realm. Created by `src/realm/RealmFactory` and never
 hand-constructed by callers.
 
-The full public surface (signatures and contracts) will be
-documented in this section as the M1 cycle 2 commit lands the
-real data model. Until then the public entry point is the
-`class_name WorldState` declared in `world.gd`.
+The M3-foundation commit adds a second public entry point,
+`class_name WorldGenerator` in [`generator.gd`](generator.gd),
+which is the deterministic pure function
+`WorldGenerator.generate(seed, width, height, constraints)
+-> WorldMap` pinned by
+[ADR-0007](../adrs/0007-world-generator-determinism.md). The
+generator builds the realm's `WorldMap` from a seed and a
+constraint set; the realm façade materialises a `WorldState`
+and a `Sim` from the `WorldMap`. The M3-foundation commit
+ships the signature and the no-op body; the M3 cycle 2
+(Track A) commit fills in the body.
 
 ## Main dependencies
 
@@ -64,14 +71,28 @@ The mechanical check for this rule lives in
 
 | File | Public class | Status |
 |------|--------------|--------|
-| [`world.gd`](world.gd) | `WorldState` (stub) | M1 stub |
-| (lands with cycle 2) | `TileGrid` | planned |
-| (lands with cycle 2) | `Zone` | planned |
-| (lands with cycle 2) | `Room` | planned |
-| (lands with cycle 2) | `coordinates.gd` | planned (ADR-0004) |
+| [`world.gd`](world.gd) | `WorldState` | M1 (Track A) |
+| [`grid.gd`](grid.gd) | `Grid` | M1 (Track A) |
+| [`tile.gd`](tile.gd) | `Tile` | M1 (Track A) |
+| [`zone.gd`](zone.gd) | `ZoneOps` / `ZoneGrid` | M1 (Track A) |
+| [`coordinates.gd`](coordinates.gd) | `WorldCoordinates` | M1 (Track A, ADR-0004) |
+| [`tile_map.gd`](tile_map.gd) | `WorldTileMapLayer` | M1 (Track A) |
+| [`zone_painter.gd`](zone_painter.gd) | `ZonePainterTool` | M1 (Track A) |
+| [`demo_realm.gd`](demo_realm.gd) | `DemoRealm` | M1 (Track A, placeholder) |
+| [`generator.gd`](generator.gd) | `WorldGenerator` (with inner `WorldMap`, `GeneratorConstraintError`) | M3-foundation skeleton (ADR-0007) |
+| [`biome.gd`](biome.gd) | `Biome` | M3-foundation skeleton |
+| [`exploration.gd`](exploration.gd) | `ExplorationMap` | M3-foundation skeleton |
+| [`narrative_anchor.gd`](narrative_anchor.gd) | `NarrativeAnchor` | M3-foundation skeleton |
+| [`branch.gd`](branch.gd) | `BranchNode` | M3-foundation skeleton (ADR-0008) |
+| (lands with M3 cycle 2 Track A) | per-biome placement, per-tile biome catalogue, fog-of-war reveal | planned |
+| (lands with M3 cycle 2 Track B) | per-anchor placement, branch-node root set | planned |
 
 ## See also
 
 - [`docs/adrs/0002-module-boundaries.md`](../adrs/0002-module-boundaries.md)
 - [`docs/adrs/0004-spatial-model.md`](../adrs/0004-spatial-model.md)
-- [`docs/requirements.md`](../requirements.md) §8, §16, §17
+- [`docs/adrs/0007-world-generator-determinism.md`](../adrs/0007-world-generator-determinism.md)
+- [`docs/adrs/0008-branching-event-schema.md`](../adrs/0008-branching-event-schema.md)
+- [`docs/requirements.md`](../requirements.md) §7, §8, §11, §16, §17
+- [`tests/_smoke/test_world_skeleton.gd`](../../tests/_smoke/test_world_skeleton.gd) —
+  the M3-foundation skeleton smoke test (15 tests, all green).
