@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CultureData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/content/culture_def.gd" id="1_culture_def"]
+
+[resource]
+script = ExtResource("1_culture_def")
+id = &"lanternbearer"
+display_name = &"CREATURE_LANTERNBEARER_NAME"
+body_form = &"CREATURE_LANTERNBEARER_BODY_FORM"
+values = PackedStringArray("CREATURE_LANTERNBEARER_VALUE_PRESERVATION", "CREATURE_LANTERNBEARER_VALUE_STORYKEEPING")

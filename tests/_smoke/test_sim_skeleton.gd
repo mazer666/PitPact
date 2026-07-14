@@ -139,9 +139,13 @@ func test_sim_version_is_m2_skeleton() -> void:
 	# M2-foundation tag is `0.1.0-m2-skeleton`; the
 	# cycle 2 commit bumps it to `0.2.0-m2-track-a`,
 	# and the cycle 3 commit to `0.3.0-m2-track-b`.
+	# The M2 Track A inhabitants commit (this branch)
+	# bumps it again to `0.4.0-m2-track-a` to mark
+	# the inhabitant-side wiring landing on top of
+	# the Track B contract / crisis wiring.
 	var SimClass := load(_SIM_PATH)
 	var v: String = String(SimClass.call("version"))
-	assert_eq(v, "0.1.0-m2-skeleton", "Sim.version() should return the M2-skeleton version tag")
+	assert_eq(v, "0.4.0-m2-track-a", "Sim.version() should return the M2-Track-A version tag")
 
 
 func test_inhabitant_loads_and_has_deterministic_id() -> void:

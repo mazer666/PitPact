@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ContractDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/content/contract_def.gd" id="1_contract_def"]
+
+[resource]
+script = ExtResource("1_contract_def")
+id = &"standard_pact"
+display_name = &"CONTRACT_STANDARD_PACT_NAME"
+terms = {
+	&"lodging": true,
+	&"food_share": true,
+	&"labour_hours_per_day": 6,
+	&"breach_consequence": &"contract.breach.morale_penalty",
+}

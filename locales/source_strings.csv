@@ -26,3 +26,15 @@ MENU_LOAD,Load,Button label on the title screen to load a specific save slot.
 MENU_RETURN_TO_TITLE,Return to Title,Button label on the pause menu to abandon the current campaign and return to the title screen.
 DIAG_TOGGLE,Toggle Diagnostics,Tooltip on the F3 hotkey.
 MINIMAP_TOGGLE,Toggle Minimap,Tooltip on the M hotkey.
+CONTRACT_STANDARD_PACT_NAME,Standard Pact,Display name of the standard pact contract (data/contracts/standard_pact.tres).
+CRISIS_FIRST_INSPECTION_NAME,First Inspection,Display name of the first-inspection crisis (data/events/first_inspection.tres).
+CRISIS_CHOICE_RECEIVE_INSPECTOR,Receive the Inspector,Label of the receive-inspector choice in the FirstInspection crisis.
+CRISIS_CHOICE_RECEIVE_INSPECTOR_SUMMARY,The gates are opened. The inspector enters the realm and watches for three days. No morale penalty is taken.,Event-log summary for the receive-inspector choice.
+CRISIS_CHOICE_EVADE_INSPECTOR,Evade the Inspector,Label of the evade-inspector choice in the FirstInspection crisis.
+CRISIS_CHOICE_EVADE_INSPECTOR_SUMMARY,The gates stay closed. The inspector departs. Every inhabitant's morale takes a small penalty.,Event-log summary for the evade-inspector choice.
+CRISIS_CHOICE_CONFRONT_INSPECTOR,Confront the Inspector,Label of the confront-inspector choice in the FirstInspection crisis.
+CRISIS_CHOICE_CONFRONT_INSPECTOR_SUMMARY,A Lanternbearer steps forward. The inspector's affinity for the realm improves.,Event-log summary for the confront-inspector choice.
+EVENT_CONTRACT_BREACH,Contract {id} has been breached. Consequence: {consequence}.,Event-log summary for the contract.breach event.
+EVENT_TASK_COMPLETED,Task {id} has been completed.,Event-log summary for the task.completed event.
+EVENT_CRISIS_TRIGGERED,Crisis {id} has been triggered.,Event-log summary for the crisis.triggered event.
+EVENT_CRISIS_CHOICE_MADE,Crisis {id} resolved by the choice {choice}.,Event-log summary for the crisis.choice_made event.
