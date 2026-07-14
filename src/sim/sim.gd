@@ -39,13 +39,14 @@
 class_name Sim
 extends RefCounted
 
-## M2 Track A version tag. Bumped from the M2 Track B tag
-## to mark the inhabitant / needs / event-memory /
-## relationship wiring landing in this commit. String
-## rather than a numeric constant so the version can be
-## derived from a single source of truth in a later
+## M2 Track A + M3 cycle 2 (Track A) exploration
+## version tag. Bumped from the M2 Track A tag
+## to mark the exploration step landing in
+## this commit. String rather than a numeric
+## constant so the version can be derived from
+## a single source of truth in a later
 ## milestone.
-const _VERSION: String = "0.4.0-m2-track-a"
+const _VERSION: String = "0.4.1-m2-track-a-explore"
 
 ## In-game time, in days. The sim's clock is advanced by
 ## `delta_days` at the end of every `tick()` call (step 6
@@ -89,6 +90,16 @@ var tasks: Dictionary = {}
 ## every crisis's `condition` between steps 5 and 6 of
 ## ADR-0005.
 var crises: Dictionary = {}
+
+## The realm's exploration map. The M3 cycle 2
+## (Track A) commit lands this field as the
+## registered-fog-of-war reference. `null` means
+## "no exploration has been registered"; the
+## per-tick rule (step 7a, M3) treats the
+## `null` case as a no-op (the M2 contract is
+## preserved). The realm façade binds the
+## reference via `register_exploration`.
+var exploration_map: RefCounted = null
 
 ## The realm's relationship graph. A
 ## `Dictionary[StringName, Relationship]` keyed by a
@@ -189,6 +200,63 @@ func add_crisis(cr: Crisis) -> void:
 		return
 	cr.bind_event_log(event_log)
 	crises[cr.id] = cr
+
+
+## Register the realm's exploration map. The
+## `register_exploration` call binds the map to
+## the sim; the per-tick rule (step 7a, M3)
+## reads the map and advances the exploration.
+## Passing `null` unregisters the map. The
+## method does NOT validate the map (a
+## registration of a `null` map is a
+## legitimate unregister; a registration of a
+## non-`ExplorationMap` value is a caller error
+## that the per-tick rule surfaces as a no-op).
+##
+## The M2 contract is preserved: a `Sim` that
+## has never had `register_exploration` called
+## has `exploration_map == null`; the per-tick
+## rule treats that as a no-op (the existing M2
+## tests continue to pass).
+func register_exploration(map) -> void:
+	exploration_map = map
+
+
+## M3 cycle 2 (Track A) exploration step. The
+## method is a thin wrapper over
+## `ExplorationStep.run(self, delta_days,
+## inhabitants, exploration_map, true)`. The
+## implementation lives in `src/sim/
+## exploration_step.gd`; the wrapper is here
+## so the per-tick hook in `tick`'s step 7a
+## can call the same code path with
+## `advance_time = false` (and so the
+## `sim.gd` file stays under the 1000-line
+## cap the lint check enforces).
+func explore(delta_days: float, inhabitants: Array, exploration_map_v) -> void:
+	if delta_days <= 0.0:
+		push_error(
+			"Sim.explore: delta_days must be positive (got %f)" % delta_days
+		)
+		return
+	ExplorationStep.run(
+		self, delta_days, inhabitants, exploration_map_v, true
+	)
+
+
+## Internal exploration step. Called from
+## `tick`'s step 7a with `advance_time = false`
+## (the standard `time_days += delta_days` at
+## the end of `tick` is the single source of
+## truth for the clock). The wrapper is the
+## thin layer that routes to
+## `ExplorationStep.run`.
+func _exploration_step(
+	delta_days: float, inhabitants: Array, exploration_map_v, advance_time: bool
+) -> void:
+	ExplorationStep.run(
+		self, delta_days, inhabitants, exploration_map_v, advance_time
+	)
 
 
 ## Tick the simulation forward by `delta_days`. Pure
@@ -312,6 +380,25 @@ func tick(delta_days: float, inhabitants: Array, events: Array) -> void:
 	#    value the event log's `time_days` field
 	#    will record.
 	_evaluate_crises(delta_days)
+
+	# 7a. Exploration step (M3 cycle 2 Track A).
+	#     The step is a no-op if the realm has no
+	#     `ExplorationMap` registered (the M2
+	#     contract is preserved: a sim that has
+	#     never had `register_exploration` called
+	#     continues to behave exactly as the M2
+	#     tests expect). The step is also a no-op
+	#     if the realm is fully revealed. The
+	#     step passes `advance_time = false` so
+	#     the standard `time_days += delta_days`
+	#     at the end of `tick` is the single
+	#     source of truth for the realm's clock;
+	#     the per-call cost is logged as an
+	#     event for the UI.
+	if exploration_map != null:
+		_exploration_step(
+			delta_days, inhabitants, exploration_map, false
+		)
 
 	# 8. Event-log append is implicit — every
 	#    subsystem that mutates state appends its

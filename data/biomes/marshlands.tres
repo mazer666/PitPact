@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BiomeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/content/biome_def.gd" id="1_biome_def"]
+
+[resource]
+script = ExtResource("1_biome_def")
+id = &"marshlands"
+display_name = &"BIOME_MARSHLANDS_NAME"
+palette_hint = &"bog_green"
+resource_bias = {
+	&"stone": 0.2,
+	&"fungi": 0.8,
+	&"ember": 0.05,
+	&"memory": 0.1,
+}
+hazard_bias = PackedStringArray("deep_mud", "fog")
+narrative_anchor = &"BIOME_MARSHLANDS_NARRATIVE"
+burden = 0.3
+movement_modifier = 0.8

@@ -48,6 +48,23 @@ extends Resource
 ## the UI shows when the player first enters the biome.
 @export var narrative_anchor: StringName = &""
 
+## Default burden for the biome — the "hostility"
+## measure ADR-0007 uses to gate the Hearth spawn
+## tile. A `float` in `[0.0, 1.0]`. The M3 default
+## is `0.3` (marshlands, low-burden) and `0.6`
+## (highlands, hostile). The runtime `Biome` class
+## is populated from this field by the M3 generator
+## (ADR-0007).
+@export var burden: float = 0.0
+
+## Default movement-cost multiplier for tiles in the
+## biome. A `float`; the M3 default is `0.8`
+## (marshlands: slow because of bog) or `1.2`
+## (highlands: faster because of open ground). The
+## runtime `Biome` class is populated from this
+## field by the M3 generator.
+@export_range(0.0, 10.0, 0.01) var movement_modifier: float = 1.0
+
 
 ## Validate the definition. Returns an empty array on success.
 func validate() -> PackedStringArray:
@@ -66,4 +83,8 @@ func validate() -> PackedStringArray:
 		if float(v) < 0.0:
 			errs.append("BiomeDef.resource_bias[%s] is negative" % str(k))
 			break
+	if burden < 0.0 or burden > 1.0:
+		errs.append("BiomeDef.burden is out of [0.0, 1.0]: %f" % burden)
+	if movement_modifier < 0.0:
+		errs.append("BiomeDef.movement_modifier is negative: %f" % movement_modifier)
 	return errs
