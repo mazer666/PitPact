@@ -52,7 +52,7 @@ The following are not required for the first public release: co-op, competitive 
 - **Later target:** iPadOS, after the desktop release.
 - **Not a target:** smartphones.
 - **Input from day one:** keyboard, mouse, trackpad, and touch-aware UI interactions. Controller support is out of initial scope.
-- Normal-sized realms on the reference MacBook Air M5 must feel smooth at a 60 FPS target.
+- Normal-sized realms on the reference MacBook Air M3 must feel smooth at a 60 FPS target.
 - Lower-end systems must have sensible performance limits and adjustable visual quality.
 - Large transitions may use clear, brief loading screens; the game must not silently freeze or stutter for long periods.
 - Simulation, map, and creature performance must be benchmarked locally.
