@@ -34,6 +34,7 @@ You do **not** need an ADR for:
 | [0002](0002-module-boundaries.md) | Module boundaries and data flow | accepted | 2026-07-13 |
 | [0003](0003-save-format.md) | Save format and versioning | accepted | 2026-07-13 |
 | [0004](0004-spatial-model.md) | Spatial model | accepted | 2026-07-13 |
+| [0005](0005-sim-tick-determinism.md) | Sim-tick determinism | accepted | 2026-07-14 |
 
 ## Conventions
 
