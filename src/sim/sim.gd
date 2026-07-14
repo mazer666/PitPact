@@ -235,13 +235,9 @@ func register_exploration(map) -> void:
 ## cap the lint check enforces).
 func explore(delta_days: float, inhabitants: Array, exploration_map_v) -> void:
 	if delta_days <= 0.0:
-		push_error(
-			"Sim.explore: delta_days must be positive (got %f)" % delta_days
-		)
+		push_error("Sim.explore: delta_days must be positive (got %f)" % delta_days)
 		return
-	ExplorationStep.run(
-		self, delta_days, inhabitants, exploration_map_v, true
-	)
+	ExplorationStep.run(self, delta_days, inhabitants, exploration_map_v, true)
 
 
 ## Internal exploration step. Called from
@@ -254,9 +250,7 @@ func explore(delta_days: float, inhabitants: Array, exploration_map_v) -> void:
 func _exploration_step(
 	delta_days: float, inhabitants: Array, exploration_map_v, advance_time: bool
 ) -> void:
-	ExplorationStep.run(
-		self, delta_days, inhabitants, exploration_map_v, advance_time
-	)
+	ExplorationStep.run(self, delta_days, inhabitants, exploration_map_v, advance_time)
 
 
 ## Tick the simulation forward by `delta_days`. Pure
@@ -396,9 +390,7 @@ func tick(delta_days: float, inhabitants: Array, events: Array) -> void:
 	#     the per-call cost is logged as an
 	#     event for the UI.
 	if exploration_map != null:
-		_exploration_step(
-			delta_days, inhabitants, exploration_map, false
-		)
+		_exploration_step(delta_days, inhabitants, exploration_map, false)
 
 	# 8. Event-log append is implicit — every
 	#    subsystem that mutates state appends its
