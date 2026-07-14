@@ -37,7 +37,9 @@ static func version() -> String:
 ## wrapper over `RealmSerializer.build_save` that exists
 ## so the call site reads naturally:
 ## `SaveService.build_save(body, seed_hex)`.
-static func build_save(realm_body: Dictionary, seed_hex: String, extra: Dictionary = {}) -> Dictionary:
+static func build_save(
+	realm_body: Dictionary, seed_hex: String, extra: Dictionary = {}
+) -> Dictionary:
 	return RealmSerializer.build_save(realm_body, seed_hex, extra)
 
 

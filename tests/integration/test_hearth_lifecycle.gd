@@ -168,9 +168,7 @@ func test_grid_determinism_same_seed_same_first_tiles() -> void:
 	var g2: Object = Grid.from_seed(_SEED, _W, _H)
 	for i in range(min(16, g1.tiles.size())):
 		assert_eq(g1.tiles[i].id, g2.tiles[i].id, "Tile %d id matches" % i)
-		assert_eq(
-			String(g1.tiles[i].biome), String(g2.tiles[i].biome), "Tile %d biome matches" % i
-		)
+		assert_eq(String(g1.tiles[i].biome), String(g2.tiles[i].biome), "Tile %d biome matches" % i)
 
 
 func test_zone_connected_components_two_zones() -> void:
