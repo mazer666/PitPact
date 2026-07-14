@@ -114,12 +114,15 @@ func test_world_generator_version_is_m3_skeleton() -> void:
 	# numeric constant so the version can be derived
 	# from a single source of truth in a later
 	# milestone. The M3-foundation tag is
-	# `0.1.0-m3-skeleton`; the M3 cycle 2 commit
-	# bumps it to mark the body landing.
+	# `0.1.0-m3-skeleton`; the M3 cycle 2 (Track A)
+	# commit bumps it to `0.2.0-m3-track-a` to mark
+	# the body landing.
 	var GeneratorClass := load(_GENERATOR_PATH)
 	var v: String = String(GeneratorClass.call("version"))
 	assert_eq(
-		v, "0.1.0-m3-skeleton", "WorldGenerator.version() should return the M3-skeleton version tag"
+		v,
+		"0.2.0-m3-track-a",
+		"WorldGenerator.version() should return the M3 cycle 2 (Track A) version tag"
 	)
 
 
