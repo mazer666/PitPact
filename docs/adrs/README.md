@@ -35,6 +35,8 @@ You do **not** need an ADR for:
 | [0003](0003-save-format.md) | Save format and versioning | accepted | 2026-07-13 |
 | [0004](0004-spatial-model.md) | Spatial model | accepted | 2026-07-13 |
 | [0005](0005-sim-tick-determinism.md) | Sim-tick determinism | accepted | 2026-07-14 |
+| [0007](0007-world-generator-determinism.md) | World-generator determinism | accepted | 2026-07-14 |
+| [0008](0008-branching-event-schema.md) | Branching-event schema | accepted | 2026-07-14 |
 
 ## Conventions
 
