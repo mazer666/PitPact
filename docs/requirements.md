@@ -48,7 +48,7 @@ The following are not required for the first public release: co-op, competitive 
 ## 4. Target platforms and performance
 
 - **Release priority:** macOS, Windows, and Linux desktop.
-- **Primary development/reference device:** MacBook Air with Apple M5.
+- **Primary development/reference device:** MacBook Air with Apple M3 and above.
 - **Later target:** iPadOS, after the desktop release.
 - **Not a target:** smartphones.
 - **Input from day one:** keyboard, mouse, trackpad, and touch-aware UI interactions. Controller support is out of initial scope.
