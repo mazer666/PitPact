@@ -94,3 +94,40 @@ msgstr "Diagnose umschalten"
 
 msgid "MINIMAP_TOGGLE"
 msgstr "Minikarte umschalten"
+
+# M2 Track B — contracts, tasks, crises
+msgid "CONTRACT_STANDARD_PACT_NAME"
+msgstr "Standardpakt"
+
+msgid "CRISIS_FIRST_INSPECTION_NAME"
+msgstr "Erste Inspektion"
+
+msgid "CRISIS_CHOICE_RECEIVE_INSPECTOR"
+msgstr "Den Inspektor empfangen"
+
+msgid "CRISIS_CHOICE_RECEIVE_INSPECTOR_SUMMARY"
+msgstr "Die Tore werden geöffnet. Der Inspektor betritt das Reich und beobachtet es drei Tage lang. Es wird kein Moralklick verhängt."
+
+msgid "CRISIS_CHOICE_EVADE_INSPECTOR"
+msgstr "Dem Inspektor ausweichen"
+
+msgid "CRISIS_CHOICE_EVADE_INSPECTOR_SUMMARY"
+msgstr "Die Tore bleiben geschlossen. Der Inspektor reist ab. Jeder Bewohner erleidet eine kleine Moraleinbuße."
+
+msgid "CRISIS_CHOICE_CONFRONT_INSPECTOR"
+msgstr "Dem Inspektor entgegentreten"
+
+msgid "CRISIS_CHOICE_CONFRONT_INSPECTOR_SUMMARY"
+msgstr "Ein Laternenträger tritt vor. Die Zuneigung des Inspektors zum Reich verbessert sich."
+
+msgid "EVENT_CONTRACT_BREACH"
+msgstr "Vertrag {id} wurde gebrochen. Konsequenz: {consequence}."
+
+msgid "EVENT_TASK_COMPLETED"
+msgstr "Aufgabe {id} wurde abgeschlossen."
+
+msgid "EVENT_CRISIS_TRIGGERED"
+msgstr "Krise {id} wurde ausgelöst."
+
+msgid "EVENT_CRISIS_CHOICE_MADE"
+msgstr "Krise {id} durch die Wahl {choice} gelöst."

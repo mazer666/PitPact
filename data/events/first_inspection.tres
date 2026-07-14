@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="CrisisDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/content/crisis_def.gd" id="1_crisis_def"]
+
+[resource]
+script = ExtResource("1_crisis_def")
+id = &"first_inspection"
+display_name = &"CRISIS_FIRST_INSPECTION_NAME"
+trigger_at_day = 7.0
+choices = [
+	{
+		"id": &"receive_inspector",
+		"display_name": &"CRISIS_CHOICE_RECEIVE_INSPECTOR",
+		"consequence_summary": &"CRISIS_CHOICE_RECEIVE_INSPECTOR_SUMMARY",
+	},
+	{
+		"id": &"evade_inspector",
+		"display_name": &"CRISIS_CHOICE_EVADE_INSPECTOR",
+		"consequence_summary": &"CRISIS_CHOICE_EVADE_INSPECTOR_SUMMARY",
+	},
+	{
+		"id": &"confront_inspector",
+		"display_name": &"CRISIS_CHOICE_CONFRONT_INSPECTOR",
+		"consequence_summary": &"CRISIS_CHOICE_CONFRONT_INSPECTOR_SUMMARY",
+	},
+]

@@ -94,3 +94,40 @@ msgstr "Toggle Diagnostics"
 
 msgid "MINIMAP_TOGGLE"
 msgstr "Toggle Minimap"
+
+# M2 Track B — contracts, tasks, crises
+msgid "CONTRACT_STANDARD_PACT_NAME"
+msgstr "Standard Pact"
+
+msgid "CRISIS_FIRST_INSPECTION_NAME"
+msgstr "First Inspection"
+
+msgid "CRISIS_CHOICE_RECEIVE_INSPECTOR"
+msgstr "Receive the Inspector"
+
+msgid "CRISIS_CHOICE_RECEIVE_INSPECTOR_SUMMARY"
+msgstr "The gates are opened. The inspector enters the realm and watches for three days. No morale penalty is taken."
+
+msgid "CRISIS_CHOICE_EVADE_INSPECTOR"
+msgstr "Evade the Inspector"
+
+msgid "CRISIS_CHOICE_EVADE_INSPECTOR_SUMMARY"
+msgstr "The gates stay closed. The inspector departs. Every inhabitant's morale takes a small penalty."
+
+msgid "CRISIS_CHOICE_CONFRONT_INSPECTOR"
+msgstr "Confront the Inspector"
+
+msgid "CRISIS_CHOICE_CONFRONT_INSPECTOR_SUMMARY"
+msgstr "A Lanternbearer steps forward. The inspector's affinity for the realm improves."
+
+msgid "EVENT_CONTRACT_BREACH"
+msgstr "Contract {id} has been breached. Consequence: {consequence}."
+
+msgid "EVENT_TASK_COMPLETED"
+msgstr "Task {id} has been completed."
+
+msgid "EVENT_CRISIS_TRIGGERED"
+msgstr "Crisis {id} has been triggered."
+
+msgid "EVENT_CRISIS_CHOICE_MADE"
+msgstr "Crisis {id} resolved by the choice {choice}."
