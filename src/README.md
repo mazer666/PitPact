@@ -9,7 +9,7 @@ defined in [`docs/adrs/0002-module-boundaries.md`](../adrs/0002-module-boundarie
 |--------|--------|--------|--------------------|
 | `src/core`    | [README](core/README.md)    | M1 stub + `SplitMix64` | `class_name PitPactCore`, `SplitMix64` |
 | `src/world`   | [README](world/README.md)   | M1 stub | `class_name WorldState` |
-| `src/sim`     | [README](sim/README.md)     | M1 stub | `class_name Simulation` |
+| `src/sim`     | [README](sim/README.md)     | M2 foundation | `class_name Sim` |
 | `src/realm`   | [README](realm/README.md)   | M1 stub | `class_name Realm`, `RealmFactory` |
 | `src/content` | [README](content/README.md) | M1 stub | `class_name ContentRegistry` |
 | `src/save`    | [README](save/README.md)    | M1 stub | `class_name SaveService` |
