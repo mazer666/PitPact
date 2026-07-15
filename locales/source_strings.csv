@@ -13,6 +13,10 @@ BIOME_HOLLOW_NAME,The Hollow,Display name of the starting biome (data/biomes/hol
 BIOME_HOLLOW_NARRATIVE,Where the rock first learns to listen.,Narrative anchor shown when the player first enters the Hollow.
 BIOME_DUSTMAZE_NAME,Dustmaze,Display name of the second biome (data/biomes/dustmaze.tres).
 BIOME_DUSTMAZE_NARRATIVE,Old roads that no longer agree on where they go.,Narrative anchor shown when the player first enters the Dustmaze.
+BIOME_MARSHLANDS_NAME,Marshlands,Display name of the marshlands biome (data/biomes/marshlands.tres).
+BIOME_MARSHLANDS_NARRATIVE,Where the ground gives before it bears.,Narrative anchor shown when the player first enters the Marshlands.
+BIOME_HIGHLANDS_NAME,Highlands,Display name of the highlands biome (data/biomes/highlands.tres).
+BIOME_HIGHLANDS_NARRATIVE,Wind-scoured stone that remembers every step.,Narrative anchor shown when the player first enters the Highlands.
 ORIGIN_SCHOLAR_NAME,Scholar,Display name of the Scholar Pactmaker origin (data/origins/scholar.tres).
 ORIGIN_SCHOLAR_NARRATIVE,You arrived with a library, a ledger, and a quiet certainty that every contract has a clause you have not read yet.,Narrative anchor for the Scholar origin.
 ORIGIN_WARDEN_NAME,Warden,Display name of the Warden Pactmaker origin (data/origins/warden.tres).
@@ -38,3 +42,15 @@ EVENT_CONTRACT_BREACH,Contract {id} has been breached. Consequence: {consequence
 EVENT_TASK_COMPLETED,Task {id} has been completed.,Event-log summary for the task.completed event.
 EVENT_CRISIS_TRIGGERED,Crisis {id} has been triggered.,Event-log summary for the crisis.triggered event.
 EVENT_CRISIS_CHOICE_MADE,Crisis {id} resolved by the choice {choice}.,Event-log summary for the crisis.choice_made event.
+ANCHOR_FIRST_MORNING_NAME,First Morning,Display name of the first-morning narrative anchor (data/anchors/first_morning.tres).
+ANCHOR_FIRST_MORNING_SUMMARY,The first morning of the realm; the fire is lit and the inhabitants gather around it.,Summary of the first-morning narrative anchor.
+ANCHOR_STOWAWAY_NAME,Stowaway,Display name of the stowaway narrative anchor (data/anchors/stowaway.tres).
+ANCHOR_STOWAWAY_SUMMARY,Someone has slipped into the realm unseen. The settlers are uncertain whether to greet them or chase them off.,Summary of the stowaway narrative anchor.
+ANCHOR_FIRST_PACTMAKER_NAME,First Pactmaker Visit,Display name of the first-pactmaker-visit narrative anchor (data/anchors/first_pactmaker_visit.tres).
+ANCHOR_FIRST_PACTMAKER_SUMMARY,A Pactmaker arrives from beyond the Hollow. They speak of rituals, of binding, of the first true name the realm will be asked to remember.,Summary of the first-pactmaker-visit narrative anchor.
+ANCHOR_INSPECTOR_RETURNS_NAME,The Inspector Returns,Display name of the inspector-returns narrative anchor (data/anchors/inspector_returns.tres).
+ANCHOR_INSPECTOR_RETURNS_SUMMARY,The Inspector returns to the realm, uninvited. The previous counter-offer has not been forgotten.,Summary of the inspector-returns narrative anchor.
+BRANCH_ACCEPT_AUDIT,Accept the Audit,Label of the accept-audit branch choice in the FirstInspection crisis.
+BRANCH_COUNTER_OFFER,Make a Counter-Offer,Label of the counter-offer branch choice in the FirstInspection crisis.
+EVENT_NARRATIVE_ANCHOR_TRIGGERED,Narrative anchor {anchor_id} has been triggered.,Event-log summary for the narrative.anchor_triggered event.
+EVENT_NARRATIVE_ANCHOR_RESOLVED,Narrative anchor {anchor_id} has been resolved.,Event-log summary for the narrative.anchor_resolved event.

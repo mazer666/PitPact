@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BiomeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/content/biome_def.gd" id="1_biome_def"]
+
+[resource]
+script = ExtResource("1_biome_def")
+id = &"highlands"
+display_name = &"BIOME_HIGHLANDS_NAME"
+palette_hint = &"stone_dry"
+resource_bias = {
+	&"stone": 0.9,
+	&"fungi": 0.1,
+	&"ember": 0.3,
+	&"memory": 0.05,
+}
+hazard_bias = PackedStringArray("rockfall", "thin_air")
+narrative_anchor = &"BIOME_HIGHLANDS_NARRATIVE"
+burden = 0.6
+movement_modifier = 1.2

@@ -54,6 +54,18 @@ msgstr "Dustmaze"
 msgid "BIOME_DUSTMAZE_NARRATIVE"
 msgstr "Old roads that no longer agree on where they go."
 
+msgid "BIOME_MARSHLANDS_NAME"
+msgstr "Marshlands"
+
+msgid "BIOME_MARSHLANDS_NARRATIVE"
+msgstr "Where the ground gives before it bears."
+
+msgid "BIOME_HIGHLANDS_NAME"
+msgstr "Highlands"
+
+msgid "BIOME_HIGHLANDS_NARRATIVE"
+msgstr "Wind-scoured stone that remembers every step."
+
 # data/origins/*.tres
 msgid "ORIGIN_SCHOLAR_NAME"
 msgstr "Scholar"
@@ -131,3 +143,44 @@ msgstr "Crisis {id} has been triggered."
 
 msgid "EVENT_CRISIS_CHOICE_MADE"
 msgstr "Crisis {id} resolved by the choice {choice}."
+
+# M3 Track B — narrative anchors, branching events
+msgid "ANCHOR_FIRST_MORNING_NAME"
+msgstr "First Morning"
+
+msgid "ANCHOR_FIRST_MORNING_SUMMARY"
+msgstr "The first morning of the realm; the fire is lit and the inhabitants gather around it."
+
+msgid "ANCHOR_STOWAWAY_NAME"
+msgstr "Stowaway"
+
+msgid "ANCHOR_STOWAWAY_SUMMARY"
+msgstr "Someone has slipped into the realm unseen. The settlers are uncertain whether to greet them or chase them off."
+
+msgid "ANCHOR_FIRST_PACTMAKER_NAME"
+msgstr "First Pactmaker Visit"
+
+msgid "ANCHOR_FIRST_PACTMAKER_SUMMARY"
+msgstr "A Pactmaker arrives from beyond the Hollow. They speak of rituals, of binding, of the first true name the realm will be asked to remember."
+
+msgid "ANCHOR_INSPECTOR_RETURNS_NAME"
+msgstr "The Inspector Returns"
+
+msgid "ANCHOR_INSPECTOR_RETURNS_SUMMARY"
+msgstr "The Inspector returns to the realm, uninvited. The previous counter-offer has not been forgotten."
+
+msgid "BRANCH_ACCEPT_AUDIT"
+msgstr "Accept the Audit"
+
+msgid "BRANCH_COUNTER_OFFER"
+msgstr "Make a Counter-Offer"
+
+msgid "EVENT_NARRATIVE_ANCHOR_TRIGGERED"
+msgstr "Narrative anchor {anchor_id} has been triggered."
+
+msgid "EVENT_NARRATIVE_ANCHOR_RESOLVED"
+msgstr "Narrative anchor {anchor_id} has been resolved."
+
+msgid "EVENT_EXPLORATION_REVEALED"
+msgstr "An inhabitant explored a new tile; {count} tiles revealed."
+

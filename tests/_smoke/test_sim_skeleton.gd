@@ -142,10 +142,19 @@ func test_sim_version_is_m2_skeleton() -> void:
 	# The M2 Track A inhabitants commit (this branch)
 	# bumps it again to `0.4.0-m2-track-a` to mark
 	# the inhabitant-side wiring landing on top of
-	# the Track B contract / crisis wiring.
+	# the Track B contract / crisis wiring. The
+	# M3 cycle 2 (Track A) exploration commit
+	# (this branch's Track A) bumps it to
+	# `0.4.1-m2-track-a-explore` to mark the
+	# exploration step landing on top of the
+	# M2 Track A inhabitants wiring.
 	var SimClass := load(_SIM_PATH)
 	var v: String = String(SimClass.call("version"))
-	assert_eq(v, "0.4.0-m2-track-a", "Sim.version() should return the M2-Track-A version tag")
+	assert_eq(
+		v,
+		"0.4.1-m2-track-a-explore",
+		"Sim.version() should return the M2-Track-A-with-explore version tag"
+	)
 
 
 func test_inhabitant_loads_and_has_deterministic_id() -> void:

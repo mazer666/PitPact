@@ -54,6 +54,18 @@ msgstr "Staublabyrinth"
 msgid "BIOME_DUSTMAZE_NARRATIVE"
 msgstr "Alte Wege, die sich nicht mehr einig sind, wohin sie führen."
 
+msgid "BIOME_MARSHLANDS_NAME"
+msgstr "Sumpflande"
+
+msgid "BIOME_MARSHLANDS_NARRATIVE"
+msgstr "Wo der Boden nachgibt, bevor er trägt."
+
+msgid "BIOME_HIGHLANDS_NAME"
+msgstr "Hochland"
+
+msgid "BIOME_HIGHLANDS_NARRATIVE"
+msgstr "Windgepeinigter Stein, der sich an jeden Schritt erinnert."
+
 # data/origins/*.tres
 msgid "ORIGIN_SCHOLAR_NAME"
 msgstr "Gelehrter"
@@ -131,3 +143,44 @@ msgstr "Krise {id} wurde ausgelöst."
 
 msgid "EVENT_CRISIS_CHOICE_MADE"
 msgstr "Krise {id} durch die Wahl {choice} gelöst."
+
+# M3 Track B — narrative anchors, branching events
+msgid "ANCHOR_FIRST_MORNING_NAME"
+msgstr "Erster Morgen"
+
+msgid "ANCHOR_FIRST_MORNING_SUMMARY"
+msgstr "Der erste Morgen des Reichs; das Feuer brennt und die Bewohner versammeln sich darum."
+
+msgid "ANCHOR_STOWAWAY_NAME"
+msgstr "Blinder Passagier"
+
+msgid "ANCHOR_STOWAWAY_SUMMARY"
+msgstr "Jemand ist ungesehen ins Reich geschlüpft. Die Siedler sind unsicher, ob sie ihn grüßen oder vertreiben sollen."
+
+msgid "ANCHOR_FIRST_PACTMAKER_NAME"
+msgstr "Erster Paktierer-Besuch"
+
+msgid "ANCHOR_FIRST_PACTMAKER_SUMMARY"
+msgstr "Ein Paktierer kommt aus der Hohlwelt. Er spricht von Ritualen, vom Binden, vom ersten wahren Namen, an den sich das Reich erinnern soll."
+
+msgid "ANCHOR_INSPECTOR_RETURNS_NAME"
+msgstr "Der Inspektor kehrt zurück"
+
+msgid "ANCHOR_INSPECTOR_RETURNS_SUMMARY"
+msgstr "Der Inspektor kehrt ungebeten ins Reich zurück. Das frühere Gegenangebot ist nicht vergessen."
+
+msgid "BRANCH_ACCEPT_AUDIT"
+msgstr "Die Prüfung akzeptieren"
+
+msgid "BRANCH_COUNTER_OFFER"
+msgstr "Ein Gegenangebot machen"
+
+msgid "EVENT_NARRATIVE_ANCHOR_TRIGGERED"
+msgstr "Erzählerischer Anker {anchor_id} wurde ausgelöst."
+
+msgid "EVENT_NARRATIVE_ANCHOR_RESOLVED"
+msgstr "Erzählerischer Anker {anchor_id} wurde aufgelöst."
+
+msgid "EVENT_EXPLORATION_REVEALED"
+msgstr "Ein Bewohner hat eine neue Kachel erkundet; {count} Kacheln aufgedeckt."
+
