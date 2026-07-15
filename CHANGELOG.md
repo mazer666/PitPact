@@ -10,16 +10,68 @@
 
 ## [Unreleased] — M3 (Polishing + Late-game) in progress
 
-M0 Foundation, M1 Playable realm core, and **M2 Simulation
-core** are all **complete** on `main`. The local quality
-command (`./tools/run_quality.sh`) is green end-to-end on
-Godot 4.3 headless, with **69/69 GUT tests passing in
-~0.42s** covering the integrated M0-M2 whole. See the
-M0-Closeout, M1-Closeout, and M2-Closeout entries below for
-the detailed histories.
+M0 Foundation, M1 Playable realm core, **M2 Simulation
+core**, and **M3 World and Campaign** are all **complete**
+on `main`. The local quality command
+(`./tools/run_quality.sh`) is green end-to-end on
+Godot 4.3 headless, with **100/100 GUT tests passing
+(99 passing + 1 pre-existing skeleton-risky) in ~0.40s /
+628 Asserts** covering the integrated M0-M3 whole. See
+the M0-Closeout, M1-Closeout, M2-Closeout, and
+M3-Closeout entries below for the detailed histories.
 
-The next milestone is M3 (polishing + late-game).
-M3-Closeout entries will be added when M3 lands.
+The next milestone is M4 (knowledge and crisis).
+
+### Added (M3-Closeout)
+
+- M3 world and campaign is on `main`. The M3 foundation
+  (ADR-0007 World-Generator-Determinismus, ADR-0008
+  Branching-Event-Schema, `WorldGenerator` façade, four
+  skeletons) was merged in `94c2328`. M3-Closeout ships
+  the M3 Track A world/biomes/exploration work and the
+  M3 Track B anchors/branches work.
+- M3 Track A: `WorldGenerator.generate()` produces a
+  constrained 24x24 world with the two M3 biomes
+  (Marshlands, Highlands) and a fog-of-war
+  `ExplorationMap`. `Sim.register_exploration` binds the
+  map; per-tick step 7a calls `ExplorationStep.run`.
+- M3 Track B (owner-merge after both 30-min tracks hit
+  cap): `NarrativeAnchor.from_content` + `BranchNode`
+  `.terminal` / `.fork` / `.make_root` factories +
+  `Crisis.resolve_branch` + `Sim.register_anchors` + a
+  per-tick step 7b that triggers time-gated anchors
+  and skips location-gated ones.
+- 2 ADRs: ADR-0007 (World-Generator-Determinismus) and
+  ADR-0008 (Branching-Event-Schema).
+- 4 integration tests + 1 end-to-end smoke test:
+  `test_narrative_anchors` (5), `test_branch_resolve` (5),
+  `test_branching_events` (5), `test_m3_smoke` (1, 24x24 +
+  2 biomes + 3 anchors + branching + save/load + locale +
+  determinism).
+- M3-Closeout local quality: 100/100 GUT tests
+  (99 passing + 1 pre-existing skeleton-risky) in ~0.40s
+  / 628 Asserts. Format, lint, license, workflows,
+  module-dependency, godot import, locale validation —
+  all green.
+
+### Fixed (M3-Closeout)
+
+- `WorldGenerator.generate` Vector2i cast in the
+  constraint parser (the M3 Track A delivery shipped a
+  GDScript-illegal `is Vector2i` chained check).
+- `Sim.narrative_anchors` is `Variant`-typed so the
+  `Array`-of-anchors registration call compiles.
+
+### Owner-override commits (M3-Closeout)
+
+- The 30-min cap killed both M3 coders before they
+  could commit Track A's biomes + Track B's anchors.
+  Track A landed on `main` via `feature/m3-world-biomes`
+  merge; Track B landed as a separate commit on `main`
+  by the owner, with the generators / factory
+  implementations / step 7b / tests written directly.
+- 1 vector2i-bug + 1 type-typing fix landed in the
+  owner commit.
 
 ### Added (M1-Closeout)
 

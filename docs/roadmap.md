@@ -42,7 +42,7 @@ hold before the next one opens. The milestones, in order:
 | M0 | Foundation | **Done** — see [`CHANGELOG.md`](../CHANGELOG.md). |
 | M1 | Playable realm core | **Done** — foundation and first vertical slice merged; 32/32 GUT tests passing on Godot 4.3 headless; the local quality command is green end-to-end. |
 | M2 | Simulation core | **Done** — see the M2-Closeout entry in [`CHANGELOG.md`](../CHANGELOG.md); 69/69 GUT tests passing in ~0.42s on Godot 4.3 headless. |
-| M3 | World and campaign | Constrained generator, two biomes, exploration, fixed narrative anchors, branching events. |
+| M3 | World and campaign | **Done** — see the M3-Closeout entry in [`CHANGELOG.md`](../CHANGELOG.md); 100/100 GUT tests (99 passing + 1 pre-existing skeleton-risky) in ~0.40s / 628 Asserts on Godot 4.3 headless; constrained 24x24 generator + Marshlands/Highlands + ExplorationMap (fog-of-war) + 4 fixed narrative anchors + 3-node branching-event tree (FirstInspection → accept_audit / counter_offer). |
 | M4 | Knowledge and crisis | Research/ritual progression, Pactmaker powers, autonomous conflict, two crises, difficulty/settings. |
 | M5 | Vertical campaign completion | Six cultures, ten rooms, fifteen events, complete success/failure/restart loop, English/German, audio pass. |
 | M6 | Public release readiness | Performance target, accessibility review, licensing/IP audit, reproducible builds, release notes, known-issues list. |
