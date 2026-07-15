@@ -8,6 +8,107 @@
 > merged changes. After M6, a "Release notes" file is generated from
 > the entries below and the GitHub Release.
 
+## [Unreleased] — M4 (Knowledge and crisis) in progress
+
+M0 Foundation, M1 Playable realm core, **M2 Simulation
+core**, **M3 World and Campaign**, and the **M4
+foundation** (knowledge / Pactmaker powers /
+autonomous conflict / difficulty) are all **complete**
+on `feature/m4-foundation`. The local quality
+command (`./tools/run_quality.sh`) is green
+end-to-end on Godot 4.7+ headless, with **125/125 GUT
+tests passing in ~0.58s / 807 Asserts** (GUT 9.4.0,
+Godot 4.7+) covering the integrated M0–M4 whole.
+See the M0-Closeout, M1-Closeout, M2-Closeout,
+M3-Closeout, and M4-foundation entries below for
+the detailed histories.
+
+The next milestone is M4 Track A (research/ritual
+progression rule + content catalogue).
+
+### Added (M4-foundation)
+
+- **ADR-0010 — Research-Tree and
+  Knowledge-State-Schema.** The M4 research/ritual
+  progression contract: forest-of-roots
+  `ResearchNode` payload schema with a `kind`
+  discriminator (`&"research"` / `&"ritual"`),
+  per-realm `KnowledgeState` carrier pinned to
+  `body.knowledge`, deterministic per-tick
+  progression rule (new step 7c), and the
+  structural invariant "no two research nodes
+  share a prerequisite tree".
+- **ADR-0011 — Autonomous-Conflict.** The M4
+  autonomous-conflict and deadline contract:
+  `Crisis.autonomous_resolution: Callable` field
+  for content-driven per-tick autonomous
+  resolution, `autonomous_resolution_days` deadline
+  pinned to `trigger_at_day +
+  autonomous_resolution_days` with a
+  `resolved.deadline` sentinel, the two M4 default
+  crises (`plague_outbreak`, `faction_dispute`),
+  the `Faction` carrier with `stance` /
+  `update_stance` / `is_hostile_to`, and the
+  `Settings` carrier with `difficulty` /
+  `auto_resolve_days` / `locale` plus the
+  `from_dict` / `to_dict` round-trip.
+- **Seven M4 skeletons under `src/sim/`:**
+  `knowledge_state.gd` (the per-realm
+  knowledge carrier with `save` / `load`
+  round-trip and `is_researched` /
+  `is_ritual_active` predicates),
+  `research_node.gd` (the typed `ResearchNode`
+  with `from_content` factory and
+  `prereqs_met` gate), `pactmaker.gd` (the
+  player carrier with `intervention_count` /
+  `intervention_limit` / `can_intervene` /
+  `register_intervention` / `has_power`),
+  `power.gd` (the per-power carrier with
+  `cooldown_days` / `is_on_cooldown` /
+  `record_use`), `faction.gd` (the per-realm
+  faction carrier with `stance` /
+  `update_stance` clamp at `[-100, 100]` and
+  `is_hostile_to` threshold at `-50`),
+  `settings.gd` (the per-realm settings
+  carrier with three presets
+  `0= Narrative, 1= Balanced, 2= Challenging`),
+  and `m4_skeleton.gd` (the public façade
+  re-exporting the six M4 carriers for the
+  closeout smoke test).
+- **One integration test:**
+  `test_m4_skeleton.gd` (19 tests, 80 asserts,
+  covering the public surface of every M4
+  carrier; the smoke test is verified by
+  flipping an assert to a known-bad value,
+  seeing the test fail, and reverting).
+- M4-foundation local quality: 125/125 GUT
+  tests in ~0.58s / 807 Asserts. Format,
+  lint, license, workflows,
+  module-dependency, godot import, locale
+  validation — all green.
+
+### Notes (M4-foundation)
+
+- The M4-foundation commit ships
+  *skeletons*; the per-tick progression
+  rule, the content catalogue, the
+  autonomous-conflict rule, and the
+  deadline mechanic are the M4 Track A
+  and Track B commits' responsibility.
+- The `M4Skeleton` façade is the
+  canonical "give me every M4 carrier in
+  one import" entry point; the
+  closeout smoke test loads the façade
+  and asserts every carrier's public
+  surface in one pass.
+- The save body slot `body.knowledge` is
+  reserved by ADR-0010; the slot's
+  content lands with the M4 Track A
+  commit (the foundation ships the
+  in-memory shape; the Track A commit
+  fills the save/load path through
+  `src/save/`).
+
 ## [Unreleased] — M3 (Polishing + Late-game) in progress
 
 M0 Foundation, M1 Playable realm core, **M2 Simulation

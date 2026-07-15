@@ -137,15 +137,28 @@ mechanical check for ADR-0005.
 | [`event_log.gd`](event_log.gd) | `EventLog` (skeleton) | M2 foundation |
 | [`crisis.gd`](crisis.gd) | `Crisis` (skeleton) | M2 foundation |
 | [`constants.gd`](constants.gd) | `SimConstants` (tuning) | M2 foundation |
+| [`knowledge_state.gd`](knowledge_state.gd) | `KnowledgeState` (skeleton) | M4 foundation |
+| [`research_node.gd`](research_node.gd) | `ResearchNode` (skeleton) | M4 foundation |
+| [`pactmaker.gd`](pactmaker.gd) | `Pactmaker` (skeleton) | M4 foundation |
+| [`power.gd`](power.gd) | `Power` (skeleton) | M4 foundation |
+| [`faction.gd`](faction.gd) | `Faction` (skeleton) | M4 foundation |
+| [`settings.gd`](settings.gd) | `Settings` (skeleton) | M4 foundation |
+| [`m4_skeleton.gd`](m4_skeleton.gd) | `M4Skeleton` (façade) | M4 foundation |
 | (lands with M2 cycle 2 / Track A) | per-tick needs decay; per-tick task progress; per-inhabitant memory recording | planned |
 | (lands with M2 cycle 3 / Track B) | per-tick relationships update; per-tick contract evaluation; per-tick crisis resolution; replay test | planned |
+| (lands with M4 Track A) | per-tick research/ritual progression; content catalogue loader; per-power registration | planned |
+| (lands with M4 Track B) | per-tick autonomous conflict; deadline mechanic; per-tick Pactmaker intervention | planned |
 
 ## See also
 
 - [`docs/adrs/0002-module-boundaries.md`](../adrs/0002-module-boundaries.md)
 - [`docs/adrs/0005-sim-tick-determinism.md`](../adrs/0005-sim-tick-determinism.md)
+- [`docs/adrs/0010-research-tree-schema.md`](../adrs/0010-research-tree-schema.md) — the M4 research/ritual/knowledge contract.
+- [`docs/adrs/0011-autonomous-conflict.md`](../adrs/0011-autonomous-conflict.md) — the M4 autonomous-conflict and deadline contract.
 - [`docs/requirements.md`](../requirements.md) §9, §10, §11, §16, §17
 - [`tests/_smoke/test_sim_skeleton.gd`](../../tests/_smoke/test_sim_skeleton.gd) — the
   M2-foundation smoke test (17 tests, all green).
+- [`tests/integration/test_m4_skeleton.gd`](../../tests/integration/test_m4_skeleton.gd) — the
+  M4-foundation smoke test (19 tests, 80 asserts, all green).
 - [`tests/sim/test_sim_replay.gd`](../../tests/sim/test_sim_replay.gd) — the
   ADR-0005 replay test (lands with M2 cycle 3).
