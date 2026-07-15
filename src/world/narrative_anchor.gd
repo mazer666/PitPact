@@ -201,3 +201,23 @@ func equals(other: NarrativeAnchor) -> bool:
 	elif resolved != other.resolved:
 		matches = false
 	return matches
+
+
+## Build a narrative anchor from content.
+## The M3 cycle 2 (Track B) commit uses this
+## factory to assemble the anchor set from
+## loaded `NarrativeAnchorDef` content. The
+## factory is the canonical entry point for
+## the realm façade's world-construction
+## path.
+static func from_content(
+	p_id: StringName, p_trigger_at_day: float, p_display_name: StringName, p_summary: StringName
+) -> NarrativeAnchor:
+	var a: NarrativeAnchor = NarrativeAnchor.new()
+	a.id = p_id
+	a.trigger_at_day = p_trigger_at_day
+	a.display_name = p_display_name
+	a.summary = p_summary
+	a.triggered = false
+	a.resolved = false
+	return a

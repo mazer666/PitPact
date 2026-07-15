@@ -101,6 +101,16 @@ var crises: Dictionary = {}
 ## reference via `register_exploration`.
 var exploration_map: RefCounted = null
 
+## The realm's narrative-anchor set. M3 cycle 2
+## (Track B) commit lands this field as the
+## registered-anchor reference. `null` means
+## "no anchors have been registered"; the
+## per-tick rule (step 7b, M3) treats the
+## `null` case as a no-op (the M2 contract is
+## preserved). The realm façade binds the
+## reference via `register_anchors`.
+var narrative_anchors: Variant = null
+
 ## The realm's relationship graph. A
 ## `Dictionary[StringName, Relationship]` keyed by a
 ## canonical edge id. The canonical id is the
@@ -220,6 +230,17 @@ func add_crisis(cr: Crisis) -> void:
 ## tests continue to pass).
 func register_exploration(map) -> void:
 	exploration_map = map
+
+
+## M3 cycle 2 (Track B) anchor registry. Binds
+## the realm's narrative-anchor set so the
+## per-tick step 7b can fire the trigger
+## rule. `null` is a no-op (the M2 contract is
+## preserved: a sim that has never had this
+## called behaves exactly as the M2 tests
+## expect).
+func register_anchors(anchors_v) -> void:
+	narrative_anchors = anchors_v
 
 
 ## M3 cycle 2 (Track A) exploration step. The
@@ -391,6 +412,18 @@ func tick(delta_days: float, inhabitants: Array, events: Array) -> void:
 	#     event for the UI.
 	if exploration_map != null:
 		_exploration_step(delta_days, inhabitants, exploration_map, false)
+
+	# 7b. Narrative-anchor step (M3 cycle 2
+	#     Track B). The step walks the registered
+	#     anchor set and calls `trigger()` on every
+	#     anchor whose `trigger_at_day` is in the
+	#     past. The M2 contract is preserved: a
+	#     sim that has never had `register_anchors`
+	#     called continues to behave exactly as the
+	#     M2 tests expect (the `narrative_anchors
+	#     == null` check short-circuits the loop).
+	if narrative_anchors != null:
+		_trigger_anchors(time_days + delta_days)
 
 	# 8. Event-log append is implicit — every
 	#    subsystem that mutates state appends its
@@ -765,3 +798,36 @@ func add_relationship(rel: Relationship) -> void:
 ## inhabitant wiring landing in this branch.
 static func version() -> String:
 	return _VERSION
+
+
+## M3 cycle 2 (Track B) anchor trigger helper.
+## Walks the registered anchor set and calls
+## `trigger()` on every anchor whose
+## `trigger_at_day` is at or before the
+## end-of-tick clock. Anchors with
+## `trigger_at_day < 0.0` (location-gated) are
+## NOT auto-triggered here; the realm façade
+## triggers them when the player reaches the
+## anchor's tile. The `post_tick_day` argument
+## is the *end-of-tick* clock (`time_days +
+## delta_days`), the same value the event log's
+## `time_days` field will eventually store, so
+## the trigger and the log agree.
+func _trigger_anchors(post_tick_day: float) -> void:
+	if narrative_anchors == null:
+		return
+	var anchors_v: Array = []
+	var raw: Variant = narrative_anchors
+	if raw is Array:
+		anchors_v = raw
+	elif raw is Dictionary:
+		anchors_v = (raw as Dictionary).values()
+	for a in anchors_v:
+		if not (a is NarrativeAnchor):
+			continue
+		if a.triggered:
+			continue
+		if a.trigger_at_day < 0.0:
+			continue
+		if post_tick_day >= a.trigger_at_day:
+			a.trigger()

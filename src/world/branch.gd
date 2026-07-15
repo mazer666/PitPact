@@ -241,3 +241,60 @@ func equals(other: BranchNode) -> bool:
 					matches = false
 					break
 	return matches
+
+
+## Build a root branch node (no parent, no
+## condition by default). The M3 cycle 2
+## (Track B) commit uses this factory to
+## assemble the branching-event tree from
+## loaded `BranchNodeDef` content.
+static func make_root(p_id: StringName, p_children: Array = []) -> BranchNode:
+	var b: BranchNode = BranchNode.new()
+	b.id = p_id
+	b.parent = &""
+	b.trigger_at_day = 0.0
+	b.condition = Callable()
+	b.children = p_children.duplicate()
+	b.terminal_effect = {}
+	return b
+
+
+## Build a terminal (leaf) branch node. The
+## structural invariant (ADR-0008) is
+## enforced: a terminal node has empty
+## `children` and a non-empty
+## `terminal_effect`. The save body stores
+## this value under
+## `body.world.branch_roots[*].children` and
+## `body.world.branch_roots[*].terminal_effect`.
+static func terminal(
+	p_id: StringName, p_parent: StringName, p_terminal_effect: Dictionary
+) -> BranchNode:
+	var b: BranchNode = BranchNode.new()
+	b.id = p_id
+	b.parent = p_parent
+	b.trigger_at_day = 0.0
+	b.condition = Callable()
+	b.children = []
+	b.terminal_effect = p_terminal_effect.duplicate(true)
+	return b
+
+
+## Build a non-terminal (interior, fork)
+## branch node. The structural invariant
+## (ADR-0008) is enforced: a fork node has
+## at least one child and an empty
+## `terminal_effect`. The save body stores
+## this value under
+## `body.world.branch_roots[*].children`.
+static func fork(
+	p_id: StringName, p_parent: StringName, p_children: Array, p_condition: Callable = Callable()
+) -> BranchNode:
+	var b: BranchNode = BranchNode.new()
+	b.id = p_id
+	b.parent = p_parent
+	b.trigger_at_day = 0.0
+	b.condition = p_condition
+	b.children = p_children.duplicate()
+	b.terminal_effect = {}
+	return b

@@ -145,7 +145,7 @@ func generate(seed: int, width: int, height: int, constraints: Dictionary) -> Wo
 	var hearth_position: Vector2i = _DEFAULT_HEARTH_POSITION
 	if hearth_position_v is Vector2i:
 		hearth_position = hearth_position_v
-	elif hearth_position_v is Vector2 and (hearth_position_v as Vector2) is Vector2i:
+	elif hearth_position_v is Vector2:
 		hearth_position = Vector2i(hearth_position_v)
 	var hearth_burden_max: float = float(constraints.get("hearth_burden_max", 0.3))
 	var min_biome_count: int = int(constraints.get("min_biome_count", 2))

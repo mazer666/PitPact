@@ -229,3 +229,35 @@ func resolve(time_days: float, pick_id: StringName) -> void:
 		"choice_id": pick_id,
 	}
 	_event_log.append(entry)
+
+
+## M3 cycle 2 (Track B) branching-event
+## resolution. The method records the player's
+## pick on the crisis and (optionally) appends
+## a `branch.resolved` event to the log. The
+## `pick_id` is the StringName of the chosen
+## `BranchNode` (or, for the M2-style choices,
+## the StringName of the chosen `choice.id`;
+## the resolver accepts both). The `branch_id`
+## is the StringName of the originating branch
+## root (or `&""` for M2-style choices that
+## have no branch tree).
+func resolve_branch(time_days: float, pick_id: StringName, branch_id: StringName = &"") -> void:
+	if resolved:
+		return
+	resolved = true
+	resolved_at_day = time_days
+	chosen_id = pick_id
+	if _event_log == null:
+		return
+	var entry: Dictionary = {
+		"id": StringName(String(id) + ".branch." + String(pick_id)),
+		"time_days": time_days,
+		"kind": &"branch.resolved",
+		"summary": &"EVENT_BRANCH_RESOLVED",
+		"affected": PackedStringArray(),
+		"crisis_id": id,
+		"choice_id": pick_id,
+		"branch_id": branch_id,
+	}
+	_event_log.append(entry)
