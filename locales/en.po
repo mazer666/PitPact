@@ -184,3 +184,12 @@ msgstr "Narrative anchor {anchor_id} has been resolved."
 msgid "EVENT_EXPLORATION_REVEALED"
 msgstr "An inhabitant explored a new tile; {count} tiles revealed."
 
+
+msgid "EVENT_CRISIS_EFFECTS_APPLIED"
+msgstr "Terminal effects (morale_delta={morale_delta} and needs_food_delta={needs_food_delta}) applied to the realm's inhabitants."
+
+msgid "EVENT_NARRATIVE_ANCHOR_FOLLOWUP"
+msgstr "Follow-up narrative anchor {anchor_id} chained from the resolved crisis."
+
+msgid "EVENT_BRANCH_RESOLVED"
+msgstr "Branch {branch_id} has been resolved by choice {choice_id}."

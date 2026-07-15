@@ -93,12 +93,25 @@ jobs:
           sys.exit(errs)
           PY
 
-      - name: Install Godot 4.3
+      - name: Install Godot 4.7
         uses: chickensoft-games/setup-godot@v2
         with:
-          godot-version: 4.3.0
+          godot-version: 4.7.0
           use-dotnet: false
           export-template-versions: ""
+
+      - name: Install GUT 9.4.0
+        # GUT 9.4.0 is the minimum version compatible
+        # with Godot 4.7 (GUT 9.2.1 has a parse error
+        # on Godot 4.7's stricter shadow-class check;
+        # GUT 9.7.1 has an unrelated regression in
+        # gut_cmdln.gd on Godot 4.7). The GUT addon
+        # is gitignored; the CI installs it from the
+        # upstream release.
+        run: |
+          git clone --depth 1 --branch v9.4.0 https://github.com/bitwes/Gut.git /tmp/gut94
+          rm -rf addons/gut
+          cp -r /tmp/gut94/addons/gut addons/
 
       - name: Headless project parse
         run: godot --headless --quit --path .

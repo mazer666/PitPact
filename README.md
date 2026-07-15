@@ -4,7 +4,22 @@
 
 ## Current status
 
-This repository is at the project-start baseline. The first work focus is **M0: Foundation**: governance, licenses, contributor rules, documentation skeleton, Godot project setup, and local quality commands.
+**M0 Foundation, M1 Playable realm core, M2 Simulation
+core, and M3 World and campaign are all complete on
+`main`.** The local quality command
+(`./tools/run_quality.sh`) is green end-to-end on Godot
+4.7+ headless: **100/100 GUT tests** (99 passing + 1
+pre-existing skeleton-risky) in ~0.40s / 628 Asserts.
+**Minimum supported Godot version: 4.7.**
+See [`CHANGELOG.md`](CHANGELOG.md) for the live log of
+merged changes, [`docs/roadmap.md`](docs/roadmap.md) for
+the M0-M6 status table, and
+[`docs/milestones.md`](docs/milestones.md) for the
+Definition-of-Done per milestone.
+
+The next milestone is M4 (Knowledge and crisis:
+research/ritual progression, Pactmaker powers,
+autonomous conflict, two crises, difficulty/settings).
 
 ## Start here
 
@@ -22,6 +37,13 @@ This repository is at the project-start baseline. The first work focus is **M0: 
 5. Complexity is optional.
 6. Privacy and ownership first.
 7. Open development is a quality feature.
+8. **Best in class.** Every commit on `main` is held to
+   the best-in-class bar defined in
+   [`AGENTS.md`](AGENTS.md) — architecture-grade,
+   test-grade, documentation-grade, local-quality-grade,
+   content-grade, audit-grade. A commit that passes the
+   automated checks but breaks an ADR, drops a test, or
+   drifts a doc is *not* best in class.
 
 ## License intent
 

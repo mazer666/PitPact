@@ -184,3 +184,12 @@ msgstr "Erzählerischer Anker {anchor_id} wurde aufgelöst."
 msgid "EVENT_EXPLORATION_REVEALED"
 msgstr "Ein Bewohner hat eine neue Kachel erkundet; {count} Kacheln aufgedeckt."
 
+
+msgid "EVENT_CRISIS_EFFECTS_APPLIED"
+msgstr "Die Terminaleffekte der Krise (morale_delta={morale_delta}, needs_food_delta={needs_food_delta}) wurden auf die Bewohner des Reichs angewendet."
+
+msgid "EVENT_NARRATIVE_ANCHOR_FOLLOWUP"
+msgstr "Ein Folge-Narrativanker {anchor_id} wurde aus der gelösten Krise verkettet."
+
+msgid "EVENT_BRANCH_RESOLVED"
+msgstr "Der Zweig {branch_id} wurde durch die Wahl {choice_id} gelöst."

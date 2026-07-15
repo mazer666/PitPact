@@ -22,7 +22,7 @@ config_version=5
 config/name="PitPact"
 config/description="Pact & Pit — An Underworld of Terms and Terrors"
 run/main_scene="res://scenes/main/Main.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.7", "Forward Plus")
 
 ; This tempdata/ is created automatically on first run. We ignore it via
 ; .gitignore; the path is centralised here so the editor and headless

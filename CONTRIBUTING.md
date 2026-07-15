@@ -112,6 +112,16 @@ and any future optional error reporting still deserve scrutiny.
    ```
    The suite must be green. If you cannot run it locally, explain why
    in the PR description.
+
+### Engine version
+
+PitPact targets **Godot 4.7+**. The minimum version is
+pinned in `project.godot`'s `config/features` array
+(`"4.7"`). The local quality suite assumes a 4.7+ headless
+binary on `PATH` (overridable via
+`PITPACT_GODOT=/path/to/godot`). Contributors on an older
+Godot 4.x build may see import or typing warnings; the
+suite is the source of truth.
 5. **Update the relevant docs in the same PR.** New module? Add a
    README in that directory per §17. New content type? Update the
    style bible. New dependency? Update `licenses/THIRD-PARTY.md`.

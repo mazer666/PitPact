@@ -71,9 +71,11 @@ func is_in_bounds_v(tile: Vector2i) -> bool:
 	return is_in_bounds(tile.x, tile.y)
 
 
-## Reveal a single tile. Returns true on success,
-## false if `(x, y)` is out of bounds.
-func reveal(x: int, y: int) -> bool:
+## Reveal a single tile. Returns `true` on success,
+## `false` if `(x, y)` is out of bounds. The
+## M3-Closeout is the canonical entry point for
+## "the player explores a single tile".
+func reveal_tile(x: int, y: int) -> bool:
 	if not is_in_bounds(x, y):
 		return false
 	revealed[y * w + x] = true
@@ -86,8 +88,11 @@ func reveal(x: int, y: int) -> bool:
 ## `|x' - position.x| + |y' - position.y| <=
 ## radius`. Returns the newly-revealed tiles as
 ## an `Array` of `Vector2i` (in painter's-
-## algorithm order).
-func reveal_radius(position: Vector2i, radius: int) -> Array:
+## algorithm order). The M3 sim's per-tick
+## step 7a (`ExplorationStep.run`) calls this
+## entry point; the call site reads
+## `emap.reveal(target, 2)`.
+func reveal(position: Vector2i, radius: int) -> Array:
 	var newly_revealed: Array = []
 	var r: int = max(0, radius)
 	if not is_in_bounds_v(position):
@@ -107,11 +112,15 @@ func reveal_radius(position: Vector2i, radius: int) -> Array:
 	return newly_revealed
 
 
-## M3 acceptance's "explore this tile" entry
-## point. An alias for `reveal_radius` so the call
-## site reads naturally: `map.reveal(position, 2)`.
-func reveal(position: Vector2i, radius: int = 1) -> Array:
-	return reveal_radius(position, radius)
+## Alias for `reveal`. The two-argument form is
+## the canonical entry point; the alias exists
+## for callers that prefer the verb "reveal a
+## radius" (the M3-Closeout shipped
+## `reveal_radius` first and the sim's per-tick
+## step 7a calls it; the alias keeps the older
+## name working).
+func reveal_radius(position: Vector2i, radius: int) -> Array:
+	return reveal(position, radius)
 
 
 ## Count the revealed tiles.

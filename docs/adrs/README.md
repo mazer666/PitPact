@@ -37,6 +37,7 @@ You do **not** need an ADR for:
 | [0005](0005-sim-tick-determinism.md) | Sim-tick determinism | accepted | 2026-07-14 |
 | [0007](0007-world-generator-determinism.md) | World-generator determinism | accepted | 2026-07-14 |
 | [0008](0008-branching-event-schema.md) | Branching-event schema | accepted | 2026-07-14 |
+| [0009](0009-best-in-class-bar.md) | Best-in-class bar for `main` contributions | accepted | 2026-07-15 |
 
 ## Conventions
 

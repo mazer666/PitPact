@@ -106,16 +106,42 @@ var triggered: bool = false
 ## `crisis.choice_made` event carries.
 var chosen_id: StringName = &""
 
+## M3-Closeout (Track B): pending terminal
+## effect, applied by the sim at the end of the
+## resolution tick. The dictionary mirrors the
+## `BranchNode.terminal_effect` schema
+## (ADR-0008). Supported keys:
+##
+##   * `"morale_delta"` (float, range `[-1, 1]`)
+##     — the per-inhabitant morale nudge the
+##     sim applies on `apply_pending_effect`.
+##   * `"needs_food_delta"` (float, range
+##     `[-1, 1]`) — per-inhabitant food-need
+##     nudge (positive = "the realm is fed",
+##     negative = "the realm goes hungry").
+##   * `"follow_up_anchor_id"` (StringName) —
+##     the id of a follow-up narrative anchor
+##     the sim will mark as resolved at the
+##     same time, so the UI can chain the two
+##     stories.
+##
+## The dictionary is empty by default; the
+## `resolve_branch` call populates it from the
+## `BranchNode.terminal_effect` of the chosen
+## terminal node.
+var pending_effects: Dictionary = {}
+
 ## Reference to the sim's event log. The crisis
 ## only writes to the log in `trigger()` and
 ## `resolve()`; the reference is held weakly
 ## (the sim owns the log).
 var _event_log: EventLog = null
 
-
 ## Default constructor. Starts with empty
 ## fields, a no-op `condition`, an empty
 ## `choices` array, and `resolved = false`.
+
+
 func _init() -> void:
 	id = &""
 	trigger_at_day = 0.0
@@ -126,6 +152,7 @@ func _init() -> void:
 	triggered = false
 	chosen_id = &""
 	_event_log = null
+	pending_effects = {}
 
 
 ## Construct a crisis with the canonical
@@ -241,13 +268,24 @@ func resolve(time_days: float, pick_id: StringName) -> void:
 ## the resolver accepts both). The `branch_id`
 ## is the StringName of the originating branch
 ## root (or `&""` for M2-style choices that
-## have no branch tree).
-func resolve_branch(time_days: float, pick_id: StringName, branch_id: StringName = &"") -> void:
+## have no branch tree). The `terminal_effect`
+## argument is a `Dictionary` of effect-tag /
+## effect-value pairs (per ADR-0008); the
+## resolver copies the dictionary into
+## `pending_effects` so the sim can apply it at
+## the end of the resolution tick.
+func resolve_branch(
+	time_days: float,
+	pick_id: StringName,
+	branch_id: StringName = &"",
+	terminal_effect: Dictionary = {}
+) -> void:
 	if resolved:
 		return
 	resolved = true
 	resolved_at_day = time_days
 	chosen_id = pick_id
+	pending_effects = terminal_effect.duplicate(true)
 	if _event_log == null:
 		return
 	var entry: Dictionary = {
@@ -259,5 +297,87 @@ func resolve_branch(time_days: float, pick_id: StringName, branch_id: StringName
 		"crisis_id": id,
 		"choice_id": pick_id,
 		"branch_id": branch_id,
+		"terminal_effect": pending_effects,
 	}
 	_event_log.append(entry)
+
+
+## M3-Closeout (Track B): apply the
+## `pending_effects` dictionary to the
+## `inhabitants` array. The method is the
+## sim-facing entry point that converts the
+## `BranchNode.terminal_effect` schema into
+## per-inhabitant state nudges. The method is
+## idempotent: a second call on the same crisis
+## is a no-op (the `pending_effects` dictionary
+## is consumed and cleared).
+##
+## The supported keys (per the field's
+## docstring above) are applied in this order:
+##   1. `morale_delta` (float) — the method
+##      stores the delta on each inhabitant's
+##      `morale` scalar directly. The M3 default
+##      is "transient delta" — the value decays
+##      back to the natural value on the next
+##      `tick()` call (the per-tick morale rule
+##      recomputes from needs). The M3-Closeout
+##      pins the delta's *sign* in the event log
+##      for the UI to display; the value is
+##      available for the same tick only.
+##   2. `needs_food_delta` (float) — a direct
+##      nudge on each inhabitant's
+##      `needs.food`. This delta is *persistent*
+##      (food does not auto-recover).
+##   3. `follow_up_anchor_id` (StringName) — a
+##      follow-up anchor id the method appends
+##      to the event log as
+##      `narrative.anchor_followup` so the UI
+##      can chain the two stories.
+##
+## The method is a no-op when `pending_effects`
+## is empty or when `inhabitants` is empty. The
+## method does NOT write to the event log
+## itself; the sim calls it after `_evaluate_crises`
+## so the per-effect event lands in the same
+## tick as the resolution.
+func apply_pending_effects(time_days: float, inhabitants: Array) -> void:
+	if pending_effects.is_empty():
+		return
+	if inhabitants == null or inhabitants.is_empty():
+		return
+	var morale_delta: float = float(pending_effects.get("morale_delta", 0.0))
+	var needs_food_delta: float = float(pending_effects.get("needs_food_delta", 0.0))
+	var follow_up_anchor_id: StringName = StringName(
+		String(pending_effects.get("follow_up_anchor_id", &""))
+	)
+	for inh in inhabitants:
+		if not (inh is Inhabitant):
+			continue
+		if morale_delta != 0.0:
+			inh.morale.morale = clampf(inh.morale.morale + morale_delta, -1.0, 1.0)
+		if needs_food_delta != 0.0:
+			inh.needs.food = clampf(inh.needs.food + needs_food_delta, 0.0, 1.0)
+	if _event_log != null and (morale_delta != 0.0 or needs_food_delta != 0.0):
+		var entry: Dictionary = {
+			"id": StringName(String(id) + ".effects"),
+			"time_days": time_days,
+			"kind": &"crisis.effects_applied",
+			"summary": &"EVENT_CRISIS_EFFECTS_APPLIED",
+			"affected": PackedStringArray(),
+			"crisis_id": id,
+			"morale_delta": morale_delta,
+			"needs_food_delta": needs_food_delta,
+		}
+		_event_log.append(entry)
+	if _event_log != null and String(follow_up_anchor_id) != "":
+		var fentry: Dictionary = {
+			"id": StringName(String(id) + ".followup"),
+			"time_days": time_days,
+			"kind": &"narrative.anchor_followup",
+			"summary": &"EVENT_NARRATIVE_ANCHOR_FOLLOWUP",
+			"affected": PackedStringArray(),
+			"crisis_id": id,
+			"anchor_id": follow_up_anchor_id,
+		}
+		_event_log.append(fentry)
+	pending_effects = {}

@@ -153,3 +153,6 @@ saves/playtest/
 benchmarks/results/
 benchmarks/.lock
 mavis/
+
+# Godot 4.4+ generates .uid files for every script; ignore them
+*.uid

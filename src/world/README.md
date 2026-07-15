@@ -46,9 +46,11 @@ which is the deterministic pure function
 [ADR-0007](../adrs/0007-world-generator-determinism.md). The
 generator builds the realm's `WorldMap` from a seed and a
 constraint set; the realm façade materialises a `WorldState`
-and a `Sim` from the `WorldMap`. The M3-foundation commit
-ships the signature and the no-op body; the M3 cycle 2
-(Track A) commit fills in the body.
+and a `Sim` from the `WorldMap`. **M3-Closeout:** the body
+lands in Track A (constrained generator + two biomes +
+`ExplorationMap` fog-of-war + per-tick step 7a) and Track B
+(`NarrativeAnchor` + `BranchNode.terminal`/`.fork`/
+`.make_root` factories + per-tick step 7b).
 
 ## Main dependencies
 
@@ -79,13 +81,35 @@ The mechanical check for this rule lives in
 | [`tile_map.gd`](tile_map.gd) | `WorldTileMapLayer` | M1 (Track A) |
 | [`zone_painter.gd`](zone_painter.gd) | `ZonePainterTool` | M1 (Track A) |
 | [`demo_realm.gd`](demo_realm.gd) | `DemoRealm` | M1 (Track A, placeholder) |
-| [`generator.gd`](generator.gd) | `WorldGenerator` (with inner `WorldMap`, `GeneratorConstraintError`) | M3-foundation skeleton (ADR-0007) |
+| [`generator.gd`](generator.gd) | `WorldGenerator` (with inner `WorldMap`, `GeneratorConstraintError`) | **M3-Closeout** (ADR-0007): constrained 24x24 generator with two-biome constraint + per-tile biome catalogue + 4-attempt retry + best-effort fallback |
 | [`biome.gd`](biome.gd) | `Biome` | M3-foundation skeleton |
-| [`exploration.gd`](exploration.gd) | `ExplorationMap` | M3-foundation skeleton |
-| [`narrative_anchor.gd`](narrative_anchor.gd) | `NarrativeAnchor` | M3-foundation skeleton |
-| [`branch.gd`](branch.gd) | `BranchNode` | M3-foundation skeleton (ADR-0008) |
-| (lands with M3 cycle 2 Track A) | per-biome placement, per-tile biome catalogue, fog-of-war reveal | planned |
-| (lands with M3 cycle 2 Track B) | per-anchor placement, branch-node root set | planned |
+| [`exploration.gd`](exploration.gd) | `ExplorationMap` | **M3-Closeout** (Track A): fog-of-war grid, Hearth-tile reveal, Manhattan-radius reveal, save/load via `to_dict` / `from_dict` |
+| [`narrative_anchor.gd`](narrative_anchor.gd) | `NarrativeAnchor` | **M3-Closeout** (Track B): `from_content` factory, `trigger()` / `resolve()` mutators, `equals()` value compare |
+| [`branch.gd`](branch.gd) | `BranchNode` | **M3-Closeout** (Track B, ADR-0008): `make_root` / `terminal` / `fork` factories; structural invariant pinned in code |
+| [`exploration_step.gd`](../sim/exploration_step.gd) | `ExplorationStep` | **M3-Closeout** (Track A): the per-tick step 7a implementation, called from `Sim.tick()` |
+
+The M3 closeout *deletes* no M1/M2 files; the new public
+classes are additive on top of the spatial foundation.
+
+## M3-closeout public surface (delta vs. M3-foundation)
+
+- `WorldGenerator.generate(seed, width, height, constraints) -> WorldMap`
+- `WorldGenerator.version() -> String`  — pinned to
+  `"0.2.0-m3-track-a"`; the M3-Closeout bumps the tag
+  only when the catalogue / constraint parser changes.
+- `WorldMap.biome_counts: Dictionary` — per-biome tile
+  counts, used by the smoke test.
+- `ExplorationMap` — `revealed: Array` (flat bool grid),
+  `home_position: Vector2i`, `reveal_around(center,
+  radius)` mutator, `to_dict()` / `from_dict()` save body.
+- `NarrativeAnchor.from_content(id, trigger_at_day,
+  display_name, summary) -> NarrativeAnchor`.
+- `BranchNode.make_root(id, children) -> BranchNode`,
+  `BranchNode.terminal(id, parent, terminal_effect) ->
+  BranchNode`, `BranchNode.fork(id, parent, children,
+  condition = Callable()) -> BranchNode`.
+- `Sim.register_exploration(map)`, `Sim.explore(...)`,
+  `Sim.register_anchors(anchors)`.
 
 ## See also
 
@@ -94,5 +118,6 @@ The mechanical check for this rule lives in
 - [`docs/adrs/0007-world-generator-determinism.md`](../adrs/0007-world-generator-determinism.md)
 - [`docs/adrs/0008-branching-event-schema.md`](../adrs/0008-branching-event-schema.md)
 - [`docs/requirements.md`](../requirements.md) §7, §8, §11, §16, §17
-- [`tests/_smoke/test_world_skeleton.gd`](../../tests/_smoke/test_world_skeleton.gd) —
-  the M3-foundation skeleton smoke test (15 tests, all green).
+- [`tests/integration/test_m3_smoke.gd`](../../tests/integration/test_m3_smoke.gd) —
+  the M3-Closeout end-to-end smoke test: 24x24 + 2 biomes
+  + 3 anchors + branching + save/load + locale + determinism.

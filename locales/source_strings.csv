@@ -54,3 +54,7 @@ BRANCH_ACCEPT_AUDIT,Accept the Audit,Label of the accept-audit branch choice in 
 BRANCH_COUNTER_OFFER,Make a Counter-Offer,Label of the counter-offer branch choice in the FirstInspection crisis.
 EVENT_NARRATIVE_ANCHOR_TRIGGERED,Narrative anchor {anchor_id} has been triggered.,Event-log summary for the narrative.anchor_triggered event.
 EVENT_NARRATIVE_ANCHOR_RESOLVED,Narrative anchor {anchor_id} has been resolved.,Event-log summary for the narrative.anchor_resolved event.
+EVENT_CRISIS_EFFECTS_APPLIED,Terminal effects (morale_delta={morale_delta} and needs_food_delta={needs_food_delta}) applied to the realm's inhabitants.,Event-log summary for the crisis.effects_applied event.
+EVENT_NARRATIVE_ANCHOR_FOLLOWUP,Follow-up narrative anchor {anchor_id} has been chained from the resolved crisis.,Event-log summary for the narrative.anchor_followup event.
+EVENT_BRANCH_RESOLVED,Branch {branch_id} has been resolved by choice {choice_id}.,Event-log summary for the branch.resolved event.
+EVENT_EXPLORATION_REVEALED,Exploration has revealed new tiles around the destination.,Event-log summary for the exploration.revealed event.

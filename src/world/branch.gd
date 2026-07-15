@@ -298,3 +298,51 @@ static func fork(
 	b.children = p_children.duplicate()
 	b.terminal_effect = {}
 	return b
+
+
+## Serialise the branch node to a save-body
+## `Dictionary`. The schema is the M3-Closeout
+## subset of the ADR-0008 §"save format" rules;
+## the M5 closeout replaces this helper with a
+## schema-versioned codec. The helper is the
+## canonical entry point for the M3 closeout
+## smoke test's save/load round-trip check.
+func to_dict() -> Dictionary:
+	var children_dicts: Array = []
+	for c in children:
+		children_dicts.append(String(c))
+	return {
+		"id": String(id),
+		"parent": String(parent),
+		"trigger_at_day": trigger_at_day,
+		"children": children_dicts,
+		"terminal_effect": terminal_effect.duplicate(true),
+		"is_terminal": is_terminal(),
+		"is_root": is_root(),
+	}
+
+
+## Reconstruct a branch node from a save-body
+## `Dictionary`. The companion to `to_dict`.
+## The M3-Closeout is a *round-trip* test
+## (to_dict → from_dict → equals); the M5
+## closeout extends the schema with
+## `BranchNodeDef` resources (per ADR-0008).
+static func from_dict(d: Dictionary) -> BranchNode:
+	var b: BranchNode = BranchNode.new()
+	b.id = StringName(String(d.get("id", "")))
+	b.parent = StringName(String(d.get("parent", "")))
+	b.trigger_at_day = float(d.get("trigger_at_day", 0.0))
+	var raw_children: Variant = d.get("children", [])
+	var children_arr: Array = []
+	if raw_children is Array:
+		for c in raw_children:
+			children_arr.append(StringName(String(c)))
+	b.children = children_arr
+	var raw_effect: Variant = d.get("terminal_effect", {})
+	if raw_effect is Dictionary:
+		b.terminal_effect = (raw_effect as Dictionary).duplicate(true)
+	else:
+		b.terminal_effect = {}
+	b.condition = Callable()
+	return b

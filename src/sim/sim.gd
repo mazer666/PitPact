@@ -133,6 +133,20 @@ var relationships: Dictionary = {}
 ## (ADR-0003) and re-supplied at load time.
 var _rng: SplitMix64 = SplitMix64.new(0)
 
+## M3-Closeout (Track B): inhabitants array
+## captured at the top of `tick()` so
+## `_evaluate_crises` can pass it to
+## `Crisis.apply_pending_effects`. The field
+## is module-private (leading underscore) and
+## is reset at the end of every `tick` call.
+var _crisis_inhabitants: Array = []
+
+## M3-Closeout (Track B): the inhabitants
+## array as seen at the top of `tick()`. The
+## field is the single source of truth for
+## "who is in the realm this tick".
+var _crisis_tick_inhabitants: Array = []
+
 
 ## Construct a `Sim` with an explicit 64-bit seed. The
 ## seed is mixed once by `SplitMix64._init`; two
@@ -509,6 +523,20 @@ func _evaluate_contracts(delta_days: float) -> void:
 ## `trigger_at_day`"; the condition is consulted
 ## only for early-trigger overrides.
 func _evaluate_crises(delta_days: float) -> void:
+	# M3-Closeout (Track B): cache the
+	# inhabitants for the duration of the
+	# per-tick call. The cache is read by the
+	# `apply_pending_effects` helper called
+	# below; the cache is reset at the end of
+	# `tick` to keep the `_evaluate_crises`
+	# signature stable for any future caller
+	# that does not pass inhabitants.
+	_crisis_inhabitants = _crisis_tick_inhabitants
+	_evaluate_crises_body(delta_days)
+	_crisis_inhabitants = [] as Array
+
+
+func _evaluate_crises_body(delta_days: float) -> void:
 	var post_tick_day: float = time_days + delta_days
 	for cr in crises.values():
 		if not (cr is Crisis):
@@ -544,6 +572,16 @@ func _evaluate_crises(delta_days: float) -> void:
 		# end-of-tick clock in the event log.
 		if cr.chosen_id != &"":
 			cr.resolve(post_tick_day, cr.chosen_id)
+		# M3-Closeout (Track B): apply the
+		# crisis's `pending_effects` to the
+		# inhabitants. The call is the sim-facing
+		# entry point that converts the
+		# `BranchNode.terminal_effect` schema
+		# (ADR-0008) into per-inhabitant state
+		# nudges. The call is a no-op when the
+		# crisis has no pending effects.
+		if not cr.pending_effects.is_empty():
+			cr.apply_pending_effects(post_tick_day, _crisis_inhabitants)
 
 
 ## M2 Track A: walk the inhabitants array and

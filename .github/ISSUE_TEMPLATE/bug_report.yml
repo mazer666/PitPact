@@ -35,9 +35,9 @@ body:
   - type: input
     id: godot_version
     attributes:
-      label: Godot version
+      label: Godot version (4.7+ required)
       description: "From Help → About in the editor, or `godot --version` on the CLI."
-      placeholder: "4.3.0"
+      placeholder: "4.7.0"
     validations:
       required: true
 

@@ -221,3 +221,35 @@ static func from_content(
 	a.triggered = false
 	a.resolved = false
 	return a
+
+
+## Serialise the narrative anchor to a save-body
+## `Dictionary`. The M3-Closeout schema is the
+## subset that survives a round-trip with no
+## information loss; the M5 closeout extends the
+## schema with `NarrativeAnchorDef` resources
+## (per ADR-0008).
+func to_dict() -> Dictionary:
+	return {
+		"id": String(id),
+		"trigger_at_day": trigger_at_day,
+		"display_name": String(display_name),
+		"summary": String(summary),
+		"triggered": triggered,
+		"resolved": resolved,
+	}
+
+
+## Reconstruct a narrative anchor from a save-body
+## `Dictionary`. The companion to `to_dict`. The
+## round-trip is the M3-Closeout invariant; the
+## M5 closeout extends the schema.
+static func from_dict(d: Dictionary) -> NarrativeAnchor:
+	var a: NarrativeAnchor = NarrativeAnchor.new()
+	a.id = StringName(String(d.get("id", "")))
+	a.trigger_at_day = float(d.get("trigger_at_day", 0.0))
+	a.display_name = StringName(String(d.get("display_name", "")))
+	a.summary = StringName(String(d.get("summary", "")))
+	a.triggered = bool(d.get("triggered", false))
+	a.resolved = bool(d.get("resolved", false))
+	return a

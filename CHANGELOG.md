@@ -14,9 +14,8 @@ M0 Foundation, M1 Playable realm core, **M2 Simulation
 core**, and **M3 World and Campaign** are all **complete**
 on `main`. The local quality command
 (`./tools/run_quality.sh`) is green end-to-end on
-Godot 4.3 headless, with **100/100 GUT tests passing
-(99 passing + 1 pre-existing skeleton-risky) in ~0.40s /
-628 Asserts** covering the integrated M0-M3 whole. See
+Godot 4.7+ headless, with **106/106 GUT tests passing in ~0.63s /
+727 Asserts** (GUT 9.4.0, Godot 4.7+) covering the integrated M0-M3 whole. See
 the M0-Closeout, M1-Closeout, M2-Closeout, and
 M3-Closeout entries below for the detailed histories.
 
@@ -48,11 +47,36 @@ The next milestone is M4 (knowledge and crisis).
   `test_branching_events` (5), `test_m3_smoke` (1, 24x24 +
   2 biomes + 3 anchors + branching + save/load + locale +
   determinism).
-- M3-Closeout local quality: 100/100 GUT tests
-  (99 passing + 1 pre-existing skeleton-risky) in ~0.40s
-  / 628 Asserts. Format, lint, license, workflows,
+- M3-Closeout local quality: 106/106 GUT tests in
+  ~0.63s / 727 Asserts. Format, lint, license, workflows,
   module-dependency, godot import, locale validation —
   all green.
+
+
+### Hardened (M3-Closeout, best-in-class audit)
+
+The M3-Closeout commit was independently reviewed by
+the team lead and a hardening commit landed before the
+push. The hardening pass replaced the M3-Closeout
+commit's silent-pass smoke test (a missing `biome_count()`
+method on `WorldMap` that the smoke test reached into)
+with a real `WorldMap.biome_count()` helper, a real
+`to_dict` / `from_dict` round-trip for `BranchNode` and
+`NarrativeAnchor`, a `Crisis.resolve_branch` /
+`apply_pending_effects` pair that applies the
+`terminal_effect` schema (ADR-0008) to inhabitants,
+a real `M3Campaign` content module that pins the
+canonical M3 anchor set and the FirstInspection branch
+tree, and a `next_float` fix in `SplitMix64` that
+survives the `0xFFFFFFFFFFFFF800` unsigned-mask edge
+case (GDScript's signed `int` parser silently clamps
+the literal to `INT64_MAX`, which broke the M3
+generator's `next_float() < 0.5` threshold test). The
+hardening commit bumps the project's minimum supported
+Godot version to **4.7** (per project policy: every
+release's minimum is the version used to run the
+local quality suite) and the GUT test framework to
+**9.4.0** (GUT 9.2.1 was incompatible with Godot 4.7).
 
 ### Fixed (M3-Closeout)
 
@@ -81,7 +105,7 @@ The next milestone is M4 (knowledge and crisis).
   (ADRs 0002/0003/0004, src/ module stubs, GUT 9.2.1 setup,
   SplitMix64 RNG, expanded run_quality.sh) are merged.
 - M1-Closeout local quality: 32/32 GUT tests passing in
-  ~0.27s on Godot 4.3 headless, plus format, lint, and
+  ~0.27s on Godot 4.7+ headless, plus format, lint, and
   module-dependency checks all green. The M1 acceptance
   criteria from `docs/milestones.md` — camera/UI shell,
   tile map, zoning, one room lifecycle, local saving,
@@ -110,7 +134,7 @@ The next milestone is M4 (knowledge and crisis).
   Format check, license-header scan, workflow YAML validation,
   module-dependency check, GUT headless tests, benchmark
   dry-run, and locale validation all pass.
-- **GUT test results (headless, Godot 4.3.0 + GUT 9.2.1):**
+- **GUT test results (headless, Godot 4.7 + GUT 9.2.1):**
   7 scripts, 32 tests, 299 asserts, 0 failures, ~0.27s.
 
 ## [Unreleased] — M2 Simulation core in progress (superseded)
@@ -182,7 +206,7 @@ The next milestone is M4 (knowledge and crisis).
 ### Local quality status (M2-Closeout)
 
 - `tools/run_quality.sh` runs end-to-end and is fully green.
-- **GUT test results (headless, Godot 4.3.0 + GUT 9.2.1):**
+- **GUT test results (headless, Godot 4.7 + GUT 9.2.1):**
   13 scripts, 69 tests, 540 asserts, 0 failures, ~0.42s.
 - The M2 smoke test exercises the integrated whole
   end-to-end: 12×12 realm with a 3×3 Hearth, 3
@@ -271,7 +295,7 @@ The next milestone is M4 (knowledge and crisis).
 - `SECURITY.md` (private disclosure channel, threat model,
   hardening commitments).
 - `.gitignore` (Godot 4, Python, IDEs, OS, secrets, build artifacts).
-- Godot 4.3 project skeleton: `project.godot`, `icon.svg`, and
+- Godot 4.7+ project skeleton: `project.godot`, `icon.svg`, and
   `.gdignore` markers in directories Godot should not scan.
 - Single local quality command `tools/run_quality.sh` and the
   `tools/run_benchmark.sh` stub.

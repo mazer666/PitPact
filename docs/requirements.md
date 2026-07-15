@@ -143,7 +143,7 @@ English is the complete source language. German is the first additional language
 
 ## 16. Technical architecture
 
-- Engine: **Godot 4**.
+- Engine: **Godot 4** (minimum supported version: **4.7**).
 - Primary language: **GDScript**, using static typing where it improves clarity.
 - Native extensions: C++ only after profiling proves a contained hotspot cannot meet targets in GDScript.
 - No external runtime service is required for gameplay.

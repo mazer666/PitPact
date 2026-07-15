@@ -127,9 +127,80 @@ func next_u64() -> int:
 ## bits of a 64-bit output and dividing by `2^53`. The result is
 ## deterministic and uniform across the 53-bit representable
 ## reals in `[0.0, 1.0)`.
+##
+## **M3-Closeout fix.** The previous implementation did
+## `float(next_u64() >> 11) / 2^53`. GDScript's `int` is
+## 64-bit **signed**; the right-shift operator on a signed
+## integer is an *arithmetic* shift, which preserves the
+## sign bit. For 64-bit SplitMix64 outputs whose top bit
+## is `1` (roughly half of the output space), the shifted
+## result is a *negative* float, and the returned
+## `next_float()` value lies in `[-0.5, 0.0)` instead of
+## `[0.0, 1.0)`. The M3 generator used `next_float()` as
+## a height value and compared it to `_HEIGHT_THRESHOLD =
+## 0.5`; on a negative `next_float()`, every tile
+## resolved to the "low" branch (Marshlands), and the
+## generator never produced a Highlands tile. The fix
+## masks the top 53 bits explicitly with an unsigned
+## AND (`& 0xFFFFFFFFFFFFF800`) before the shift; the
+## result is a non-negative `int` whose division by
+## `2^53` lands in `[0.0, 1.0)`.
+##
+## **M3-Closeout fix v2 (best-in-class audit).** The v1
+## fix used `& 0x7FFFFFFFFFFFF800` as the mask. GDScript's
+## `int` literal parser silently maps the unsigned
+## `0xFFFFFFFFFFFFF800` to the signed `0x7FFFFFFFFFFFFFFF`
+## (= `INT64_MAX`); the resulting mask cleared the
+## sign bit of every `next_u64()` output, so the
+## shifted value lived in `[0, 2^52)` and the divided
+## float lived in `[0.0, 0.5)` — *never* above the
+## `_HEIGHT_THRESHOLD = 0.5` that the M3 generator
+## checks. The v2 fix uses the signed 64-bit
+## representation of `0xFFFFFFFFFFFFF800`, which is
+## `-2048` (`~0x7FF`); the high bit is preserved, the
+## bottom 11 bits are zeroed, and the shifted value
+## lives in `[0, 2^53)` and the float in `[0.0, 1.0)`.
 func next_float() -> float:
-	# 2^53 = 9007199254740992.
-	return float(next_u64() >> 11) / 9007199254740992.0
+	# M3-Closeout fix v3: extract the top 53 bits of the
+	# 64-bit *unsigned* output as a non-negative `int`,
+	# then divide by `2^53`. The previous fix
+	# (`(next_u64() & -2048) >> 11`) failed because
+	# GDScript's right-shift on a signed int with the
+	# high bit set is an arithmetic shift (it propagates
+	# the sign bit), so the result was still negative.
+	# The byte-level approach: take the 8 bytes of the
+	# next_u64() output, build the top 53 bits via
+	# `int` arithmetic (each step is positive), and
+	# divide. The helper uses the static
+	# `_int_to_bytes` / `_bytes_to_int` round-trip
+	# that already lives in this file.
+	var u: int = next_u64()
+	var bytes: PackedByteArray = _int_to_bytes(u)
+	# `_int_to_bytes` is little-endian: `bytes[0]` is the
+	# low byte, `bytes[7]` is the high byte. The top 53
+	# bits of the 64-bit unsigned output are:
+	#   bits  0..7  = bytes[1] >> 3     (low 5 bits of byte 1)
+	#   bits  8..15 = bytes[2]          (full byte 2)
+	#   bits 16..23 = bytes[3]
+	#   bits 24..31 = bytes[4]
+	#   bits 32..39 = bytes[5]
+	#   bits 40..47 = bytes[6]
+	#   bits 48..52 = bytes[7]          (low 5 bits of byte 7, since
+	#                                   the top 3 bits of byte 7 are
+	#                                   the discarded bottom 11 bits)
+	# Note: `bytes[7] & 0x1F` extracts the *low* 5 bits of the
+	# high byte. The top 3 bits of `bytes[7]` (the high byte)
+	# are part of the 11-bit "discard" zone; only the bottom 5
+	# bits of `bytes[7]` survive the right-shift by 11.
+	var top: int = 0
+	top |= (bytes[1] & 0xF8) >> 3
+	top |= bytes[2] << 5
+	top |= bytes[3] << 13
+	top |= bytes[4] << 21
+	top |= bytes[5] << 29
+	top |= bytes[6] << 37
+	top |= bytes[7] << 45
+	return float(top) / 9007199254740992.0
 
 
 ## Return a deterministic signed 32-bit integer in `[lo, hi)`

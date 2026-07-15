@@ -3,7 +3,7 @@
 #
 # PitPact — the TileMapLayer-based renderer for the grid.
 #
-# `WorldTileMapLayer` is a thin `TileMapLayer` (Godot 4.3
+# `WorldTileMapLayer` is a thin `TileMapLayer` (Godot 4.7+
 # API) that projects a `Grid` onto the screen. It owns
 # no game state; it reads the realm façade and projects.
 # The layer is a child of the realm scene and lives

@@ -9,6 +9,18 @@
 > [`docs/roadmap.md`](roadmap.md) for the suite.
 >
 > When a rule feels wrong, open an issue. Don't silently break it.
+>
+> **Best-in-class bar.** Every commit on `main` must clear the
+> best-in-class bar defined in [`AGENTS.md`](../AGENTS.md). The
+> bar is the union of (a) the architectural rules here and in
+> the ADRs, (b) the test rules in the integration tests, and
+> (c) the documentation rules in
+> [`docs/roadmap.md`](roadmap.md) /
+> [`CHANGELOG.md`](../CHANGELOG.md) /
+> the module READMEs. A commit that passes `format.sh` /
+> `lint.sh` / `check_module_dependencies.sh` but breaks any
+> ADR, drops a test, or drifts a doc is *not* best in class
+> and the commit is reverted.
 
 ## Why this file is short
 
@@ -36,7 +48,7 @@ project-specific calls. The companion documents that go deeper:
   word and the gain is one fewer mental hop.
 - For collections, prefer typed arrays and dictionaries
   (`Array[int]`, `Dictionary[StringName, Variant]`) over
-  untyped `Array` and `Dictionary`. The Godot 4.3+ syntax
+  untyped `Array` and `Dictionary`. The Godot 4.7+ syntax
   `Array[Type]` is the standard.
 
 ## 2. Small, focused files
