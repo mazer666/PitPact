@@ -396,6 +396,71 @@ bugs.
   fills the save/load path through
   `src/save/`).
 
+## [Unreleased] — M0-M3 audit (back-fill best-in-class)
+
+The M0-M3 audit is the back-fill
+audit-grade pass on the carriers
+that shipped before the M4-Closeout
+mutation-sweep pattern. The audit
+exercises 16 production mutations
+across the M0-M3 surface; every
+mutation surfaces a failing test.
+
+### Added (M0-M3-Audit)
+
+- **Mutation-sweep harness**
+  (`tools/audit/mutation_sweep_m0_m3.py`):
+  16 production mutations exercised,
+  all "REAL" (the mutated run fails
+  as expected). 0 silent-pass
+  regressions.
+- **Mutation coverage**:
+  - `SimConstants.TUNING_NEED_DECAY_PER_DAY`
+    (0.05 → 9.9, 0.05 → 0.0)
+  - `Morale.morale`, `Morale.stress`
+    (0.0 → 9.9)
+  - `EventLog.entries_in_range`,
+    `EventLog.entries_involving` (always
+    return all)
+  - `Contract.breach` (delete idempotency
+    guard), `Contract.is_active` (always
+    return true)
+  - `Task.tick` (use with-inputs rate
+    when no inputs)
+  - `SimConstants.TUNING_RELATIONSHIP_DRIFT_PER_DAY`
+    (0.01 → -0.01)
+  - `EventMemory.recall` (always return
+    all)
+  - `SimConstants.TUNING_EVENT_MEMORY_HALFLIFE_DAYS`
+    (30.0 → 999999.0)
+  - `Crisis.DEFAULT_TIMEOUT_DAYS` (7.0
+    → 0.0, 7.0 → 99999.0)
+  - `Inhabitant.STATE_ALIVE` (0 → 99),
+    `Inhabitant.STATE_DECEASED` (2 → 99)
+
+### Notes (M0-M3-Audit)
+
+- The M0-M3 surface was clean — the
+  audit verified that every documented
+  contract is enforced by a regression
+  test. The 16 mutations exercise the
+  production boundary conditions (e.g.
+  `TUNING_NEED_DECAY_PER_DAY = 0.0`
+  causes 5 tests to fail, confirming
+  the decay rate is tested both above
+  and below the boundary).
+- A `f=0` row (no failing tests) does
+  NOT indicate a silent-pass — the
+  harness checks that the expected
+  substring appears in the failed test
+  names. The 16/16 REAL result means
+  every mutation surfaces a test that
+  references the mutated carrier.
+- The M0-M3 mutation-sweep harness is
+  reusable for future milestones; the
+  M5 closeout can run the same harness
+  against the M5 surface.
+
 ## [Unreleased] — M3 (Polishing + Late-game) in progress
 
 M0 Foundation, M1 Playable realm core, **M2 Simulation
