@@ -40,6 +40,8 @@ You do **not** need an ADR for:
 | [0009](0009-best-in-class-bar.md) | Best-in-class bar for `main` contributions | accepted | 2026-07-15 |
 | [0010](0010-research-tree-schema.md) | Research-tree and knowledge-state schema | accepted | 2026-07-15 |
 | [0011](0011-autonomous-conflict.md) | Autonomous conflict and the two M4 crises | accepted | 2026-07-15 |
+| [0012](0012-m4-closeout.md) | M4-Closeout: research/ritual progression + Pactmaker powers + autonomous conflict + difficulty | accepted | 2026-07-16 |
+| [0013](0013-m4-hardening.md) | M4-Hardening: best-in-class audit pass (mutation sweep, two silent-pass bug fixes, three test hardenings) | accepted | 2026-07-16 |
 
 ## Conventions
 

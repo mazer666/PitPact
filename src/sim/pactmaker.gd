@@ -224,23 +224,63 @@ func get_power(power_id: StringName) -> Power:
 ## - the power is on cooldown
 ## - the power's effect raises.
 func apply_power(power_id: StringName, sim: Variant, time_days: float = 0.0) -> bool:
+	if not _can_apply_power(power_id, sim, time_days):
+		return false
+	var power: Power = get_power(power_id)
+	# Try the effect first; the counter
+	# is incremented only on success.
+	# The M4 default is "debit on
+	# success": a power that no-ops
+	# (e.g. `seal_breach` with no
+	# sealable crisis) does not cost
+	# an intervention.
+	var result: bool = _invoke_power_effect(power, sim, time_days)
+	if not result:
+		return false
+	# The M4-Hardening contract is
+	# "debit on success": the counter
+	# is incremented only after the
+	# effect succeeds. A race-condition
+	# guard (the counter was at the
+	# limit but is now full) is
+	# impossible in single-threaded
+	# code, but the conservative
+	# check is preserved.
+	if not register_intervention():
+		return true
+	power.record_use(time_days)
+	return true
+
+
+## M4-Hardening: predicate for
+## `apply_power`. The method factors
+## out the four gate checks (sim,
+## power, intervention-limit,
+## cooldown) so the public method's
+## body stays under gdlint's
+## `max-returns` cap.
+func _can_apply_power(power_id: StringName, sim: Variant, time_days: float) -> bool:
 	if sim == null:
 		return false
 	var power: Power = get_power(power_id)
 	if power == null:
 		return false
-	if not register_intervention():
+	if not can_intervene():
+		# The M4 default is "strict gate":
+		# a Pactmaker at the intervention
+		# limit cannot apply a power (the
+		# counter is *not* incremented on
+		# the rejected call).
 		return false
 	if power.is_on_cooldown(time_days):
-		# Refund the intervention — the
-		# cooldown gate is a soft no-op
+		# The cooldown gate is a soft no-op
 		# (the M4 default is "no free
 		# pass for cooldown-locked
-		# powers").
-		intervention_count -= 1
+		# powers"; the counter is *not*
+		# incremented on the rejected
+		# call).
 		return false
-	power.record_use(time_days)
-	return _invoke_power_effect(power, sim, time_days)
+	return true
 
 
 ## M4-Closeout: invoke a power's

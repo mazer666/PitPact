@@ -146,8 +146,15 @@ mechanical check for ADR-0005.
 | [`m4_skeleton.gd`](m4_skeleton.gd) | `M4Skeleton` (façade) | M4 foundation |
 | (lands with M2 cycle 2 / Track A) | per-tick needs decay; per-tick task progress; per-inhabitant memory recording | planned |
 | (lands with M2 cycle 3 / Track B) | per-tick relationships update; per-tick contract evaluation; per-tick crisis resolution; replay test | planned |
-| (lands with M4 Track A) | per-tick research/ritual progression; content catalogue loader; per-power registration | planned |
-| (lands with M4 Track B) | per-tick autonomous conflict; deadline mechanic; per-tick Pactmaker intervention | planned |
+| (lands with M4 Track A) | per-tick research/ritual progression; content catalogue loader; per-power registration | **done (M4-Closeout)** |
+| (lands with M4 Track B) | per-tick autonomous conflict; deadline mechanic; per-tick Pactmaker intervention | **done (M4-Closeout)** |
+| [`m4_sim_step.gd`](m4_sim_step.gd) | `M4SimStep` — static-only helper class for the M4 per-tick step delegation (steps 7c, 7d, 7e) | M4-Closeout |
+| [`../content/m4_research.gd`](../content/m4_research.gd) | `M4Research` — 6 research nodes in two trees (binding + survey) | M4-Closeout |
+| [`../content/m4_rituals.gd`](../content/m4_rituals.gd) | `M4Rituals` — 3 rituals (`bind_inhabitant`, `survey_tile`, `seal_breach`) | M4-Closeout |
+| [`../content/m4_pactmaker.gd`](../content/m4_pactmaker.gd) | `M4Pactmaker` — canonical M4 Pactmaker (`intervention_limit = 3`, 3 powers) | M4-Closeout |
+| [`../content/m4_factions.gd`](../content/m4_factions.gd) | `M4Factions` — 3 factions (`lantern_clan`, `ledger_cabal`, `hollow_church`) | M4-Closeout |
+| [`../content/m4_crises.gd`](../content/m4_crises.gd) | `M4Crises` — 2 M4 default crises (`plague_outbreak`, `faction_dispute`) | M4-Closeout |
+| [`difficulty.gd`](difficulty.gd) | `Difficulty` — static-only helper for the difficulty multipliers | M4-Closeout |
 
 ## See also
 
@@ -155,10 +162,19 @@ mechanical check for ADR-0005.
 - [`docs/adrs/0005-sim-tick-determinism.md`](../adrs/0005-sim-tick-determinism.md)
 - [`docs/adrs/0010-research-tree-schema.md`](../adrs/0010-research-tree-schema.md) — the M4 research/ritual/knowledge contract.
 - [`docs/adrs/0011-autonomous-conflict.md`](../adrs/0011-autonomous-conflict.md) — the M4 autonomous-conflict and deadline contract.
+- [`docs/adrs/0012-m4-closeout.md`](../adrs/0012-m4-closeout.md) — the M4-Closeout implementation.
 - [`docs/requirements.md`](../requirements.md) §9, §10, §11, §16, §17
 - [`tests/_smoke/test_sim_skeleton.gd`](../../tests/_smoke/test_sim_skeleton.gd) — the
   M2-foundation smoke test (17 tests, all green).
 - [`tests/integration/test_m4_skeleton.gd`](../../tests/integration/test_m4_skeleton.gd) — the
   M4-foundation smoke test (19 tests, 80 asserts, all green).
+- [`tests/integration/test_m4_closeout_lifecycle.gd`](../../tests/integration/test_m4_closeout_lifecycle.gd) — the
+  M4-Closeout lifecycle smoke test (12 tests).
+  (M4-Hardening adds two Pactmaker edge-case tests: zero-limit
+  boundary + no-sealable-crisis negative path.)
+- [`tests/integration/test_m4_closeout_content.gd`](../../tests/integration/test_m4_closeout_content.gd) — the
+  M4-Closeout content + sim integration smoke test (12 tests).
+- [`tests/integration/test_m4_closeout_content.gd`](../../tests/integration/test_m4_closeout_content.gd) — the
+  M4-Closeout content + sim integration smoke test (13 tests; includes the 30-day M4 fuzz test).
 - [`tests/sim/test_sim_replay.gd`](../../tests/sim/test_sim_replay.gd) — the
   ADR-0005 replay test (lands with M2 cycle 3).

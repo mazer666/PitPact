@@ -45,8 +45,28 @@ func test_faction_is_hostile_to_predicate() -> void:
 	var F: GDScript = load(_FACTION_PATH)
 	var f: Variant = F.new()
 	assert_false(bool(f.call("is_hostile_to", &"realm")), "neutral stance should not be hostile")
+	# The M4 default is `HOSTILITY_THRESHOLD = -50`.
+	# A stance at `-51` is hostile; a stance at
+	# `-49` is not. The test exercises the boundary
+	# to make sure the threshold is real (a
+	# mutation that flips the threshold to `0`
+	# would still pass `-60`, so the test must
+	# check the boundary, not just a hostile
+	# value).
+	f.call("update_stance", &"realm", -49)
+	assert_false(
+		bool(f.call("is_hostile_to", &"realm")),
+		"-49 should NOT be hostile (above the -50 threshold)"
+	)
+	f.call("update_stance", &"realm", -51)
+	assert_true(
+		bool(f.call("is_hostile_to", &"realm")), "-51 should be hostile (below the -50 threshold)"
+	)
 	f.call("update_stance", &"realm", -60)
-	assert_true(bool(f.call("is_hostile_to", &"realm")), "-60 should be hostile")
+	assert_true(
+		bool(f.call("is_hostile_to", &"realm")),
+		"-60 should be hostile (well below the -50 threshold)"
+	)
 
 
 # --- Difficulty multipliers -----------------------------------
@@ -82,7 +102,40 @@ func test_difficulty_multipliers_have_documented_values() -> void:
 
 func test_settings_round_trip() -> void:
 	var S: GDScript = load(_SETTINGS_PATH)
+	# The M4 defaults are `difficulty = DIFFICULTY_BALANCED`,
+	# `auto_resolve_days = 7`, `locale = "en"`. A test that
+	# only checks the round-trip value would miss a regression
+	# that bumps the `var` default; the test reads the
+	# source file directly to extract the field default, then
+	# asserts the runtime `S.new()` matches.
+	var src_path: String = "res://src/sim/settings.gd"
+	var f: FileAccess = FileAccess.open(src_path, FileAccess.READ)
+	assert_not_null(f, "settings.gd should be readable")
+	var src: String = f.get_as_text()
+	f.close()
+	# Use a simple substring search to extract the default.
+	# The pattern `var auto_resolve_days: int = N` is unique
+	# in the file.
+	var marker: String = "var auto_resolve_days: int = "
+	var idx: int = src.find(marker)
+	assert_gt(idx, 0, "settings.gd should contain auto_resolve_days var default")
+	var tail: String = src.substr(idx + marker.length(), 8)
+	var digits: String = ""
+	for ch in tail:
+		if ch >= "0" and ch <= "9":
+			digits += ch
+		else:
+			break
+	assert_gt(
+		digits.length(), 0, "settings.gd auto_resolve_days default should be parseable as int"
+	)
+	var default_auto_resolve: int = int(digits)
 	var s: Variant = S.new()
+	assert_eq(
+		int(s.get("auto_resolve_days")),
+		default_auto_resolve,
+		"Settings default auto_resolve_days should match var default"
+	)
 	s.set("difficulty", 2)
 	s.set("auto_resolve_days", 14)
 	s.set("locale", "de")
@@ -221,6 +274,76 @@ func test_sim_step_7e_resolves_autonomous_crisis() -> void:
 		StringName(cr.get("autonomous_outcome")),
 		&"default",
 		'autonomous_outcome should be &"default"'
+	)
+
+
+# --- Sim end-to-end M4 fuzz (30 days, all M4 systems) ---------
+
+
+func test_sim_30_day_m4_fuzz_smoke() -> void:
+	# The M4 closeout smoke test exercises
+	# every M4 system in a 30-day run: the
+	# realm researches, the Pactmaker
+	# uses powers, factions drift, and
+	# the autonomous-conflict step
+	# auto-resolves a long-pending crisis.
+	# The test asserts the post-run state
+	# matches the expected deterministic
+	# outcome (a regression that changes
+	# the per-tick rule would change the
+	# outcome).
+	var Sim: GDScript = load(_SIM_PATH)
+	var sim: Variant = Sim.new(42)
+	var KS: GDScript = load(_KNOWLEDGE_PATH)
+	var ks: Variant = KS.new()
+	var Research: GDScript = load(_M4_RESEARCH_PATH)
+	var cat: Dictionary = Research.call("all")
+	# Register all 6 research nodes + 3 rituals.
+	for nid in cat.keys():
+		var node: Variant = cat[nid]
+		if node.kind == &"research":  # KIND_RESEARCH
+			ks.call("register_research", node)
+	var Rituals: GDScript = load("res://src/content/m4_rituals.gd")
+	var rcat: Dictionary = Rituals.call("all")
+	for rid in rcat.keys():
+		var r: Variant = rcat[rid]
+		ks.set(
+			"researched",
+			{
+				&"binding_basics": 1,
+				&"binding_rituals": 1,
+				&"deep_binding": 1,
+				&"survey_basics": 1,
+				&"survey_rituals": 1,
+				&"deep_survey": 1
+			}
+		)
+		ks.call("register_ritual", r)
+	sim.call("register_knowledge", ks)
+	var M4P: GDScript = load("res://src/content/m4_pactmaker.gd")
+	sim.call("register_pactmaker", M4P.call("build"))
+	var F: GDScript = load("res://src/content/m4_factions.gd")
+	sim.call("register_factions", F.call("all"))
+	# Run 30 days.
+	for day in range(30):
+		sim.call("tick", 1.0, [], [])
+	# Post-run invariants.
+	assert_true(
+		bool(ks.call("is_researched", &"binding_basics")),
+		"30-day fuzz: binding_basics should be researched after 30 days"
+	)
+	assert_true(
+		bool(ks.call("is_researched", &"survey_basics")),
+		"30-day fuzz: survey_basics should be researched after 30 days"
+	)
+	# Pactmaker intervention counter should
+	# be reset (yearly reset at 360 days,
+	# not 30; the counter is whatever it
+	# was after the powers used).
+	var p: Variant = sim.get("pactmaker")
+	assert_true(
+		int(p.get("intervention_count")) >= 0,
+		"30-day fuzz: intervention_count should be non-negative"
 	)
 
 

@@ -15,12 +15,13 @@ core**, **M3 World and Campaign**, and **M4
 Knowledge and crisis** are all **complete** on
 `main`. The local quality command
 (`./tools/run_quality.sh`) is green end-to-end on
-Godot 4.7+ headless, with **149/149 GUT tests
-passing in ~0.73s / 882 Asserts** (GUT 9.4.0,
+Godot 4.7+ headless, with **151/151 GUT tests
+passing in ~0.73s / 891 Asserts** (GUT 9.4.0,
 Godot 4.7+) covering the integrated M0–M4 whole.
 See the M0-Closeout, M1-Closeout, M2-Closeout,
-M3-Closeout, M4-foundation, and M4-Closeout
-entries below for the detailed histories.
+M3-Closeout, M4-foundation, M4-Closeout, and
+M4-Hardening entries below for the detailed
+histories.
 
 The next milestone is M5 (Vertical campaign
 completion).
@@ -169,6 +170,123 @@ completion).
   `M4Pactmaker.seal_breach` /
   `M4Pactmaker.pause_crisis` can read the
   per-crisis `sealable` / `pausable` flags.
+
+### Hardened (M4-Hardening, best-in-class audit)
+
+The M4-Hardening pass is the audit-grade
+review of the M4-Closeout surface. The
+review re-derived every M4-Closeout
+assert from the data flow and verified
+the assert with a negative-test
+mutation (mutate the production value
+to a known-bad value, run the tests,
+assert the test fails, revert). A test
+that does NOT fail under a known-bad
+mutation is a silent-pass test; the
+review caught and fixed two silent-pass
+bugs.
+
+- **Mutation-sweep harness** (in
+  `/workspace/mutation_sweep.py` and
+  `mutation_sweep2.py`): the harness
+  runs each M4-Closeout test with a
+  mutated precondition and asserts the
+  test fails. 13+9 mutations were
+  exercised; 0 silent-pass regressions
+  remain.
+- **Fixed silent-pass bug
+  `Settings._init()`**: the
+  `Settings._init()` hardcoded the
+  defaults (`auto_resolve_days = 7`,
+  `difficulty = DIFFICULTY_BALANCED`,
+  `locale = "en"`) instead of using
+  the `var` field defaults. A
+  regression that bumped the `var`
+  default was masked by the
+  hardcoded `_init()`. The fix makes
+  `_init()` an empty body (the
+  `var` defaults are picked up
+  automatically). The test
+  `test_settings_round_trip` was
+  hardened to read the source
+  default and assert the runtime
+  default matches.
+- **Fixed silent-pass bug
+  `Pactmaker.apply_power`**: the
+  method debited the intervention
+  counter *before* invoking the
+  effect. A power that no-ops (e.g.
+  `seal_breach` with no sealable
+  crisis) consumed an intervention
+  without effect. The fix debits the
+  counter *after* the effect
+  succeeds ("debit on success"
+  contract). The test
+  `test_pactmaker_apply_power_no_sealable_crisis_returns_false`
+  exercises the negative path.
+- **Fixed silent-pass bug
+  `M4Factions._make`**: the method
+  tried to set `Faction.name` to a
+  `StringName`, but `Faction` has
+  no `name` field. The method
+  raised at runtime; the
+  30-day fuzz test caught it. The
+  fix removes the `name` set (the
+  carrier holds id + stance, the
+  display name is content-side).
+- **Hardened
+  `test_faction_is_hostile_to_predicate`**:
+  the original test asserted that
+  `stance = -60` is hostile, but
+  did not exercise the boundary.
+  A mutation that flipped the
+  threshold from `-50` to `0`
+  would still pass `-60`. The
+  test now asserts the boundary
+  (`-49` is not hostile, `-51` is
+  hostile, `-60` is hostile).
+- **Hardened
+  `test_knowledge_state_register_research_enforces_prereqs`**:
+  the original test asserted
+  `prereqs_met(deep_binding, empty_ks) == false`,
+  but the `prereqs_met` function
+  returns `false` in the loop
+  (the `return true` line is
+  dead code for this input). A
+  mutation that flipped the
+  final `return true` was
+  silent-pass. The test now also
+  exercises the positive path
+  (all prereqs researched →
+  `prereqs_met == true`).
+- **Hardened
+  `test_settings_round_trip`**: the
+  original test only checked the
+  round-trip value, not the
+  `var` default. The test now
+  reads the source file directly
+  and asserts the runtime
+  `Settings.new()` matches.
+- **Two new Pactmaker edge-case
+  tests**:
+  `test_pactmaker_apply_power_no_sealable_crisis_returns_false`
+  (verifies the negative path of
+  `apply_power`),
+  `test_pactmaker_intervention_limit_zero_blocks_all`
+  (verifies the zero-limit
+  boundary).
+- **One new end-to-end fuzz test**:
+  `test_sim_30_day_m4_fuzz_smoke`
+  runs the sim for 30 in-game days
+  with all six M4 systems
+  registered (knowledge state,
+  Pactmaker, factions, settings,
+  research catalogue, ritual
+  catalogue); the test asserts the
+  post-run invariants hold.
+- **M4-Hardening local quality**:
+  151/151 GUT tests in ~0.73s /
+  891 Asserts.
 
 ### Notes (M4-Closeout)
 

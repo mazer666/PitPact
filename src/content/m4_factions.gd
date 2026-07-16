@@ -52,9 +52,19 @@ static func by_id(id: StringName) -> Faction:
 ## friendly). The M4 closeout default
 ## is `0.0` (neutral) for all three
 ## factions.
-static func _make(fid: StringName, fname: StringName, initial_stance: float) -> Faction:
+static func _make(fid: StringName, _fname: StringName, initial_stance: float) -> Faction:
+	# The `_fname` parameter is a
+	# display-name locale key; the
+	# `Faction` carrier does not
+	# store the display name (the
+	# UI layer resolves the locale
+	# key via `tr()` at draw time).
+	# The M4 closeout default is
+	# "id-only": the carrier holds
+	# the faction's stable id and
+	# stance; the display name is
+	# content-side, not state-side.
 	var f: Faction = Faction.new()
 	f.id = fid
-	f.name = fname
 	f.stance = {"realm": initial_stance}
 	return f

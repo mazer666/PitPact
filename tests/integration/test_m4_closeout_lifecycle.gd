@@ -65,10 +65,26 @@ func test_knowledge_state_register_research_enforces_prereqs() -> void:
 	var Research: GDScript = load(_M4_RESEARCH_PATH)
 	var cat: Dictionary = Research.call("all")
 	var deep: Variant = cat[&"deep_binding"]
+	# Negative case: empty knowledge state, deep_binding's prereqs
+	# (binding_rituals) are not researched. prereqs_met should
+	# return false; register_research should be rejected.
+	var pm: bool = bool(deep.call("prereqs_met", ks))
+	assert_false(
+		pm, "prereqs_met should return false for unmet prereqs (binding_rituals not researched)"
+	)
 	assert_false(
 		bool(ks.call("register_research", deep)),
 		"register_research must reject deep_binding without binding_rituals"
 	)
+	# Positive case: with binding_basics AND binding_rituals researched,
+	# prereqs_met should return true; register_research should succeed.
+	# The positive case exercises the final `return true` line of
+	# prereqs_met (the path a "prereqs_met always true" mutation
+	# would also pass, but a "prereqs_met always false" mutation
+	# would break).
+	ks.set("researched", {&"binding_basics": 1, &"binding_rituals": 1})
+	var pm_pos: bool = bool(deep.call("prereqs_met", ks))
+	assert_true(pm_pos, "prereqs_met should return true when all prereqs are researched")
 
 
 func test_knowledge_state_register_ritual_consumes_days() -> void:
@@ -224,4 +240,47 @@ func test_crisis_paused_skips_autonomous_resolution() -> void:
 	assert_false(
 		bool(cr.call("is_autonomous_deadline_reached", 100.0)),
 		"a paused crisis must not auto-resolve"
+	)
+
+
+# --- Pactmaker edge cases --------------------------------------
+
+
+func test_pactmaker_apply_power_no_sealable_crisis_returns_false() -> void:
+	# The M4 closeout default: when no
+	# crisis is `sealable`, `apply_power`
+	# (`seal_breach`) returns `false`
+	# without consuming an intervention.
+	var M4P: GDScript = load(_M4_PACTMAKER_PATH)
+	var p: Variant = M4P.call("build")
+	var sim: Dictionary = {
+		"crises": {},
+		"settings": null,
+		"knowledge_state": null,
+		"pactmaker": p,
+		"factions": null,
+		"exploration_map": null,
+		"anchor": Vector2i.ZERO,
+	}
+	var before: int = int(p.get("intervention_count"))
+	var ok: bool = bool(p.call("apply_power", &"seal_breach", sim, 5.0))
+	assert_false(ok, "apply_power should return false when no sealable crisis exists")
+	assert_eq(
+		int(p.get("intervention_count")),
+		before,
+		"intervention_count should not increment on a no-op apply_power"
+	)
+
+
+func test_pactmaker_intervention_limit_zero_blocks_all() -> void:
+	# A Pactmaker with `intervention_limit = 0`
+	# cannot intervene (the strict-gate contract).
+	var P: GDScript = load(_PACTMAKER_PATH)
+	var p: Variant = P.new()
+	p.set("intervention_limit", 0)
+	p.set("intervention_count", 0)
+	assert_false(bool(p.call("can_intervene")), "can_intervene should return false at limit=0")
+	assert_false(
+		bool(p.call("register_intervention")),
+		"register_intervention should return false at limit=0"
 	)

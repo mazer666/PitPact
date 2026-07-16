@@ -83,14 +83,21 @@ var auto_resolve_days: int = 7
 var locale: String = "en"
 
 
-## Default constructor. Starts with
-## the M4 defaults: Balanced
-## difficulty, `7` auto-resolve
-## days, English locale.
+## Default constructor. The M4
+## defaults are read from the
+## `var` defaults above (a
+## `Settings.new()` instance uses
+## the field defaults without an
+## explicit `_init()` override).
+## The `_init()` body is empty so
+## a regression that bumps the
+## `var` default is automatically
+## picked up by the constructor
+## (the M4 closeout smoke test
+## asserts the source default
+## matches the runtime default).
 func _init() -> void:
-	difficulty = DIFFICULTY_BALANCED
-	auto_resolve_days = 7
-	locale = "en"
+	pass
 
 
 ## Static factory. The canonical way
