@@ -101,6 +101,51 @@ var crises: Dictionary = {}
 ## reference via `register_exploration`.
 var exploration_map: RefCounted = null
 
+## M4-Closeout: the realm's knowledge
+## state. The per-tick step 7c walks the
+## `KnowledgeState` and advances active
+## research / rituals. The default is
+## `null`; a sim that has never had
+## `register_knowledge` called behaves
+## exactly as the M3 tests expect.
+var knowledge_state: Variant = null
+
+## M4-Closeout: the realm's Pactmaker
+## carrier. The per-tick step 7c resets
+## the intervention counter every 360
+## in-game days. The default is `null`;
+## a sim that has never had
+## `register_pactmaker` called behaves
+## exactly as the M3 tests expect.
+var pactmaker: Variant = null
+
+## M4-Closeout: the realm's faction list.
+## The per-tick step 7d walks the
+## factions and applies the per-day
+## stance drift. The default is `null`;
+## a sim that has never had
+## `register_factions` called behaves
+## exactly as the M3 tests expect.
+var factions: Variant = null
+
+## M4-Closeout: the realm's settings
+## carrier. The per-tick steps 7c/7d
+## consult `settings.difficulty` for
+## the difficulty-dependent
+## multipliers. The default is `null`;
+## a sim that has never had
+## `register_settings` called behaves
+## exactly as the M3 tests expect.
+var settings: Variant = null
+
+## M4-Closeout: the realm's anchor
+## `Vector2i` (the world tile the
+## realm is centered on). The
+## `M4Pactmaker.reveal_tile` effect
+## reads this to compute the reveal
+## radius. The default is `Vector2i(0, 0)`.
+var anchor: Variant = null
+
 ## The realm's narrative-anchor set. M3 cycle 2
 ## (Track B) commit lands this field as the
 ## registered-anchor reference. `null` means
@@ -132,6 +177,17 @@ var relationships: Dictionary = {}
 ## depends on the seed being recorded into the save body
 ## (ADR-0003) and re-supplied at load time.
 var _rng: SplitMix64 = SplitMix64.new(0)
+
+## M4-Closeout: the realm's auto-resolve
+## day count. The M4 default is `0.0`
+## (no auto-resolve gating); the
+## per-tick step 7c increments this
+## by `delta_days` and resets the
+## Pactmaker intervention counter
+## every 360 in-game days (the M4
+## closeout default is "yearly
+## reset").
+var _last_auto_resolve_day: float = 0.0
 
 ## M3-Closeout (Track B): inhabitants array
 ## captured at the top of `tick()` so
@@ -255,6 +311,56 @@ func register_exploration(map) -> void:
 ## expect).
 func register_anchors(anchors_v) -> void:
 	narrative_anchors = anchors_v
+
+
+## M4-Closeout: register the realm's
+## knowledge state. The per-tick step 7c
+## walks the `KnowledgeState` and
+## advances active research / rituals.
+## Passing `null` unregisters the state.
+## The M3 contract is preserved: a sim
+## that has never had this called has
+## `knowledge_state == null`; the
+## per-tick step treats that as a
+## no-op (the existing M3 tests
+## continue to pass).
+func register_knowledge(state) -> void:
+	knowledge_state = state
+
+
+## M4-Closeout: register the realm's
+## Pactmaker carrier. The per-tick step
+## 7c resets the intervention counter
+## every 360 in-game days. Passing
+## `null` unregisters the carrier. The
+## M3 contract is preserved: a sim that
+## has never had this called has
+## `pactmaker == null`; the per-tick
+## step treats that as a no-op.
+func register_pactmaker(p) -> void:
+	pactmaker = p
+
+
+## M4-Closeout: register the realm's
+## faction list. The per-tick step 7d
+## walks the factions and applies the
+## per-day stance drift. Passing `null`
+## unregisters the list. The M3
+## contract is preserved.
+func register_factions(arr) -> void:
+	factions = arr
+
+
+## M4-Closeout: register the realm's
+## settings carrier. The per-tick
+## steps 7c/7d consult
+## `settings.difficulty` for the
+## difficulty-dependent multipliers.
+## Passing `null` unregisters the
+## carrier. The M3 contract is
+## preserved.
+func register_settings(s) -> void:
+	settings = s
 
 
 ## M3 cycle 2 (Track A) exploration step. The
@@ -438,6 +544,25 @@ func tick(delta_days: float, inhabitants: Array, events: Array) -> void:
 	#     == null` check short-circuits the loop).
 	if narrative_anchors != null:
 		_trigger_anchors(time_days + delta_days)
+
+	# 7c-e. M4 steps (research, faction
+	#       drift, autonomous conflict).
+	#       The helpers live in
+	#       `m4_sim_step.gd` to keep this
+	#       file under the 1000-line lint
+	#       cap. The M3 contract is
+	#       preserved: a sim that has
+	#       never had `register_knowledge`
+	#       / `register_factions` called
+	#       has `knowledge_state == null`
+	#       / `factions == null`; the
+	#       helpers short-circuit on
+	#       `null`.
+	if knowledge_state != null:
+		(knowledge_state as KnowledgeState).tick(delta_days, self)
+		M4SimStep.maybe_reset_pactmaker_yearly(self, time_days + delta_days)
+	M4SimStep.update_factions(self, delta_days)
+	M4SimStep.evaluate_autonomous_conflicts(self, time_days + delta_days)
 
 	# 8. Event-log append is implicit — every
 	#    subsystem that mutates state appends its

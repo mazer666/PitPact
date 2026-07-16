@@ -1,8 +1,8 @@
 # PitPact Roadmap
 
 > Status: **live**, best-in-class. The roadmap reflects the
-> repository as of the M3-Closeout commit on `main`. The
-> next update lands with the M4 closeout. Every closeout
+> repository as of the M4-Closeout commit on `main`. The
+> next update lands with the M5 closeout. Every closeout
 > is held to the best-in-class bar defined in
 > [`AGENTS.md`](../AGENTS.md): architecture-grade,
 > test-grade, documentation-grade, local-quality-grade,
@@ -47,6 +47,7 @@ hold before the next one opens. The milestones, in order:
 | M1 | Playable realm core | **Done** — foundation and first vertical slice merged; 32/32 GUT tests passing on Godot 4.7+ headless; the local quality command is green end-to-end. |
 | M2 | Simulation core | **Done** — see the M2-Closeout entry in [`CHANGELOG.md`](../CHANGELOG.md); 69/69 GUT tests passing in ~0.42s on Godot 4.7+ headless. |
 | M3 | World and campaign | **Done** — see the M3-Closeout entry in [`CHANGELOG.md`](../CHANGELOG.md); 106/106 GUT tests in ~0.63s / 727 Asserts on Godot 4.7+ headless (GUT 9.4.0); constrained 24x24 generator + Marshlands/Highlands + ExplorationMap (fog-of-war) + 4 fixed narrative anchors + 3-node branching-event tree (FirstInspection → accept_audit / counter_offer with `terminal_effect` schema). |
+| M4 | Knowledge and crisis | **Done** — see the M4-Closeout entry in [`CHANGELOG.md`](../CHANGELOG.md); 149/149 GUT tests in ~0.73s / 882 Asserts on Godot 4.7+ headless (GUT 9.4.0); KnowledgeState (research + ritual progression with `pending_effects` queue) + Pactmaker (3 interventions/year, 3 powers: `seal_breach` / `pause_crisis` / `reveal_tile`) + two new crises (`plague_outbreak`, `faction_dispute` with 14-day autonomous resolution) + Difficulty multipliers (PEACEFUL/BALANCED/CRUEL) + Settings (difficulty, auto_resolve_days, locale) + 6 research nodes (binding + survey trees) + 3 rituals + 3 factions (lantern_clan, ledger_cabal, hollow_church) + 44 new locale keys (en + de). |
 | M4 | Knowledge and crisis | Research/ritual progression, Pactmaker powers, autonomous conflict, two crises, difficulty/settings. |
 | M5 | Vertical campaign completion | Six cultures, ten rooms, fifteen events, complete success/failure/restart loop, English/German, audio pass. |
 | M6 | Public release readiness | Performance target, accessibility review, licensing/IP audit, reproducible builds, release notes, known-issues list. |

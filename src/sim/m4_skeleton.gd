@@ -57,7 +57,7 @@ extends RefCounted
 ## Track B commit (Pactmaker powers and
 ## autonomous conflict) bumps it to
 ## `0.3.0-m4-track-b`.
-const _VERSION: String = "0.1.0-m4-foundation"
+const _VERSION: String = "0.5.0-m4-closeout"
 
 
 ## Default constructor. The façade holds no
@@ -117,7 +117,7 @@ static func make_research_node() -> ResearchNode:
 ## catalogue and sets the carrier's
 ## field).
 static func make_pactmaker() -> Pactmaker:
-	return Pactmaker.new()
+	return M4Pactmaker.build()
 
 
 ## Build a fresh `Power` with the default
@@ -172,3 +172,41 @@ static func make_settings() -> Settings:
 ## "is the M4 foundation in place?".
 static func version() -> String:
 	return _VERSION
+
+
+## M4-Closeout: build the M4 default
+## research catalogue as a fresh
+## `Dictionary[StringName, ResearchNode]`.
+## The factory is the canonical "M4
+## research nodes" entry point; the
+## realm façade's boot path calls this
+## and stores the result in
+## `KnowledgeState.node_lookup`.
+static func make_research_catalogue() -> Dictionary:
+	return M4Research.all()
+
+
+## M4-Closeout: build the M4 default
+## ritual catalogue as a fresh
+## `Dictionary[StringName, ResearchNode]`.
+static func make_ritual_catalogue() -> Dictionary:
+	return M4Rituals.all()
+
+
+## M4-Closeout: build the canonical M4
+## faction list. The factory is the
+## canonical "M4 factions" entry point;
+## the realm façade's boot path calls
+## this and stores the result via
+## `Sim.register_factions(arr)`.
+static func make_factions() -> Array:
+	return M4Factions.all()
+
+
+## M4-Closeout: build the M4 default
+## crisis catalogue as an `Array` of
+## `Dictionary` payloads (the
+## `Crisis.make(...)` factory consumes
+## them).
+static func make_crisis_catalogue() -> Array:
+	return M4Crises.all()

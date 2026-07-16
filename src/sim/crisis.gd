@@ -32,6 +32,11 @@ extends RefCounted
 ## the per-crisis overrides land.
 const DEFAULT_TIMEOUT_DAYS: float = 7.0
 
+## M4-Closeout: the default deadline (in
+## in-game days) for the
+## `autonomous_resolution_days` field.
+const DEFAULT_AUTONOMOUS_RESOLUTION_DAYS: float = 14.0
+
 ## The crisis's stable identity. `StringName` for
 ## the same reasons as `Inhabitant.id`. The id is
 ## what the event log (`crisis.triggered` and
@@ -135,8 +140,55 @@ var pending_effects: Dictionary = {}
 ## only writes to the log in `trigger()` and
 ## `resolve()`; the reference is held weakly
 ## (the sim owns the log).
-var _event_log: EventLog = null
 
+## M4-Closeout: the deadline (in in-game
+## days) after which the sim auto-resolves
+## a triggered-but-unresolved crisis with
+## the first `default_choice` (or with
+## `&""` when no choice has been picked).
+## The M4 default is
+## `DEFAULT_AUTONOMOUS_RESOLUTION_DAYS`
+## (`14.0`); the M4 content catalogue
+## overrides this per-crisis (e.g.
+## `plague_outbreak` = 14.0,
+## `faction_dispute` = 14.0). The field
+## is the canonical ADR-0011 entry point.
+var autonomous_resolution_days: float = DEFAULT_AUTONOMOUS_RESOLUTION_DAYS
+
+## M4-Closeout: the day the crisis was
+## triggered. The sim reads this to
+## compute the autonomous-resolution
+## deadline. The field is `0.0` until
+## `trigger()` is called.
+
+## M4-Closeout: the `&"paused"` /
+## `&"resolved"` / `&"default"` flag the
+## sim's per-tick rule reads when
+## auto-resolving. The default is `&""`
+## (no autonomous outcome yet).
+var autonomous_outcome: StringName = &""
+
+## M4-Closeout: per-crisis data the
+## content catalogue sets. The M4
+## closeout keys are `sealable: bool`
+## (the `seal_breach` Pactmaker power
+## targets these) and `pausable: bool`
+## (the `pause_crisis` Pactmaker power
+## targets these). The default is `{}`
+## (no flags).
+var data: Dictionary = {}
+
+## Reference to the sim's event log. The crisis
+## only writes to the log in `trigger()` and
+## `resolve()`; the reference is held weakly
+## (the sim owns the log).
+var _event_log: EventLog = null
+## M4-Closeout: the day the crisis was
+## triggered. The sim reads this to
+## compute the autonomous-resolution
+## deadline. The field is `0.0` until
+## `trigger()` is called.
+var _triggered_at_day: float = 0.0
 ## Default constructor. Starts with empty
 ## fields, a no-op `condition`, an empty
 ## `choices` array, and `resolved = false`.
@@ -199,6 +251,7 @@ func trigger(time_days: float) -> void:
 	if triggered:
 		return
 	triggered = true
+	_triggered_at_day = time_days
 	if _event_log == null:
 		return
 	var entry: Dictionary = {
@@ -381,3 +434,82 @@ func apply_pending_effects(time_days: float, inhabitants: Array) -> void:
 		}
 		_event_log.append(fentry)
 	pending_effects = {}
+
+
+## M4-Closeout: whether the crisis is past
+## its autonomous-resolution deadline. The
+## method returns `true` when the crisis is
+## triggered-but-unresolved and the current
+## time minus `_triggered_at_day` is at or
+## above `autonomous_resolution_days`. A
+## crisis with `autonomous_outcome ==
+## &"paused"` is exempt (the player
+## explicitly paused it; the M4 default
+## is "no auto-resolve while paused").
+##
+## The M4 closeout default is "strict
+## gate": a `null` self is a `push_error`
+## no-op that returns `false`.
+func is_autonomous_deadline_reached(time_days: float) -> bool:
+	if not triggered:
+		return false
+	if resolved:
+		return false
+	if autonomous_outcome == &"paused":
+		return false
+	return (time_days - _triggered_at_day) >= autonomous_resolution_days
+
+
+## M4-Closeout: auto-resolve the crisis.
+## The method sets `resolved = true`,
+## `resolved_at_day = time_days`,
+## `autonomous_outcome = &"default"`,
+## and picks the choice with
+## `is_default = true` (or `&""` when no
+## choice has the flag). The method is
+## the canonical "the player did not
+## pick in time" mutation path; the
+## sim's per-tick rule calls this when
+## `is_autonomous_deadline_reached(...)`
+## is `true`.
+##
+## The method appends a
+## `crisis.autonomous_resolved` event
+## to the bound `EventLog` (if one is
+## bound). The M4 default is "strict
+## gate": a `null` self is a `push_error`
+## no-op that returns `&""`.
+func autonomous_resolve(time_days: float) -> StringName:
+	if resolved:
+		return chosen_id
+	if not triggered:
+		return &""
+	autonomous_outcome = &"default"
+	# Pick the first default choice, or
+	# `&""` when no choice is flagged.
+	var pick: StringName = &""
+	for c in choices:
+		if c == null or not (c is Dictionary):
+			continue
+		if bool((c as Dictionary).get("is_default", false)):
+			pick = StringName(String((c as Dictionary).get("id", &"")))
+			break
+	resolved = true
+	resolved_at_day = time_days
+	chosen_id = pick
+	if _event_log != null:
+		(
+			_event_log
+			. append(
+				{
+					"id": StringName(String(id) + ".autonomous_resolved"),
+					"time_days": time_days,
+					"kind": &"crisis.autonomous_resolved",
+					"summary": &"EVENT_CRISIS_AUTONOMOUS_RESOLVED",
+					"affected": PackedStringArray(),
+					"crisis_id": id,
+					"chosen_id": pick,
+				}
+			)
+		)
+	return pick

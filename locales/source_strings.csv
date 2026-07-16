@@ -58,3 +58,46 @@ EVENT_CRISIS_EFFECTS_APPLIED,Terminal effects (morale_delta={morale_delta} and n
 EVENT_NARRATIVE_ANCHOR_FOLLOWUP,Follow-up narrative anchor {anchor_id} has been chained from the resolved crisis.,Event-log summary for the narrative.anchor_followup event.
 EVENT_BRANCH_RESOLVED,Branch {branch_id} has been resolved by choice {choice_id}.,Event-log summary for the branch.resolved event.
 EVENT_EXPLORATION_REVEALED,Exploration has revealed new tiles around the destination.,Event-log summary for the exploration.revealed event.
+SETTINGS_DIFFICULTY_LABEL,Difficulty,Settings menu label for the difficulty dropdown.
+SETTINGS_DIFFICULTY_PEACEFUL,Peaceful,Settings menu label for the PEACEFUL difficulty.
+SETTINGS_DIFFICULTY_DEFAULT,Balanced,Settings menu label for the BALANCED difficulty.
+SETTINGS_DIFFICULTY_CRUEL,Cruel,Settings menu label for the CRUEL difficulty.
+SETTINGS_LOCALE_LABEL,Language,Settings menu label for the language dropdown.
+PACTMAKER_NAME,The Pactmaker,Display name of the M4 Pactmaker.
+POWER_SEAL_BREACH_NAME,Seal Breach,Display name of the Pactmaker seal_breach power.
+POWER_PAUSE_CRISIS_NAME,Pause Crisis,Display name of the Pactmaker pause_crisis power.
+POWER_REVEAL_TILE_NAME,Reveal Tile,Display name of the Pactmaker reveal_tile power.
+FACTION_LANTERN_CLAN_NAME,Lantern Clan,Display name of the lantern_clan faction.
+FACTION_LEDGER_CABAL_NAME,Ledger Cabal,Display name of the ledger_cabal faction.
+FACTION_HOLLOW_CHURCH_NAME,Hollow Church,Display name of the hollow_church faction.
+M4_RESEARCH_BINDING_BASICS_NAME,Binding Basics,Display name of the binding_basics research node.
+M4_RESEARCH_BINDING_BASICS_SUMMARY,The foundational theory of binding inhabitants to the realm.,Summary of the binding_basics research node.
+M4_RESEARCH_BINDING_RITUALS_NAME,Binding Rituals,Display name of the binding_rituals research node.
+M4_RESEARCH_BINDING_RITUALS_SUMMARY,The ritual protocols for binding inhabitants.,Summary of the binding_rituals research node.
+M4_RESEARCH_DEEP_BINDING_NAME,Deep Binding,Display name of the deep_binding research node.
+M4_RESEARCH_DEEP_BINDING_SUMMARY,The deep-binding lore that unlocks the seal_breach ritual.,Summary of the deep_binding research node.
+M4_RESEARCH_SURVEY_BASICS_NAME,Survey Basics,Display name of the survey_basics research node.
+M4_RESEARCH_SURVEY_BASICS_SUMMARY,The foundational theory of surveying the realm's tile layout.,Summary of the survey_basics research node.
+M4_RESEARCH_SURVEY_RITUALS_NAME,Survey Rituals,Display name of the survey_rituals research node.
+M4_RESEARCH_SURVEY_RITUALS_SUMMARY,The ritual protocols for surveying tiles.,Summary of the survey_rituals research node.
+M4_RESEARCH_DEEP_SURVEY_NAME,Deep Survey,Display name of the deep_survey research node.
+M4_RESEARCH_DEEP_SURVEY_SUMMARY,The deep-survey lore that unlocks long-range reveal rituals.,Summary of the deep_survey research node.
+M4_RITUAL_BIND_INHABITANT_NAME,Bind Inhabitant,Display name of the bind_inhabitant ritual.
+M4_RITUAL_BIND_INHABITANT_SUMMARY,Binds a wandering inhabitant to the realm.,Summary of the bind_inhabitant ritual.
+M4_RITUAL_SURVEY_TILE_NAME,Survey Tile,Display name of the survey_tile ritual.
+M4_RITUAL_SURVEY_TILE_SUMMARY,Reveals a 3-tile radius around the realm's anchor.,Summary of the survey_tile ritual.
+M4_RITUAL_SEAL_BREACH_NAME,Seal Breach,Display name of the seal_breach ritual.
+M4_RITUAL_SEAL_BREACH_SUMMARY,Seals a crisis breach (consumes one Pactmaker intervention).,Summary of the seal_breach ritual.
+M4_CRISIS_PLAGUE_QUARANTINE,Quarantine,Label of the quarantine choice in the plague_outbreak crisis.
+M4_CRISIS_PLAGUE_QUARANTINE_SUMMARY,Isolate the infected. Morale -10, no deaths.,Summary of the quarantine choice in the plague_outbreak crisis.
+M4_CRISIS_PLAGUE_SEEK_PACTMAKER,Seek Pactmaker,Label of the seek_pactmaker choice in the plague_outbreak crisis.
+M4_CRISIS_PLAGUE_SEEK_PACTMAKER_SUMMARY,Consume one Pactmaker intervention to seal the breach. No morale hit.,Summary of the seek_pactmaker choice in the plague_outbreak crisis.
+M4_CRISIS_PLAGUE_BURN_INFECTED,Burn Infected,Label of the burn_infected choice in the plague_outbreak crisis.
+M4_CRISIS_PLAGUE_BURN_INFECTED_SUMMARY,Burn the infected. Morale -20, no deaths but -1 inhabitant.,Summary of the burn_infected choice in the plague_outbreak crisis.
+M4_CRISIS_FACTION_MEDIATE,Mediate,Label of the mediate choice in the faction_dispute crisis.
+M4_CRISIS_FACTION_MEDIATE_SUMMARY,Negotiate between the factions. No stance change.,Summary of the mediate choice in the faction_dispute crisis.
+M4_CRISIS_FACTION_SIDE_LANTERN,Side with Lantern Clan,Label of the side_lantern_clan choice in the faction_dispute crisis.
+M4_CRISIS_FACTION_SIDE_LANTERN_SUMMARY,Back the lantern_clan. lantern_clan +0.2, ledger_cabal -0.2.,Summary of the side_lantern_clan choice in the faction_dispute crisis.
+M4_CRISIS_FACTION_SIDE_LEDGER,Side with Ledger Cabal,Label of the side_ledger_cabal choice in the faction_dispute crisis.
+M4_CRISIS_FACTION_SIDE_LEDGER_SUMMARY,Back the ledger_cabal. ledger_cabal +0.2, lantern_clan -0.2.,Summary of the side_ledger_cabal choice in the faction_dispute crisis.
+EVENT_CRISIS_AUTONOMOUS_RESOLVED,Crisis {crisis_id} has been auto-resolved with choice {chosen_id}.,Event-log summary for the crisis.autonomous_resolved event.

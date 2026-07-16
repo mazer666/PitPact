@@ -171,3 +171,88 @@ func has_power(power_id: StringName) -> bool:
 		if (p as Power).id == power_id:
 			return true
 	return false
+
+
+## M4-Closeout: reset the yearly
+## intervention counter. The method
+## zeroes `intervention_count` and
+## returns the previous value. The M4
+## default caller is the sim façade's
+## per-year rule (every 360 in-game
+## days). The method is idempotent: a
+## second call without an intervening
+## `register_intervention()` returns 0.
+func reset_yearly_count() -> int:
+	var prev: int = intervention_count
+	intervention_count = 0
+	return prev
+
+
+## M4-Closeout: look up a power by id in
+## the Pactmaker's `powers`. Returns
+## `null` when the id is unknown or the
+## Pactmaker has no such power. The
+## method is the canonical "power by id"
+## entry point; `apply_power(...)`
+## delegates to this method.
+func get_power(power_id: StringName) -> Power:
+	if power_id == &"":
+		return null
+	for p in powers:
+		if p == null or not (p is Power):
+			continue
+		if (p as Power).id == power_id:
+			return p
+	return null
+
+
+## M4-Closeout: apply a power by id. The
+## method looks up the power, calls
+## `register_intervention()` to debit
+## the counter, calls
+## `Power.record_use(time_days)` to
+## start the cooldown, and invokes
+## `Power.effect.call(...)` with the
+## `sim` and `time_days` arguments. The
+## method returns the power's return
+## value (typically `true` / `false`)
+## or `false` when:
+## - `sim` is `null`
+## - the power is unknown
+## - the Pactmaker is at the
+##   intervention limit
+## - the power is on cooldown
+## - the power's effect raises.
+func apply_power(power_id: StringName, sim: Variant, time_days: float = 0.0) -> bool:
+	if sim == null:
+		return false
+	var power: Power = get_power(power_id)
+	if power == null:
+		return false
+	if not register_intervention():
+		return false
+	if power.is_on_cooldown(time_days):
+		# Refund the intervention — the
+		# cooldown gate is a soft no-op
+		# (the M4 default is "no free
+		# pass for cooldown-locked
+		# powers").
+		intervention_count -= 1
+		return false
+	power.record_use(time_days)
+	return _invoke_power_effect(power, sim, time_days)
+
+
+## M4-Closeout: invoke a power's
+## effect. The method is the
+## factored-out "run the callable
+## and return its result" path so
+## `apply_power` stays under
+## gdlint's `max-returns` cap.
+func _invoke_power_effect(power: Power, sim: Variant, time_days: float) -> bool:
+	if not power.effect.is_valid():
+		return true
+	var result: Variant = power.effect.call(sim, time_days)
+	if result == null:
+		return true
+	return bool(result)

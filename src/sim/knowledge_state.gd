@@ -83,14 +83,32 @@ var active_rituals: Array = []
 ## default is `[]` (no pending effects).
 var pending_effects: Array = []
 
+## M4-Closeout: the dictionary of active
+## research entries. Each entry is a
+## `Dictionary` with `node_id` and
+## `progress_days`. The dictionary is
+## module-private (the public surface is
+## `register_research` / `cancel_research`).
+var active_research: Dictionary = {}
+
+## M4-Closeout: the `node_id -> ResearchNode`
+## lookup the realm façade sets when
+## starting a research. The lookup is
+## required for the per-tick rule to read
+## the node's `cost` and `effect`. The
+## default is `null` (no nodes registered).
+var node_lookup: Variant = null
+
 
 ## Default constructor. Starts with empty
-## `researched`, `active_rituals`, and
-## `pending_effects`.
+## `researched`, `active_research`,
+## `active_rituals`, and `pending_effects`.
 func _init() -> void:
 	researched = {}
+	active_research = {}
 	active_rituals = []
 	pending_effects = []
+	node_lookup = null
 
 
 ## Whether the realm has researched the node
@@ -312,3 +330,198 @@ func consume_pending_effects() -> Array:
 	var out: Array = pending_effects
 	pending_effects = []
 	return out
+
+
+## M4-Closeout: register a research node
+## against the knowledge state. The method
+## is the canonical entry point for the
+
+
+## M4-Closeout: register a research node
+## against the knowledge state. The method
+## is the canonical entry point for the
+## realm façade's "start a new research"
+## action; it stores the node's id and
+## progress in the `active_research`
+## dictionary. The M4 default is "one
+## research per realm at a time" (multiple
+## concurrent researches are out of scope
+## for the M4 closeout, the M5 closeout
+## relaxes this).
+##
+## Returns `true` on success, `false`
+## when the node is `null`, has an empty
+## id, is already researched, is already
+## in `active_research`, has unmet
+## prerequisites, or is a ritual (rituals
+## live in `active_rituals`, not in
+## `active_research`).
+func register_research(node: ResearchNode) -> bool:
+	if not _can_register_research(node):
+		return false
+	active_research[node.id] = {
+		"node_id": node.id,
+		"progress_days": 0.0,
+	}
+	if node_lookup == null:
+		node_lookup = {}
+	if node_lookup is Dictionary and not (node_lookup as Dictionary).has(node.id):
+		(node_lookup as Dictionary)[node.id] = node
+	return true
+
+
+## M4-Closeout: predicate for
+## `register_research`. The method
+## factors out the six gate checks
+## so the public method's body stays
+## under gdlint's `max-returns` cap.
+func _can_register_research(node: ResearchNode) -> bool:
+	if node == null:
+		return false
+	if node.id == &"":
+		return false
+	if is_researched(node.id):
+		return false
+	if active_research.has(node.id):
+		return false
+	if node.kind == ResearchNode.KIND_RITUAL:
+		return false
+	return node.prereqs_met(self)
+
+
+## M4-Closeout: register a ritual against
+## the knowledge state. The method is the
+## canonical entry point for the realm
+## façade's "start a new ritual" action;
+## it appends a `Dictionary` entry to
+## `active_rituals`. The M4 default is
+## "one ritual per realm at a time"
+## (concurrent rituals are out of scope
+## for the M4 closeout).
+##
+## Returns `true` on success, `false`
+## when the ritual is `null`, has an
+## empty id, is already active, has
+## unmet prerequisites, or is a research
+## (research lives in `active_research`,
+## not in `active_rituals`).
+func register_ritual(node: ResearchNode) -> bool:
+	if not _can_register_ritual(node):
+		return false
+	(
+		active_rituals
+		. append(
+			{
+				"node_id": node.id,
+				"remaining_days": float(node.cost.get("days", 1.0)),
+				"effect": node.effect.duplicate(true),
+			}
+		)
+	)
+	return true
+
+
+## M4-Closeout: predicate for
+## `register_ritual`. The method
+## factors out the five gate checks
+## so the public method's body stays
+## under gdlint's `max-returns` cap.
+func _can_register_ritual(node: ResearchNode) -> bool:
+	if node == null:
+		return false
+	if node.id == &"":
+		return false
+	if is_ritual_active(node.id):
+		return false
+	if not node.prereqs_met(self):
+		return false
+	if node.kind != ResearchNode.KIND_RITUAL:
+		return false
+	return true
+
+
+## M4-Closeout: cancel an active research.
+## The method removes the entry from
+## `active_research` without emitting an
+## event. The M4 closeout default is "no
+## refund" — the progress is lost.
+func cancel_research(node_id: StringName) -> bool:
+	if node_id == &"":
+		return false
+	if not active_research.has(node_id):
+		return false
+	active_research.erase(node_id)
+	return true
+
+
+## M4-Closeout: per-tick rule. The
+## method walks `active_research` and
+## `active_rituals`, advances each by
+## `delta_days` (scaled by the active
+## `Difficulty.get_research_rate(...)`
+## when a `Settings` carrier is
+## registered), and emits the node's
+## effect on `pending_effects` when an
+## entry reaches its cost. The iteration
+## order is `keys()` (deterministic on
+## the same input; the M4 closeout pins
+## this as the contract).
+func tick(delta_days: float, sim: Variant) -> void:
+	if delta_days <= 0.0:
+		return
+	if sim == null:
+		return
+	var rate: float = 1.0
+	if sim.settings != null and sim.settings is Settings:
+		rate = Difficulty.get_research_rate(int(sim.settings.difficulty))
+	# Active research.
+	var research_done: Array = []
+	for rkey in active_research.keys():
+		var entry: Variant = active_research[rkey]
+		if not (entry is Dictionary):
+			continue
+		var node_id: StringName = StringName(String(entry.get("node_id", &"")))
+		var node_progress: float = float(entry.get("progress_days", 0.0)) + delta_days * rate
+		entry["progress_days"] = node_progress
+		var cost_days: float = 1.0
+		if node_lookup != null and (node_lookup as Dictionary).has(node_id):
+			var node_obj: Variant = (node_lookup as Dictionary)[node_id]
+			if node_obj is ResearchNode:
+				cost_days = float((node_obj as ResearchNode).cost.get("days", 1.0))
+		if node_progress >= cost_days:
+			research_done.append(node_id)
+	# Commit completed research.
+	for nid in research_done:
+		researched[nid] = 1
+		active_research.erase(nid)
+		if node_lookup != null and (node_lookup as Dictionary).has(nid):
+			var n2: Variant = (node_lookup as Dictionary)[nid]
+			if n2 is ResearchNode:
+				var eff: Dictionary = (n2 as ResearchNode).effect
+				if not eff.is_empty():
+					pending_effects.append(eff.duplicate(true))
+				for unlock_id in (n2 as ResearchNode).unlocks:
+					researched[unlock_id] = 1
+	# Active rituals.
+	var rituals_done: Array = []
+	for r in active_rituals:
+		if not (r is Dictionary):
+			continue
+		var node_id2: StringName = StringName(String(r.get("node_id", &"")))
+		var remaining: float = float(r.get("remaining_days", 0.0)) - delta_days * rate
+		r["remaining_days"] = remaining
+		if remaining <= 0.0:
+			rituals_done.append(node_id2)
+	for nid in rituals_done:
+		for i in range(active_rituals.size() - 1, -1, -1):
+			var rdict: Variant = active_rituals[i]
+			if (
+				rdict is Dictionary
+				and StringName(String((rdict as Dictionary).get("node_id", &""))) == nid
+			):
+				var finished: Dictionary = rdict
+				active_rituals.remove_at(i)
+				var eff2: Dictionary = finished.get("effect", {})
+				if not eff2.is_empty():
+					pending_effects.append(eff2)
+				break

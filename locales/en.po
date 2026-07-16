@@ -193,3 +193,179 @@ msgstr "Follow-up narrative anchor {anchor_id} chained from the resolved crisis.
 
 msgid "EVENT_BRANCH_RESOLVED"
 msgstr "Branch {branch_id} has been resolved by choice {choice_id}."
+
+# id
+msgid "id"
+msgstr "source"
+
+# SETTINGS_DIFFICULTY_LABEL
+msgid "SETTINGS_DIFFICULTY_LABEL"
+msgstr "Difficulty"
+
+# SETTINGS_DIFFICULTY_PEACEFUL
+msgid "SETTINGS_DIFFICULTY_PEACEFUL"
+msgstr "Peaceful"
+
+# SETTINGS_DIFFICULTY_DEFAULT
+msgid "SETTINGS_DIFFICULTY_DEFAULT"
+msgstr "Balanced"
+
+# SETTINGS_DIFFICULTY_CRUEL
+msgid "SETTINGS_DIFFICULTY_CRUEL"
+msgstr "Cruel"
+
+# SETTINGS_LOCALE_LABEL
+msgid "SETTINGS_LOCALE_LABEL"
+msgstr "Language"
+
+# PACTMAKER_NAME
+msgid "PACTMAKER_NAME"
+msgstr "The Pactmaker"
+
+# POWER_SEAL_BREACH_NAME
+msgid "POWER_SEAL_BREACH_NAME"
+msgstr "Seal Breach"
+
+# POWER_PAUSE_CRISIS_NAME
+msgid "POWER_PAUSE_CRISIS_NAME"
+msgstr "Pause Crisis"
+
+# POWER_REVEAL_TILE_NAME
+msgid "POWER_REVEAL_TILE_NAME"
+msgstr "Reveal Tile"
+
+# FACTION_LANTERN_CLAN_NAME
+msgid "FACTION_LANTERN_CLAN_NAME"
+msgstr "Lantern Clan"
+
+# FACTION_LEDGER_CABAL_NAME
+msgid "FACTION_LEDGER_CABAL_NAME"
+msgstr "Ledger Cabal"
+
+# FACTION_HOLLOW_CHURCH_NAME
+msgid "FACTION_HOLLOW_CHURCH_NAME"
+msgstr "Hollow Church"
+
+# M4_RESEARCH_BINDING_BASICS_NAME
+msgid "M4_RESEARCH_BINDING_BASICS_NAME"
+msgstr "Binding Basics"
+
+# M4_RESEARCH_BINDING_BASICS_SUMMARY
+msgid "M4_RESEARCH_BINDING_BASICS_SUMMARY"
+msgstr "The foundational theory of binding inhabitants to the realm."
+
+# M4_RESEARCH_BINDING_RITUALS_NAME
+msgid "M4_RESEARCH_BINDING_RITUALS_NAME"
+msgstr "Binding Rituals"
+
+# M4_RESEARCH_BINDING_RITUALS_SUMMARY
+msgid "M4_RESEARCH_BINDING_RITUALS_SUMMARY"
+msgstr "The ritual protocols for binding inhabitants."
+
+# M4_RESEARCH_DEEP_BINDING_NAME
+msgid "M4_RESEARCH_DEEP_BINDING_NAME"
+msgstr "Deep Binding"
+
+# M4_RESEARCH_DEEP_BINDING_SUMMARY
+msgid "M4_RESEARCH_DEEP_BINDING_SUMMARY"
+msgstr "The deep-binding lore that unlocks the seal_breach ritual."
+
+# M4_RESEARCH_SURVEY_BASICS_NAME
+msgid "M4_RESEARCH_SURVEY_BASICS_NAME"
+msgstr "Survey Basics"
+
+# M4_RESEARCH_SURVEY_BASICS_SUMMARY
+msgid "M4_RESEARCH_SURVEY_BASICS_SUMMARY"
+msgstr "The foundational theory of surveying the realm's tile layout."
+
+# M4_RESEARCH_SURVEY_RITUALS_NAME
+msgid "M4_RESEARCH_SURVEY_RITUALS_NAME"
+msgstr "Survey Rituals"
+
+# M4_RESEARCH_SURVEY_RITUALS_SUMMARY
+msgid "M4_RESEARCH_SURVEY_RITUALS_SUMMARY"
+msgstr "The ritual protocols for surveying tiles."
+
+# M4_RESEARCH_DEEP_SURVEY_NAME
+msgid "M4_RESEARCH_DEEP_SURVEY_NAME"
+msgstr "Deep Survey"
+
+# M4_RESEARCH_DEEP_SURVEY_SUMMARY
+msgid "M4_RESEARCH_DEEP_SURVEY_SUMMARY"
+msgstr "The deep-survey lore that unlocks long-range reveal rituals."
+
+# M4_RITUAL_BIND_INHABITANT_NAME
+msgid "M4_RITUAL_BIND_INHABITANT_NAME"
+msgstr "Bind Inhabitant"
+
+# M4_RITUAL_BIND_INHABITANT_SUMMARY
+msgid "M4_RITUAL_BIND_INHABITANT_SUMMARY"
+msgstr "Binds a wandering inhabitant to the realm."
+
+# M4_RITUAL_SURVEY_TILE_NAME
+msgid "M4_RITUAL_SURVEY_TILE_NAME"
+msgstr "Survey Tile"
+
+# M4_RITUAL_SURVEY_TILE_SUMMARY
+msgid "M4_RITUAL_SURVEY_TILE_SUMMARY"
+msgstr "Reveals a 3-tile radius around the realm's anchor."
+
+# M4_RITUAL_SEAL_BREACH_NAME
+msgid "M4_RITUAL_SEAL_BREACH_NAME"
+msgstr "Seal Breach"
+
+# M4_RITUAL_SEAL_BREACH_SUMMARY
+msgid "M4_RITUAL_SEAL_BREACH_SUMMARY"
+msgstr "Seals a crisis breach (consumes one Pactmaker intervention)."
+
+# M4_CRISIS_PLAGUE_QUARANTINE
+msgid "M4_CRISIS_PLAGUE_QUARANTINE"
+msgstr "Quarantine"
+
+# M4_CRISIS_PLAGUE_QUARANTINE_SUMMARY
+msgid "M4_CRISIS_PLAGUE_QUARANTINE_SUMMARY"
+msgstr "Isolate the infected. Morale -10"
+
+# M4_CRISIS_PLAGUE_SEEK_PACTMAKER
+msgid "M4_CRISIS_PLAGUE_SEEK_PACTMAKER"
+msgstr "Seek Pactmaker"
+
+# M4_CRISIS_PLAGUE_SEEK_PACTMAKER_SUMMARY
+msgid "M4_CRISIS_PLAGUE_SEEK_PACTMAKER_SUMMARY"
+msgstr "Consume one Pactmaker intervention to seal the breach. No morale hit."
+
+# M4_CRISIS_PLAGUE_BURN_INFECTED
+msgid "M4_CRISIS_PLAGUE_BURN_INFECTED"
+msgstr "Burn Infected"
+
+# M4_CRISIS_PLAGUE_BURN_INFECTED_SUMMARY
+msgid "M4_CRISIS_PLAGUE_BURN_INFECTED_SUMMARY"
+msgstr "Burn the infected. Morale -20"
+
+# M4_CRISIS_FACTION_MEDIATE
+msgid "M4_CRISIS_FACTION_MEDIATE"
+msgstr "Mediate"
+
+# M4_CRISIS_FACTION_MEDIATE_SUMMARY
+msgid "M4_CRISIS_FACTION_MEDIATE_SUMMARY"
+msgstr "Negotiate between the factions. No stance change."
+
+# M4_CRISIS_FACTION_SIDE_LANTERN
+msgid "M4_CRISIS_FACTION_SIDE_LANTERN"
+msgstr "Side with Lantern Clan"
+
+# M4_CRISIS_FACTION_SIDE_LANTERN_SUMMARY
+msgid "M4_CRISIS_FACTION_SIDE_LANTERN_SUMMARY"
+msgstr "Back the lantern_clan. lantern_clan +0.2"
+
+# M4_CRISIS_FACTION_SIDE_LEDGER
+msgid "M4_CRISIS_FACTION_SIDE_LEDGER"
+msgstr "Side with Ledger Cabal"
+
+# M4_CRISIS_FACTION_SIDE_LEDGER_SUMMARY
+msgid "M4_CRISIS_FACTION_SIDE_LEDGER_SUMMARY"
+msgstr "Back the ledger_cabal. ledger_cabal +0.2"
+
+# EVENT_CRISIS_AUTONOMOUS_RESOLVED
+msgid "EVENT_CRISIS_AUTONOMOUS_RESOLVED"
+msgstr "Crisis {crisis_id} has been auto-resolved with choice {chosen_id}."

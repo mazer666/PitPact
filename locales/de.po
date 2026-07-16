@@ -193,3 +193,179 @@ msgstr "Ein Folge-Narrativanker {anchor_id} wurde aus der gelösten Krise verket
 
 msgid "EVENT_BRANCH_RESOLVED"
 msgstr "Der Zweig {branch_id} wurde durch die Wahl {choice_id} gelöst."
+
+# id
+msgid "id"
+msgstr "source"
+
+# SETTINGS_DIFFICULTY_LABEL
+msgid "SETTINGS_DIFFICULTY_LABEL"
+msgstr "Schwierigkeit"
+
+# SETTINGS_DIFFICULTY_PEACEFUL
+msgid "SETTINGS_DIFFICULTY_PEACEFUL"
+msgstr "Friedlich"
+
+# SETTINGS_DIFFICULTY_DEFAULT
+msgid "SETTINGS_DIFFICULTY_DEFAULT"
+msgstr "Ausgewogen"
+
+# SETTINGS_DIFFICULTY_CRUEL
+msgid "SETTINGS_DIFFICULTY_CRUEL"
+msgstr "Grausam"
+
+# SETTINGS_LOCALE_LABEL
+msgid "SETTINGS_LOCALE_LABEL"
+msgstr "Sprache"
+
+# PACTMAKER_NAME
+msgid "PACTMAKER_NAME"
+msgstr "Der Paktmacher"
+
+# POWER_SEAL_BREACH_NAME
+msgid "POWER_SEAL_BREACH_NAME"
+msgstr "Riss versiegeln"
+
+# POWER_PAUSE_CRISIS_NAME
+msgid "POWER_PAUSE_CRISIS_NAME"
+msgstr "Krise pausieren"
+
+# POWER_REVEAL_TILE_NAME
+msgid "POWER_REVEAL_TILE_NAME"
+msgstr "Kachel enthüllen"
+
+# FACTION_LANTERN_CLAN_NAME
+msgid "FACTION_LANTERN_CLAN_NAME"
+msgstr "Laternen-Clan"
+
+# FACTION_LEDGER_CABAL_NAME
+msgid "FACTION_LEDGER_CABAL_NAME"
+msgstr "Buchhalter-Kabal"
+
+# FACTION_HOLLOW_CHURCH_NAME
+msgid "FACTION_HOLLOW_CHURCH_NAME"
+msgstr "Hohle Kirche"
+
+# M4_RESEARCH_BINDING_BASICS_NAME
+msgid "M4_RESEARCH_BINDING_BASICS_NAME"
+msgstr "Bindungsgrundlagen"
+
+# M4_RESEARCH_BINDING_BASICS_SUMMARY
+msgid "M4_RESEARCH_BINDING_BASICS_SUMMARY"
+msgstr "Die Grundtheorie der Bindung von Einwohnern an das Reich."
+
+# M4_RESEARCH_BINDING_RITUALS_NAME
+msgid "M4_RESEARCH_BINDING_RITUALS_NAME"
+msgstr "Bindungsrituale"
+
+# M4_RESEARCH_BINDING_RITUALS_SUMMARY
+msgid "M4_RESEARCH_BINDING_RITUALS_SUMMARY"
+msgstr "Die Ritualprotokolle für die Bindung von Einwohnern."
+
+# M4_RESEARCH_DEEP_BINDING_NAME
+msgid "M4_RESEARCH_DEEP_BINDING_NAME"
+msgstr "Tiefe Bindung"
+
+# M4_RESEARCH_DEEP_BINDING_SUMMARY
+msgid "M4_RESEARCH_DEEP_BINDING_SUMMARY"
+msgstr "Das tiefe Bindungswissen, das das Siegelritual freischaltet."
+
+# M4_RESEARCH_SURVEY_BASICS_NAME
+msgid "M4_RESEARCH_SURVEY_BASICS_NAME"
+msgstr "Vermessungsgrundlagen"
+
+# M4_RESEARCH_SURVEY_BASICS_SUMMARY
+msgid "M4_RESEARCH_SURVEY_BASICS_SUMMARY"
+msgstr "Die Grundtheorie der Vermessung des Kachellayouts."
+
+# M4_RESEARCH_SURVEY_RITUALS_NAME
+msgid "M4_RESEARCH_SURVEY_RITUALS_NAME"
+msgstr "Vermessungsrituale"
+
+# M4_RESEARCH_SURVEY_RITUALS_SUMMARY
+msgid "M4_RESEARCH_SURVEY_RITUALS_SUMMARY"
+msgstr "Die Ritualprotokolle für die Vermessung von Kacheln."
+
+# M4_RESEARCH_DEEP_SURVEY_NAME
+msgid "M4_RESEARCH_DEEP_SURVEY_NAME"
+msgstr "Tiefe Vermessung"
+
+# M4_RESEARCH_DEEP_SURVEY_SUMMARY
+msgid "M4_RESEARCH_DEEP_SURVEY_SUMMARY"
+msgstr "Das tiefe Vermessungswissen für weitreichende Enthüllungsrituale."
+
+# M4_RITUAL_BIND_INHABITANT_NAME
+msgid "M4_RITUAL_BIND_INHABITANT_NAME"
+msgstr "Einwohner binden"
+
+# M4_RITUAL_BIND_INHABITANT_SUMMARY
+msgid "M4_RITUAL_BIND_INHABITANT_SUMMARY"
+msgstr "Bindet einen umherziehenden Einwohner an das Reich."
+
+# M4_RITUAL_SURVEY_TILE_NAME
+msgid "M4_RITUAL_SURVEY_TILE_NAME"
+msgstr "Kachel vermessen"
+
+# M4_RITUAL_SURVEY_TILE_SUMMARY
+msgid "M4_RITUAL_SURVEY_TILE_SUMMARY"
+msgstr "Enthüllt einen 3-Kachel-Radius um den Anker des Reichs."
+
+# M4_RITUAL_SEAL_BREACH_NAME
+msgid "M4_RITUAL_SEAL_BREACH_NAME"
+msgstr "Riss versiegeln"
+
+# M4_RITUAL_SEAL_BREACH_SUMMARY
+msgid "M4_RITUAL_SEAL_BREACH_SUMMARY"
+msgstr "Versiegelt einen Krisenriss (verbraucht eine Paktmacher-Intervention)."
+
+# M4_CRISIS_PLAGUE_QUARANTINE
+msgid "M4_CRISIS_PLAGUE_QUARANTINE"
+msgstr "Quarantäne"
+
+# M4_CRISIS_PLAGUE_QUARANTINE_SUMMARY
+msgid "M4_CRISIS_PLAGUE_QUARANTINE_SUMMARY"
+msgstr "Isoliere die Infizierten. Moral -10, keine Tode."
+
+# M4_CRISIS_PLAGUE_SEEK_PACTMAKER
+msgid "M4_CRISIS_PLAGUE_SEEK_PACTMAKER"
+msgstr "Paktmacher suchen"
+
+# M4_CRISIS_PLAGUE_SEEK_PACTMAKER_SUMMARY
+msgid "M4_CRISIS_PLAGUE_SEEK_PACTMAKER_SUMMARY"
+msgstr "Verbrauche eine Paktmacher-Intervention, um den Riss zu versiegeln. Kein Moralverlust."
+
+# M4_CRISIS_PLAGUE_BURN_INFECTED
+msgid "M4_CRISIS_PLAGUE_BURN_INFECTED"
+msgstr "Infizierte verbrennen"
+
+# M4_CRISIS_PLAGUE_BURN_INFECTED_SUMMARY
+msgid "M4_CRISIS_PLAGUE_BURN_INFECTED_SUMMARY"
+msgstr "Verbrenne die Infizierten. Moral -20, keine Tode, aber -1 Einwohner."
+
+# M4_CRISIS_FACTION_MEDIATE
+msgid "M4_CRISIS_FACTION_MEDIATE"
+msgstr "Vermitteln"
+
+# M4_CRISIS_FACTION_MEDIATE_SUMMARY
+msgid "M4_CRISIS_FACTION_MEDIATE_SUMMARY"
+msgstr "Zwischen den Fraktionen verhandeln. Keine Haltungsänderung."
+
+# M4_CRISIS_FACTION_SIDE_LANTERN
+msgid "M4_CRISIS_FACTION_SIDE_LANTERN"
+msgstr "Laternen-Clan unterstützen"
+
+# M4_CRISIS_FACTION_SIDE_LANTERN_SUMMARY
+msgid "M4_CRISIS_FACTION_SIDE_LANTERN_SUMMARY"
+msgstr "Unterstütze den Laternen-Clan. Laternen-Clan +0,2, Buchhalter-Kabal -0,2."
+
+# M4_CRISIS_FACTION_SIDE_LEDGER
+msgid "M4_CRISIS_FACTION_SIDE_LEDGER"
+msgstr "Buchhalter-Kabal unterstützen"
+
+# M4_CRISIS_FACTION_SIDE_LEDGER_SUMMARY
+msgid "M4_CRISIS_FACTION_SIDE_LEDGER_SUMMARY"
+msgstr "Unterstütze den Buchhalter-Kabal. Buchhalter-Kabal +0,2, Laternen-Clan -0,2."
+
+# EVENT_CRISIS_AUTONOMOUS_RESOLVED
+msgid "EVENT_CRISIS_AUTONOMOUS_RESOLVED"
+msgstr "Krise {crisis_id} wurde automatisch mit Wahl {chosen_id} gelöst."

@@ -63,7 +63,7 @@ func test_m4_skeleton_facade_and_version() -> void:
 	assert_not_null(Façade, "src/sim/m4_skeleton.gd should load as a class")
 	var v: String = String(Façade.call("version"))
 	assert_eq(
-		v, "0.1.0-m4-foundation", "M4Skeleton.version() should return the M4-foundation version tag"
+		v, "0.5.0-m4-closeout", "M4Skeleton.version() should return the M4-closeout version tag"
 	)
 
 

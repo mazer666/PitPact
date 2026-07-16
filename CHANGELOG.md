@@ -11,20 +11,189 @@
 ## [Unreleased] — M4 (Knowledge and crisis) in progress
 
 M0 Foundation, M1 Playable realm core, **M2 Simulation
-core**, **M3 World and Campaign**, and the **M4
-foundation** (knowledge / Pactmaker powers /
-autonomous conflict / difficulty) are all **complete**
-on `feature/m4-foundation`. The local quality
-command (`./tools/run_quality.sh`) is green
-end-to-end on Godot 4.7+ headless, with **125/125 GUT
-tests passing in ~0.58s / 807 Asserts** (GUT 9.4.0,
+core**, **M3 World and Campaign**, and **M4
+Knowledge and crisis** are all **complete** on
+`main`. The local quality command
+(`./tools/run_quality.sh`) is green end-to-end on
+Godot 4.7+ headless, with **149/149 GUT tests
+passing in ~0.73s / 882 Asserts** (GUT 9.4.0,
 Godot 4.7+) covering the integrated M0–M4 whole.
 See the M0-Closeout, M1-Closeout, M2-Closeout,
-M3-Closeout, and M4-foundation entries below for
-the detailed histories.
+M3-Closeout, M4-foundation, and M4-Closeout
+entries below for the detailed histories.
 
-The next milestone is M4 Track A (research/ritual
-progression rule + content catalogue).
+The next milestone is M5 (Vertical campaign
+completion).
+
+### Added (M4-Closeout)
+
+- **Track A: Research + Ritual progression
+  (ADR-0010 implementation).**
+  - `KnowledgeState.register_research(node)` /
+    `register_ritual(node)` / `cancel_research(id)`
+    with the six / five gate checks factored into
+    `_can_register_research` /
+    `_can_register_ritual` predicates (so the
+    public surface stays under gdlint's
+    `max-returns` cap).
+  - `KnowledgeState.tick(delta_days, sim)` — the
+    per-tick rule that advances active research
+    by `delta_days * Difficulty.get_research_rate(...)`
+    and active rituals by the same rate, then
+    emits the node's `effect` payload into
+    `pending_effects` when the cost is met.
+  - `KnowledgeState.node_lookup` —
+    `Dictionary[StringName, ResearchNode]` the
+    realm façade populates with the catalogue
+    on boot.
+  - `M4Research` — 6 research nodes in two trees
+    (binding: `binding_basics` →
+    `binding_rituals` → `deep_binding`; survey:
+    `survey_basics` → `survey_rituals` →
+    `deep_survey`).
+  - `M4Rituals` — 3 rituals: `bind_inhabitant`,
+    `survey_tile`, `seal_breach` (the last
+    unlocks the Pactmaker `seal_breach` power).
+- **Track B: Pactmaker + powers + intervention
+  limits (ADR-0011 implementation).**
+  - `Pactmaker.reset_yearly_count()` — zeroes
+    the intervention counter (the yearly-reset
+    helper; the per-tick step calls this every
+    360 in-game days).
+  - `Pactmaker.get_power(id)` /
+    `apply_power(id, sim, time_days)` — the
+    "look up a power and invoke it" path. The
+    `apply_power` method debits the intervention
+    counter, refunds on cooldown, records the
+    use, and invokes the power's `Callable`
+    effect.
+  - `M4Pactmaker.build()` — the canonical M4
+    Pactmaker carrier with `intervention_limit
+    = 3` and three powers: `seal_breach`
+    (resolves the first `sealable` crisis),
+    `pause_crisis` (pauses the first `pausable`
+    crisis), `reveal_tile` (reveals a 3-tile
+    radius around the realm's anchor).
+  - 3 factions: `lantern_clan`,
+    `ledger_cabal`, `hollow_church` (each starts
+    at `0.0` stance; the per-tick step 7d
+    applies a sign-preserving drift).
+- **Track C: Two new crises + autonomous
+  conflict (ADR-0011 implementation).**
+  - `Crisis.autonomous_resolution_days` (default
+    `14.0`) — the deadline after which the sim
+    auto-resolves a triggered-but-unresolved
+    crisis.
+  - `Crisis.is_autonomous_deadline_reached(t)`
+    / `autonomous_resolve(t)` — the deadline
+    predicate and the auto-resolve helper. The
+    helper sets `autonomous_outcome = &"default"`
+    and picks the first `is_default` choice
+    (or `&""` when no choice is flagged).
+  - `Crisis._triggered_at_day` /
+    `autonomous_outcome` /
+    `data: Dictionary` — the per-crisis data
+    carrier (the M4 closeout keys are
+    `sealable: bool` and `pausable: bool`).
+  - `M4Crises` — the two M4 default crises
+    (`plague_outbreak` with three choices:
+    `quarantine` / `seek_pactmaker` /
+    `burn_infected`; `faction_dispute` with
+    three choices: `mediate` /
+    `side_lantern_clan` / `side_ledger_cabal`).
+  - `Sim` step 7c–e delegation in
+    `M4SimStep` (separate file to keep
+    `sim.gd` under the 1000-line lint cap):
+    `update_factions(sim, delta_days)`,
+    `evaluate_autonomous_conflicts(sim, t)`,
+    `maybe_reset_pactmaker_yearly(sim, t)`.
+- **Track D: Difficulty + Settings + Locale.**
+  - `Difficulty.get_research_rate(d)` (1.0 /
+    1.0 / 0.5),
+    `get_morale_delta_per_day(d)` (0.05 / 0.0 /
+    -0.1),
+    `get_crisis_chance_per_day(d)` (0.0 /
+    0.05 / 0.1) for `PEACEFUL` /
+    `BALANCED` / `CRUEL` difficulties.
+  - `Settings.from_dict` / `to_dict` round-trip
+    (foundation) plus 44 new M4 locale keys in
+    `en.po` and `de.po` (research, ritual,
+    faction, crisis, Pactmaker, settings).
+  - 5 settings labels:
+    `SETTINGS_DIFFICULTY_LABEL`,
+    `SETTINGS_DIFFICULTY_PEACEFUL`,
+    `SETTINGS_DIFFICULTY_DEFAULT`,
+    `SETTINGS_DIFFICULTY_CRUEL`,
+    `SETTINGS_LOCALE_LABEL`.
+- **Two M4 closeout integration tests:**
+  - `test_m4_closeout_lifecycle.gd` (12 tests
+    covering `KnowledgeState.tick`,
+    `Pactmaker.register_intervention` /
+    `apply_power`, `Crisis.autonomous_resolve`).
+  - `test_m4_closeout_content.gd` (12 tests
+    covering the catalogues, difficulty
+    multipliers, settings round-trip, the
+    `Sim` registration surface, the end-to-end
+    per-tick step delegation, and the locale
+    key coverage).
+  - 24 tests, 75 new asserts; negative-test
+    verification confirmed `cat.size() == 6`
+    fails when flipped to `7`.
+
+### Hardened (M4-Closeout, best-in-class audit)
+
+- `sim.gd` was 1071 lines (above the 1000-line
+  lint cap). Extracted the M4 per-tick step
+  delegation into `src/sim/m4_sim_step.gd` (a
+  static-only helper class) so `sim.gd` is
+  back to 996 lines.
+- `Crisis` had two `class_name` definitions
+  in scope; consolidated `const`s at the top
+  of the class so gdlint's
+  `class-definitions-order` check is green.
+- `KnowledgeState.register_research` had 7
+  `return` statements (over gdlint's
+  `max-returns` cap of 6); factored the gate
+  checks into `_can_register_research` and
+  `_can_register_ritual` predicates. Same fix
+  for `Pactmaker.apply_power` →
+  `_invoke_power_effect`.
+- `test_m4_closeout.gd` had 24 `test_*`
+  methods (over gdlint's
+  `max-public-methods` cap of 20); split into
+  `test_m4_closeout_lifecycle.gd` (12 tests)
+  and `test_m4_closeout_content.gd` (12
+  tests).
+- `Crisis` had no `data: Dictionary` field;
+  the M4 closeout adds the field so
+  `M4Pactmaker.seal_breach` /
+  `M4Pactmaker.pause_crisis` can read the
+  per-crisis `sealable` / `pausable` flags.
+
+### Notes (M4-Closeout)
+
+- The M4 closeout is the canonical "research
+  and ritual progression + autonomous conflict
+  + difficulty" milestone. The M5 closeout
+  extends the surface with the
+  "vertical campaign completion" requirements
+  (see `docs/milestones.md`).
+- The `M4SimStep` static-only helper class is
+  the canonical "M4 per-tick step" entry
+  point; future milestones (M5+) that need
+  to extend the per-tick rule add their
+  helpers to a new `m5_sim_step.gd` file
+  rather than growing `sim.gd`.
+- The `M4SimStep.maybe_reset_pactmaker_yearly`
+  helper resets the Pactmaker intervention
+  counter every 360 in-game days; the M5
+  closeout can pin the year length to a
+  content-driven constant.
+- All Pactmaker power effects read the sim's
+  `crises` as a `Dictionary` (the canonical
+  Sim type) but fall back to `Array` for
+  tests that pass a hand-built `Dictionary`
+  in `sim.crises`.
 
 ### Added (M4-foundation)
 
