@@ -396,6 +396,105 @@ bugs.
   fills the save/load path through
   `src/save/`).
 
+## [Unreleased] — M5-Foundation (PlayableShell) in progress
+
+M0 Foundation, M1 Playable realm core, **M2 Simulation
+core**, **M3 World and Campaign**, **M4 Knowledge
+and crisis**, **M0-M3 audit** (back-fill
+mutation-sweep), and **M5-Foundation** (PlayableShell)
+are all **complete** on `main`. The local quality
+command (`./tools/run_quality.sh`) is green
+end-to-end on Godot 4.7+ headless, with **172/172
+GUT tests passing in ~0.85s / 966 Asserts** (GUT
+9.4.0, Godot 4.7+) covering the integrated M0–M5
+whole. See the M0-Closeout, M1-Closeout,
+M2-Closeout, M3-Closeout, M4-foundation,
+M4-Closeout, M4-Hardening, M0-M3-Audit, and
+M5-Foundation entries below for the detailed
+histories.
+
+The next milestone is M5 Closeout (six cultures,
+ten rooms, fifteen events, complete
+success/failure/restart loop, English/German,
+audio pass).
+
+### Added (M5-Foundation)
+
+- **`PlayableShell` carrier** (`src/ui/playable_shell.gd`):
+  the canonical "playable sim" factory. The
+  factory composes the M0-M4 sim (Inhabitant +
+  Needs + Contracts + Tasks + Relationships +
+  EventLog + Crisis + Branch + NarrativeAnchor
+  + WorldGenerator + ExplorationMap +
+  Knowledge + Pactmaker + Faction + Settings)
+  into a single "playable sim" `Dictionary`.
+  The M5 closeout can swap in a different sim
+  factory without touching the UI scene.
+
+- **`PlayableShellUI` controller**
+  (`src/ui/playable_shell_ui.gd`): the code-driven
+  UI for the M5-Foundation shell. The controller
+  builds a top-bar (time + FPS), a left
+  inhabitant panel, a right Pactmaker panel
+  (3 powers + intervention-counter), a bottom
+  tick control (Step button + auto-tick
+  toggle), and the per-power invocation
+  handlers. The M5 closeout can swap the
+  code-driven UI for a `.tscn`-driven UI when
+  the visual polish lands.
+
+- **Two end-to-end smoke tests:**
+  - `test_m5_foundation_smoke.gd` (7 tests):
+    the M5-Foundation factory smoke test
+    (canonical sim build, world biomes,
+    30-day tick loop, Pactmaker power
+    invocation, version tag, settings
+    default, determinism).
+  - `test_m5_playable_shell_ui.gd` (6 tests):
+    the M5-Foundation UI end-to-end test
+    (binding to the sim, Step button
+    advancing the sim, Power button
+    invoking the power, auto-tick toggle,
+    end-to-end Step → Power sequence,
+    30-step world state).
+
+- **M5-Foundation local quality:** 172/172
+  GUT tests in ~0.85s / 966 Asserts. Format /
+  lint / module-dependency / godot import /
+  gut tests / locale validation — all green
+  via `tools/run_quality.sh`.
+
+- **M5-Foundation mutation-sweep harness**
+  (`tools/audit/mutation_sweep_m5.py`):
+  7 production mutations exercised, all
+  "REAL" (the mutated run fails as expected).
+  0 silent-pass regressions.
+
+### Notes (M5-Foundation)
+
+- The M5-Foundation is the first milestone
+  that delivers a *playable* game: the
+  player can drive the sim end-to-end via
+  the Step button, the auto-tick toggle,
+  and the Pactmaker power buttons.
+- The M4 `M4Crises._plague_outbreak()` and
+  `M4Crises._faction_dispute()` static
+  factories were updated to wrap the
+  per-crisis `sealable` / `pausable` flags
+  in a `data` subkey (the M4 Pactmaker power
+  effects read `cr.data.get("sealable",
+  false)`, not the top-level flag). The
+  M4-Closeout tests are unaffected (the
+  smoke test reads the `data` field
+  directly).
+- The `PlayableShell` factory is the
+  canonical "give me a playable realm"
+  entry point. The M5 closeout extends the
+  factory with content (six cultures,
+  ten rooms, fifteen events) and
+  production features (audio pass,
+  success/failure loop).
+
 ## [Unreleased] — M0-M3 audit (back-fill best-in-class)
 
 The M0-M3 audit is the back-fill

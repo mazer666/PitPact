@@ -43,6 +43,7 @@ You do **not** need an ADR for:
 | [0012](0012-m4-closeout.md) | M4-Closeout: research/ritual progression + Pactmaker powers + autonomous conflict + difficulty | accepted | 2026-07-16 |
 | [0013](0013-m4-hardening.md) | M4-Hardening: best-in-class audit pass (mutation sweep, two silent-pass bug fixes, three test hardenings) | accepted | 2026-07-16 |
 | [0014](0014-m0-m3-audit.md) | M0-M3 Audit: back-fill mutation-sweep on the M0-M3 carriers (16/16 mutations REAL, 0 silent-pass) | accepted | 2026-07-16 |
+| [0015](0015-m5-foundation.md) | M5-Foundation: PlayableShell — the minimal end-to-end UI that drives the M0-M4 sim | accepted | 2026-07-16 |
 
 ## Conventions
 

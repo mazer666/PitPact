@@ -62,8 +62,11 @@ static func _plague_outbreak() -> Dictionary:
 		"trigger_at_day": 0.0,
 		"condition": Callable(),
 		"autonomous_resolution_days": DEFAULT_AUTONOMOUS_RESOLUTION_DAYS,
-		"sealable": true,
-		"pausable": true,
+		"data":
+		{
+			"sealable": true,
+			"pausable": true,
+		},
 		"choices":
 		[
 			{
@@ -102,8 +105,11 @@ static func _faction_dispute() -> Dictionary:
 		"trigger_at_day": 0.0,
 		"condition": Callable(),
 		"autonomous_resolution_days": DEFAULT_AUTONOMOUS_RESOLUTION_DAYS,
-		"sealable": false,
-		"pausable": true,
+		"data":
+		{
+			"sealable": false,
+			"pausable": true,
+		},
 		"choices":
 		[
 			{
