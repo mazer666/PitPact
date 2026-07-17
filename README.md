@@ -17,9 +17,21 @@ the M0-M6 status table, and
 [`docs/milestones.md`](docs/milestones.md) for the
 Definition-of-Done per milestone.
 
-The next milestone is M4 (Knowledge and crisis:
-research/ritual progression, Pactmaker powers,
-autonomous conflict, two crises, difficulty/settings).
+M4 (Knowledge and crisis) and M5-Foundation
+(PlayableShell + code-driven PlayableShellUI) are
+complete on `main`. **Phase 2.5 (echte UI mit
+prozeduralen Assets)** is also complete: 21
+prozedural PNGs (Tile-Atlas, UI-Icons, Inhabitant-
+Portraits, Crisis-Icons) + TileSet-Resource + UI-Theme
+(Gothic-Fantasy Dark) + echte `scenes/main/
+PlayableShell.tscn` + Animation-Entry-Points.
+**184/184 GUT tests / 1007 Asserts** auf Godot 4.7+
+headless. M5-Real-UI-Assets mutation sweep: 6/6 REAL.
+Minimum supported Godot version: 4.7.
+
+The next milestone is M5-Closeout (six cultures, ten
+rooms, fifteen events, complete success/failure/
+restart loop, English/German localization, audio).
 
 ## Start here
 

@@ -897,3 +897,111 @@ established the empty repository; the "Add initial project
 documentation structure" PR (codex #1) added the directory
 scaffolding, `AGENTS.md`, `README.md`, and the `docs/` skeleton
 including the mirrored requirements spec._
+
+
+## [Unreleased] — M5-Real-UI-Assets (prozedurale Pipeline + .tscn) in progress
+
+### Added (M5-Real-UI-Assets)
+
+- **Prozedural Asset-Generator** (`tools/assets/generate_assets.gd`,
+  14.8 KB, SEED-pinned). Generiert 21 PNGs in 4 Verzeichnissen:
+  - `assets/tiles/`: 7 PNGs (floor_stone, floor_marsh,
+    floor_highland, wall_stone, hearth, fog, atlas_4x4 als
+    4x2-Atlas)
+  - `assets/ui/`: 10 PNGs (step, auto_tick, save, load, settings,
+    pause, play, power_seal_breach, power_pause_crisis,
+    power_reveal_tile)
+  - `assets/inhabitants/`: 2 PNGs (lanternbearer_scribe, settler)
+  - `assets/crises/`: 2 PNGs (plague, faction)
+- **TileSet-Resource** (`assets/tiles/world_tileset.tres`):
+  `TileSetAtlasSource` mit 8 Cells im 16x16-Raster. Mapping
+  `tile_id → (col, row)` über
+  `WorldTileMapLayer.tile_id_to_atlas_coord()` deterministisch.
+- **UI-Theme** (`assets/ui/gothic_fantasy_theme.tres`): 7
+  `StyleBoxFlat` Ressourcen (Panel, Button normal/hover/pressed/
+  disabled, Critical-Banner, Hearth-Background) plus Label/
+  Button-Color-Overlays. Gothic-Fantasy Dark Palette per
+  `docs/style-bible.md` §2.2.
+- **Echte `PlayableShell.tscn`** (`scenes/main/PlayableShell.tscn`):
+  CanvasLayer mit TopBar (TimeLabel + FPSLabel),
+  CrisisBanner (TextureRect-Icon + VBox mit Title + Summary),
+  InhabitantPanel (links), PactmakerPanel (rechts, CounterLabel +
+  PowersList), TickControl (unten, StepButton mit Icon +
+  AutoTickToggle). Verwendet das Gothic-Fantasy-Theme.
+- **`PlayableShellUI.build_ui()`**: neue Methode, baut die UI
+  entweder aus den `.tscn`-Nodes (Production-Path) oder
+  code-driven (Headless-Test-Path). Idempotent via `_built`-Guard.
+- **`WorldTileMapLayer.tile_id_to_atlas_coord()`** +
+  **`bind_tileset()`**: kanonische Tile-Mapping-Entry-Points.
+- **`PlayableShellUI.format_day_label()`**: kanonische "Day N"
+  Entry-Point (testbar, format-pinned).
+- **Asset-README** (`assets/README.md`): Pipeline-Doku.
+- **ADR-0016** (`docs/adrs/0016-m5-real-ui-assets.md`): dokumentiert
+  die Entscheidung für prozedurale Assets + .tscn + Theme.
+
+### Tests added (M5-Real-UI-Assets)
+
+- `test_playable_shell_scene_loads`: `PlayableShell.tscn` lädt
+  als PackedScene.
+- `test_playable_shell_tileset_loads_with_eight_cells`: TileSet
+  hat 1 Source mit 8 Cells.
+- `test_playable_shell_theme_loads_with_documented_styles`: Theme
+  hat `Button/normal` und `Button/hover` Styles.
+- `test_playable_shell_ui_populates_inhabitant_and_power_rows`:
+  InhabitantList und PowersList werden nach `bind()` gefüllt.
+- `test_playable_shell_tileset_atlas_mapping`: 4 Mapping-Punkte
+  (tile 0, 1, 4, 7) gepinnt.
+- `test_playable_shell_assets_all_procedurally_generated`: jede
+  Asset-Subdir hat die kanonische PNG-Anzahl (7+10+2+2 = 21).
+- `test_world_tile_map_layer_uses_tileset_resource`: layer lädt
+  die TileSet-Resource über `_TILE_ATLAS_PATH`.
+- `test_playable_shell_renders_in_viewport`: 8 End-to-End-Asserts
+  (TimeLabel-Text, InhabitantList=3, PowersList=3, StepButton +
+  AutoTickToggle existieren).
+- `test_playable_shell_power_button_invokes_power`: Seal-Breach
+  resolved die Crisis.
+- `test_playable_shell_inhabitant_row_uses_portrait_texture`:
+  Portrait-TextureRect ist geladen.
+- `test_playable_shell_power_button_uses_icon`: Power-Icon ist
+  geladen.
+- `test_playable_shell_format_day_label`: format_day_label(0,1,42)
+  pinned "Day N".
+
+Total: **184/184 GUT tests passing (1007 Asserts)** — vorher
+172/172 (966 Asserts), +12 tests, +41 asserts.
+
+### Hardened (M5-Real-UI-Assets, best-in-class audit)
+
+- **Mutation sweep M5-Real-UI-Assets** (`tools/audit/
+  mutation_sweep_m5_scene.gd`): 6/6 mutations REAL, 0 silent-pass.
+  Mutations:
+  1. tileset-path-typo: `world_tileset.tres` → `WRONG_tileset.tres`
+  2. atlas-coord-mapping-flip: `(id%4, id/4)` → `(id/4, id%4)`
+  3. ui-portrait-path-typo: `lanternbearer_scribe.png` → wrong
+  4. ui-power-icon-path-typo: `power_%s.png` → `WRONG_%s.png`
+  5. ui-built-guard-removed: build_ui läuft 2x (6 statt 3 Rows)
+  6. ui-format-day-label-broken: `"Day %d"` → `"DAY %d"`
+- **Godot 4.7 + GUT 9.4.0 + gdtoolkit 4.5.0**: Quality gate ALL
+  CHECKS PASSED ✓ (Format, Lint, Tests, License-Headers,
+  Workflow-YAML, Locale-Validation, Benchmark-Dry-Run).
+- **Bug-Fix: `WorldTileMapLayer.set_grid`**: TileSet-Bind auf
+  erstem Call (idempotent), `set_cell(x, y, 0, coord)` ohne
+  überflüssigen `alternative_tile`-Parameter.
+- **Bug-Fix: Power-Icon-Dateinamen** von `power_seal.png` etc.
+  auf `power_seal_breach.png` (deckt sich mit M4-Power-IDs).
+- **Bug-Fix: `PlayableShellUI._ready` Doppel-Build-Schutz**:
+  `_built: bool` Guard verhindert doppelte Population der
+  Inhabitant/Pactmaker-Rows.
+
+### Notes (M5-Real-UI-Assets)
+
+- Alle Assets sind SEED-pinned (per ADR-0005). Der Generator
+  ist idempotent: Re-Run produziert Byte-identische PNGs.
+- Die UI-Theme + TileSet-StyleBoxes folgen
+  `docs/style-bible.md` §2.2 (Gothic-Fantasy Dark Palette).
+- Der M5-Closeout kann hand-drawn Assets einsetzen, ohne den
+  Code zu ändern — Icon-Pfade und TileSet-Resource sind die
+  einzigen Kopplungspunkte.
+- Phase 2.5 abgeschlossen. Bereit für M5-Closeout (six cultures,
+  ten rooms, fifteen events, success/failure/restart loop, en/de
+  localization, audio) — auf User-Direction.

@@ -77,6 +77,18 @@ var auto_tick_enabled: bool = false
 ## ticks and the accumulator resets.
 var _auto_tick_acc: float = 0.0
 
+## The crisis banner. The M5-Foundation
+## shows a translucent red banner when a
+## crisis is pending; the player picks
+## one of the three choices via the
+## banner buttons.
+var _crisis_banner: PanelContainer
+
+## The intervention-counter label. The
+## right panel shows "0 / 3 interventions"
+## (the M4 closeout default).
+var _counter_label: Label
+
 ## Time display label. The top-bar
 ## shows the current sim time.
 var _time_label: Label
@@ -101,6 +113,17 @@ var _pactmaker_panel: VBoxContainer
 ## button + the auto-tick toggle.
 var _tick_control: HBoxContainer
 
+## Build-once guard. The M5-Foundation
+## `build_ui` is idempotent: `_ready`
+## (scene path) and `bind` (test path)
+## can both call it, but only the first
+## call constructs the UI (the second
+## call returns early). The guard pins
+## the invariant: the inhabitant +
+## power rows are populated exactly
+## once.
+var _built: bool = false
+
 
 ## Initialize the UI from a
 ## `build()` output. The factory
@@ -115,6 +138,14 @@ func bind(built: Dictionary) -> void:
 	pactmaker = built["pactmaker"]
 	settings = built["settings"]
 	factions = built["factions"]
+	# The bind path is the canonical
+	# "set the data" entry point;
+	# the .tscn production path runs
+	# `_ready` after bind, but the
+	# headless test path calls
+	# `build_ui` directly.
+	if is_inside_tree():
+		build_ui()
 
 
 ## Build the UI. The method is the
@@ -122,7 +153,75 @@ func bind(built: Dictionary) -> void:
 ## point; the M5-Foundation smoke
 ## test calls it after `bind()`.
 func _ready() -> void:
-	# Top bar: time + FPS.
+	# The .tscn path: when the scene is
+	# added to the tree, the `_ready`
+	# callback runs. The `bind()` call
+	# is the canonical "set the sim
+	# data" entry point; the M5-Foundation
+	# pattern is: instantiate ->
+	# bind -> add to tree.
+	# If `sim` is already bound (e.g. by
+	# a test that binds first), the
+	# build runs immediately. Otherwise
+	# the build is deferred to the
+	# explicit `bind()` call.
+	if sim != null:
+		build_ui()
+
+
+## Build the UI from the bound sim
+## data. The method is the canonical
+## "construct the UI" entry point;
+## the smoke test calls it directly.
+## The .tscn production path runs
+## `build_ui` via `_ready` (when the
+## scene is added to the tree after
+## a `bind()` call).
+
+
+func build_ui() -> void:
+	if _built:
+		return
+	_built = true
+	# Try to bind to the .tscn-defined
+	# nodes first (the canonical M5
+	# production path). Fall back to
+	# code-driven UI when the node
+	# references are missing (the
+	# headless smoke-test path).
+	var node_top: Node = get_node_or_null("TopBar/HBox/TimeLabel")
+	if node_top != null:
+		_time_label = node_top
+		_fps_label = get_node("TopBar/HBox/FpsLabel")
+		# Build inhabitant + pactmaker
+		# rows from the data into the
+		# .tscn-defined VBoxContainers.
+		var inhab_list: Node = get_node("InhabitantPanel/VBox/InhabitantList")
+		_inhabitant_panel = inhab_list
+		for inh in inhabitants:
+			_inhabitant_panel.add_child(_build_inhabitant_row(inh))
+		var powers_list: Node = get_node("PactmakerPanel/VBox/PowersList")
+		_pactmaker_panel = powers_list
+		for power in pactmaker.powers:
+			powers_list.add_child(_build_power_button(power))
+		_counter_label = get_node("PactmakerPanel/VBox/CounterLabel")
+		_counter_label.text = "0 / %d interventions" % int(pactmaker.intervention_limit)
+		# Wire the .tscn-defined tick
+		# controls.
+		var step_btn: Button = get_node("TickControl/HBox/StepButton")
+		step_btn.pressed.connect(_on_step_pressed)
+		var auto_btn: CheckButton = get_node("TickControl/HBox/AutoTickToggle")
+		auto_btn.toggled.connect(_on_auto_tick_toggled)
+		# Hide the crisis banner until
+		# a crisis is pending.
+		_crisis_banner = get_node("CrisisBanner")
+		_crisis_banner.visible = false
+		return
+	# Code-driven fallback (headless
+	# test path: no .tscn, build the
+	# UI from scratch). The M5
+	# closeout can drop the fallback
+	# once the .tscn is mandatory.
 	var top_bar: HBoxContainer = HBoxContainer.new()
 	top_bar.name = "TopBar"
 	add_child(top_bar)
@@ -139,42 +238,65 @@ func _ready() -> void:
 	_inhabitant_panel.name = "InhabitantPanel"
 	add_child(_inhabitant_panel)
 	for inh in inhabitants:
-		var row: HBoxContainer = HBoxContainer.new()
-		var label: Label = Label.new()
-		label.text = "%s (%s)" % [String(inh.id), String(inh.role)]
-		row.add_child(label)
+		var row: HBoxContainer = _build_inhabitant_row(inh)
 		_inhabitant_panel.add_child(row)
 	# Right panel: Pactmaker powers.
 	_pactmaker_panel = VBoxContainer.new()
 	_pactmaker_panel.name = "PactmakerPanel"
 	add_child(_pactmaker_panel)
 	for power in pactmaker.powers:
-		var btn: Button = Button.new()
-		btn.text = String(power.id)
-		btn.name = "Power_" + String(power.id)
-		# Connect the click to a
-		# Callable that invokes
-		# the power via
-		# `pactmaker.apply_power`.
-		btn.pressed.connect(_on_power_pressed.bind(power.id))
+		var btn: Button = _build_power_button(power)
 		_pactmaker_panel.add_child(btn)
-	# Bottom bar: Step button + auto-tick toggle.
-	_tick_control = HBoxContainer.new()
-	_tick_control.name = "TickControl"
-	add_child(_tick_control)
-	var step_btn: Button = Button.new()
-	step_btn.text = "Step"
-	step_btn.name = "StepButton"
-	step_btn.pressed.connect(_on_step_pressed)
-	_tick_control.add_child(step_btn)
-	var auto_btn: CheckButton = CheckButton.new()
-	auto_btn.text = "Auto-tick"
-	auto_btn.name = "AutoTickToggle"
-	auto_btn.toggled.connect(_on_auto_tick_toggled)
-	_tick_control.add_child(auto_btn)
 
 
-## Per-frame update. The method
+## Build a single inhabitant row (HBoxContainer
+## with portrait + label). The factory is the
+## canonical "row per inhabitant" entry point;
+## the M5 closeout can swap the portrait
+## for a hand-drawn sprite.
+func _build_inhabitant_row(inh: Inhabitant) -> HBoxContainer:
+	var row: HBoxContainer = HBoxContainer.new()
+	var portrait: TextureRect = TextureRect.new()
+	portrait.custom_minimum_size = Vector2(16, 24)
+	portrait.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	# Load the portrait from the
+	# assets directory. The M4 closeout
+	# portraits are keyed by culture +
+	# role; the M5-Foundation uses
+	# lanternbearer + settler.
+	var portrait_path: String = "res://assets/inhabitants/lanternbearer_scribe.png"
+	if String(inh.role) == "settler":
+		portrait_path = "res://assets/inhabitants/settler.png"
+	if ResourceLoader.exists(portrait_path):
+		portrait.texture = load(portrait_path)
+	row.add_child(portrait)
+	var label: Label = Label.new()
+	label.text = "%s (%s)" % [String(inh.id), String(inh.role)]
+	row.add_child(label)
+	return row
+
+
+## Build a single Pactmaker power button.
+## The factory is the canonical "button
+## per power" entry point; the M5 closeout
+## can swap the icon for a hand-drawn
+## sprite.
+func _build_power_button(power: Power) -> Button:
+	var btn: Button = Button.new()
+	btn.text = String(power.id)
+	btn.name = "Power_" + String(power.id)
+	btn.pressed.connect(_on_power_pressed.bind(power.id))
+	# Optional: load an icon from
+	# `res://assets/ui/power_<id>.png`
+	# when present.
+	var icon_path: String = "res://assets/ui/power_%s.png" % String(power.id)
+	if ResourceLoader.exists(icon_path):
+		btn.icon = load(icon_path)
+	return btn
+
+
+## Per-frame update. The method## Per-frame update. The method
 ## advances the auto-tick
 ## accumulator and updates the
 ## time + FPS labels.
@@ -183,6 +305,11 @@ func _process(delta: float) -> void:
 		_time_label.text = "Day %d" % int(sim.time_days)
 	if _fps_label != null:
 		_fps_label.text = "FPS %d" % int(Engine.get_frames_per_second())
+	if _counter_label != null and pactmaker != null:
+		_counter_label.text = (
+			"%d / %d interventions"
+			% [int(pactmaker.intervention_count), int(pactmaker.intervention_limit)]
+		)
 	if auto_tick_enabled and sim != null:
 		_auto_tick_acc += delta
 		if _auto_tick_acc >= AUTO_TICK_INTERVAL:
@@ -199,6 +326,22 @@ func _on_step_pressed() -> void:
 	if sim == null:
 		return
 	sim.tick(1.0, inhabitants, [])
+	# Update the time label
+	# immediately so headless
+	# tests (no _process loop)
+	# can assert the day.
+	if _time_label != null:
+		_time_label.text = format_day_label(int(sim.time_days))
+
+
+## Format the day label. The method is
+## the canonical "Day N" entry point;
+## the M5 closeout can swap the format
+## string (e.g. "Day N / T") without
+## touching the call sites. The test
+## net pins the format to "Day N".
+func format_day_label(day: int) -> String:
+	return "Day %d" % int(day)
 
 
 ## Toggle the auto-tick. The

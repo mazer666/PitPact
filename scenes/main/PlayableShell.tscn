@@ -1,0 +1,139 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1m1pitpactpshell01"]
+
+[ext_resource type="Script" path="res://src/ui/playable_shell_ui.gd" id="1_psui"]
+[ext_resource type="Theme" uid="uid://b1m1pitpactt01" path="res://assets/ui/gothic_fantasy_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" uid="uid://b1m1pitpactstep" path="res://assets/ui/step.png" id="3_step"]
+[ext_resource type="Texture2D" uid="uid://b1m1pitpactpause" path="res://assets/ui/pause.png" id="4_pause"]
+
+[node name="PlayableShell" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_psui")
+theme = ExtResource("2_theme")
+
+[node name="TopBar" type="PanelContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 36.0
+grow_horizontal = 2
+
+[node name="HBox" type="HBoxContainer" parent="TopBar"]
+
+[node name="TimeLabel" type="Label" parent="TopBar/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Day 0"
+
+[node name="FpsLabel" type="Label" parent="TopBar/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "FPS 0"
+
+[node name="CrisisBanner" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -240.0
+offset_top = 50.0
+offset_right = 240.0
+offset_bottom = 120.0
+grow_horizontal = 2
+
+[node name="HBox" type="HBoxContainer" parent="CrisisBanner"]
+
+[node name="Icon" type="TextureRect" parent="CrisisBanner/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+texture = ExtResource("4_pause")
+
+[node name="Text" type="VBoxContainer" parent="CrisisBanner/HBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="CrisisBanner/HBox/Text"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Crisis: Plague"
+
+[node name="Summary" type="Label" parent="CrisisBanner/HBox/Text"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Choose how to respond."
+
+[node name="InhabitantPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 50.0
+offset_right = 220.0
+offset_bottom = -100.0
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="InhabitantPanel"]
+
+[node name="Title" type="Label" parent="InhabitantPanel/VBox"]
+layout_mode = 2
+text = "INHABITANTS"
+
+[node name="InhabitantList" type="VBoxContainer" parent="InhabitantPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PactmakerPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -240.0
+offset_top = 50.0
+offset_right = -8.0
+offset_bottom = -100.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="PactmakerPanel"]
+
+[node name="Title" type="Label" parent="PactmakerPanel/VBox"]
+layout_mode = 2
+text = "PACTMAKER"
+
+[node name="CounterLabel" type="Label" parent="PactmakerPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0 / 3 interventions"
+
+[node name="PowersList" type="VBoxContainer" parent="PactmakerPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TickControl" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 240.0
+offset_top = -88.0
+offset_right = -240.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBox" type="HBoxContainer" parent="TickControl"]
+
+[node name="StepButton" type="Button" parent="TickControl/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 64)
+layout_mode = 2
+icon = ExtResource("3_step")
+expand_icon = true
+
+[node name="AutoTickToggle" type="CheckButton" parent="TickControl/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Auto-tick"
