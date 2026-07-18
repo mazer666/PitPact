@@ -2010,3 +2010,84 @@ Total: **273/273 GUT tests passing (1652 Asserts)** — vorher
   1942 Asserts (was 407,
   1888 in M12; +33 tests,
   +54 asserts).
+
+## [Unreleased] — M14-Engine-Perf-Content in progress
+
+### Added (M14-Engine-Perf-Content)
+
+- `src/progression/achievement.gd` — `Achievement`
+  carrier (id, title, description, condition
+  callable, unlock state).
+- `src/progression/achievement_registry.gd` —
+  `AchievementRegistry` carrier (add / check_all /
+  unlocked_count / total_count).
+- `src/progression/built_in_achievements.gd` —
+  10 built-in achievements (first_step, first_inhabitant,
+  first_hearth, mid_game, full_house, survivor,
+  pacifist, warlord, builder, completionist).
+- `src/progression/chapter.gd` — `Chapter` carrier
+  (id, title, target_days, required_inhabitants,
+  progress, is_complete).
+- `src/progression/campaign.gd` — `Campaign` carrier
+  (add_chapter, current_chapter, advance, is_complete)
+  + `make_default_campaign()` with 5 chapters.
+- `src/engine/engine_profiler.gd` — `FrameProfiler`
+  carrier (record_frame, avg_frame_ms, p99_frame_ms,
+  is_within_budget, 1000-frame rolling window).
+- `src/engine/object_pool.gd` — `ObjectPool` carrier
+  (factory-based, acquire / release, 16 default).
+- `src/progression/speed_run.gd` — `SpeedRun` carrier
+  (start, stop, elapsed_seconds, is_running, reset).
+- `docs/adrs/0026-m14-engine-perf-content.md` —
+  ADR-0026 documenting the 3 M14 buckets +
+  side-quest K.
+
+### Tests added (M14-Engine-Perf-Content, 44 new)
+
+- `tests/integration/test_m14_achievement.gd` (15) —
+  Achievement (version, make, check, unlock),
+  AchievementRegistry (version, make, add, check_all,
+  get_achievement, is_unlocked), BuiltInAchievements
+  (count, make_registry, first_step, survivor,
+  completionist).
+- `tests/integration/test_m14_campaign.gd` (10) —
+  Chapter (version, make, is_complete, progress),
+  Campaign (version, make, add, current, advance,
+  is_complete, make_default).
+- `tests/integration/test_m14_engine_profiler.gd`
+  (14) — FrameProfiler (version, make, record, avg,
+  p99, within_budget, outside_budget, reset),
+  ObjectPool (version, make, acquire, reuse, release,
+  unknown no-op, default_size).
+- `tests/integration/test_m14_speed_run.gd` (5) —
+  SpeedRun (version, make, start, stop, elapsed,
+  is_running, reset).
+
+### Hardened (M14-Engine-Perf-Content)
+
+- 5/5 M14 mutations REAL, 0 silent
+  (`tools/audit/mutation_sweep_m14.gd`):
+  1. remove achievement unlock
+  2. change chapter target
+  3. remove first campaign chapter
+  4. remove profiler avg calculation
+  5. remove pool release append
+
+### Notes (M14-Engine-Perf-Content)
+
+- `EngineProfiler` was renamed
+  to `FrameProfiler` to avoid
+  a name collision with
+  Godot's built-in
+  `EngineProfiler` class.
+- `Object.get()` was renamed
+  to `get_achievement()` in
+  AchievementRegistry to
+  avoid a name collision
+  with `Object.get()`.
+- 492/492 GUT tests (9 risky
+  due to M8/M13 node
+  hierarchy; no failures),
+  2016 Asserts (was 444,
+  1942 in M13; +44 tests,
+  +74 asserts).

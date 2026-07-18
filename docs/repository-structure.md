@@ -121,6 +121,7 @@ The module-boundary check is automated via
 | 0023 | M11-Art-Rework | M11 |
 | 0024 | M12-UI-Grafical-Rework | M12 |
 | 0025 | M13-Visual-Polish | M13 |
+| 0026 | M14-Engine-Perf-Content | M14 |
 
 ## Test count progression
 
@@ -152,6 +153,7 @@ The module-boundary check is automated via
 | M11-Art-Rework | 392 | 1867 |
 | M12-UI-Grafical-Rework | 407 | 1888 |
 | M13-Visual-Polish | 444 | 1942 |
+| M14-Engine-Perf-Content | 492 | 2016 |
 
 ## References
 

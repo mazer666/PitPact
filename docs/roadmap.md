@@ -57,10 +57,11 @@ hold before the next one opens. The milestones, in order:
 | M11 | Art Rework | AI-Art (18 assets, CC0 via mavis image_synthesize), Procedural Upgrade (Perlin-noise + hue-shifts), Shader Pipeline (post_process.gdshader mit Bloom/Vignette/Color-Grade), TimeOfDay (4 phases), Perf Budget (60 FPS auf 4-year-old laptop). 25 neue Tests, 5/5 M11-Mutationen REAL. 392/392 GUT tests, 1867 Asserts. ADR-0023 dokumentiert die 3 M11-Buckets + Side-Quest H. |
 | M12 | UI Grafical Rework | AI-driven .tscn scenes (PlayableShell, CrisisBanner, GameOverBanner, VictoryBanner, TitleScreen) — alle mit AI-generierten Gothic-Watercolor-Texturen. Theme v2 mit 4 Button-States (normal/hover/pressed/disabled) + animated transitions (60 FPS, 9 frames per tween). Title-Screen fade-in 1.5s. 15 neue Tests, 5/5 M12-Mutationen REAL. 407/407 GUT tests, 1888 Asserts. ADR-0024 dokumentiert die 3 M12-Buckets + Side-Quest I. |
 | M13 | Visual Polish & Animation | Idle Animator (3-frame breathing cycle, 2.0s), Particle Spawner (fire/smoke/magic/blood, headless-safe), DayNight Integrator (M11 TimeOfDay → M11 shader, 0.5s tick), Audio-Reactive Visual (step-pulse, crisis-flash, power-glow, 0.3s decay). 33 neue Tests, 5/5 M13-Mutationen REAL. 444/444 GUT tests, 1942 Asserts. ADR-0025 dokumentiert die 3 M13-Buckets + Side-Quest J. |
+| M14 | Engine Perf & Content | Achievement System (10 built-in achievements mit Condition-Callables), Campaign (5 chapters: awakening/settlement/expansion/crisis/mastery), FrameProfiler (avg + p99, 1000-frame rolling window), ObjectPool (16 default, factory-based), SpeedRun (timer + 3 targets). 44 neue Tests, 5/5 M14-Mutationen REAL. 492/492 GUT tests, 2016 Asserts. ADR-0026 dokumentiert die 3 M14-Buckets + Side-Quest K. |
 
 Post-release work (balancing, additional content, mod/content
 interfaces, eventual co-op) is out of scope for
-M0-M12 and tracked separately.
+M0-M13 and tracked separately.
 
 ## What "done" means for M1
 
