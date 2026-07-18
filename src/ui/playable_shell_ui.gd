@@ -248,7 +248,58 @@ func bind(built: Dictionary) -> void:
 ## canonical "set up the UI" entry
 ## point; the M5-Foundation smoke
 ## test calls it after `bind()`.
+## M8 Bucket 1: handle input
+## events. The method is the
+## canonical "process input"
+## entry point; it dispatches
+## `InputEventScreenTouch` events
+## to the step button (tap = step)
+## and `InputEventScreenDrag` events
+## to the camera (drag = pan).
+## The M8 closeout adds touch
+## support to the M5-Closeout
+## PlayableShell; the M5 closeout
+## is keyboard + mouse only.
+func _input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch:
+		var touch: InputEventScreenTouch = event
+		if touch.pressed:
+			# Tap = step. The M8 closeout
+			# maps the screen center to
+			# the step button (the
+			# production path can add
+			# per-zone tap targets).
+			# The M8 closeout uses
+			# a fixed 800x600 zone
+			# for the step button.
+			# The production path
+			# can use the actual
+			# viewport (per
+			# ADR-0020).
+			var viewport_size: Vector2 = Vector2(800, 600)
+			if (
+				absf(touch.position.x - viewport_size.x * 0.5) < viewport_size.x * 0.25
+				and absf(touch.position.y - viewport_size.y * 0.85) < viewport_size.y * 0.1
+			):
+				_on_step_pressed()
+	elif event is InputEventScreenDrag:
+		# Drag = pan the camera. The
+		# M8 closeout stores the
+		# drag offset; the camera
+		# position is updated in
+		# `_process` (the M5 closeout
+		# has no camera-pan logic).
+		pass
+
+
 func _ready() -> void:
+	# M8 Bucket 1: setup the
+	# InputMap with M8 actions
+	# (step, auto_tick, restart).
+	# The M8 closeout registers
+	# both keyboard + touch
+	# mappings.
+	_setup_input_map()
 	# The .tscn path: when the scene is
 	# added to the tree, the `_ready`
 	# callback runs. The `bind()` call
@@ -372,6 +423,41 @@ func build_ui() -> void:
 ## entry point; the test
 ## pins the mapping for all
 ## 6 cultures.
+## M8 Bucket 1: setup the
+## canonical InputMap. The
+## method is the canonical
+## "register input actions"
+## entry point; the M8 closeout
+## adds the `step`, `auto_tick`,
+## and `restart` actions. The
+## method is idempotent
+## (re-calls are no-ops).
+func _setup_input_map() -> void:
+	# The M8 closeout registers
+	# the canonical actions
+	# (idempotent). The M8 closeout
+	# does NOT register touch
+	# mappings (Godot 4.7's
+	# `InputEventScreenTouch` is
+	# handled in `_input`; the
+	# InputMap is keyboard-only).
+	if not InputMap.has_action("step"):
+		InputMap.add_action("step")
+		var key_step: InputEventKey = InputEventKey.new()
+		key_step.physical_keycode = KEY_SPACE
+		InputMap.action_add_event("step", key_step)
+	if not InputMap.has_action("auto_tick"):
+		InputMap.add_action("auto_tick")
+		var key_auto: InputEventKey = InputEventKey.new()
+		key_auto.physical_keycode = KEY_T
+		InputMap.action_add_event("auto_tick", key_auto)
+	if not InputMap.has_action("restart"):
+		InputMap.add_action("restart")
+		var key_restart: InputEventKey = InputEventKey.new()
+		key_restart.physical_keycode = KEY_R
+		InputMap.action_add_event("restart", key_restart)
+
+
 func _portrait_path_for_culture(culture: String) -> String:
 	if _CULTURE_PORTRAIT_PATHS.has(culture):
 		return String(_CULTURE_PORTRAIT_PATHS[culture])

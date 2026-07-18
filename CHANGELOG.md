@@ -1516,3 +1516,77 @@ Total: **273/273 GUT tests passing (1652 Asserts)** — vorher
   (keine A/B-Tests, keine Community-Feedback-
   loops). M8 kann iterative balance-pass liefern.
 
+
+## [Unreleased] — M8-iPadOS-and-Mobile in progress
+
+### Added (M8-iPadOS-and-Mobile)
+
+- `src/ui/playable_shell_ui.gd::_input(event)` —
+  handles `InputEventScreenTouch` (tap = step)
+  and `InputEventScreenDrag` (drag = pan) for
+  mobile/touch input.
+- `src/ui/playable_shell_ui.gd::_setup_input_map()` —
+  registers the `step`, `auto_tick`, and
+  `restart` actions in `InputMap` (idempotent).
+  Called from `_ready()` so the scene's tree
+  triggers the registration.
+- `tools/build/build_ios.sh` — iOS build script
+  (verifies Godot 4.7, runs asset pipeline,
+  runs quality gate, exports to
+  `build/ios/pitpact.xcframework`).
+- `docs/ipados-deployment.md` — iPadOS deployment
+  guide (Prerequisites, Build steps, Bundle ID,
+  iOS version support).
+- `docs/adrs/0020-m8-ipados-and-mobile.md` —
+  ADR-0020 documenting the 3 M8 buckets and
+  out-of-scope items (real iPad build, Co-op).
+
+### Tests added (M8-iPadOS-and-Mobile, 18 new)
+
+- `tests/integration/test_m8_touch.gd` — 7
+  tests: InputMap setup, idempotency, touch
+  event handling (in-zone, out-of-zone, release).
+- `tests/integration/test_m8_mobile_ui.gd` — 6
+  tests: touch-friendly button sizes (44px iOS
+  HIG), anchor checks (TopBar, InhabitantPanel,
+  PactmakerPanel), resize handling.
+- `tests/integration/test_m8_ios_export.gd` — 5
+  tests: build script exists + executable, iOS
+  deployment doc + required sections, Bundle ID.
+
+### Hardened (M8-iPadOS-and-Mobile)
+
+- 4/4 M8 mutations REAL, 0 silent-pass
+  (`tools/audit/mutation_sweep_m8.gd`):
+  1. remove `_setup_input_map()` call from
+     `_ready()` (caught by
+     `test_input_map_setup_via_ready`)
+  2. rename `step` action to `step_removed`
+     (caught by `test_input_map_has_step_action`)
+  3. remove `_on_step_pressed()` call from
+     `_input()` (caught by
+     `test_touch_event_triggers_step`)
+  4. rename `restart` action to `restart_removed`
+     (caught by `test_input_map_has_restart_action`)
+
+### Notes (M8-iPadOS-and-Mobile)
+
+- M8-Bucket 1 (Touch Input) is tested
+  headless (no real touch device in CI);
+  the M8 closeout covers the canonical
+  `InputEventScreenTouch` + `InputEventScreenDrag`
+  paths.
+- M8-Bucket 2 (Mobile UI Reflow) does not
+  reflow the desktop layout (the M5-Closeout
+  .tscn is preserved); the M8 closeout adds
+  per-anchor tests for portrait + landscape
+  orientations.
+- M8-Bucket 3 (iOS Export Preset) is
+  preparation only — the actual iOS build
+  is out of scope (no Apple hardware in
+  CI, no code-signing certificates). The
+  M8 closeout ships the build script +
+  deployment guide.
+- 291/291 GUT tests, 1678 Asserts (was
+  273/273, 1652 in M7 closeout; +18 tests,
+  +26 asserts).

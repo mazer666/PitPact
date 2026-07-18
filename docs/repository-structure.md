@@ -115,6 +115,7 @@ The module-boundary check is automated via
 | 0017 | M5-Closeout | M5 |
 | 0018 | M6-Release-Readiness | M6 |
 | 0019 | M7-Content-and-Balance | M7 |
+| 0020 | M8-iPadOS-and-Mobile | M8 |
 
 ## Test count progression
 
@@ -140,6 +141,7 @@ The module-boundary check is automated via
 | M5-Closeout-Bucket-6 | 236 | 1566 |
 | M6-Release-Readiness | 251 | 1591 |
 | M7-Content-and-Balance | 273 | 1652 |
+| M8-iPadOS-and-Mobile | 291 | 1678 |
 
 ## References
 

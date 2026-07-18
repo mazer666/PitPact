@@ -10,6 +10,7 @@
 | M5: Vertical campaign completion | Six cultures, ten rooms, fifteen events, complete success/failure/restart loop, English/German, audio pass. |
 | M6: Public release readiness | Performance target, accessibility review, licensing/IP audit, reproducible builds, release notes, known-issues list. |
 | M7: Content and balance | Additional content (2x), balance pass (45-day win / 6-inhabitant minimum), mod/content interface. |
+| M8: iPadOS & mobile UI | Touch input, mobile UI reflow, iOS export preset. |
 | Post-release | Balancing, additional content, mod/content interfaces, and later iPadOS preparation; co-op only after the single-player architecture is stable. |
 
 ## M5-Closeout sub-buckets (per ADR-0017)
@@ -42,14 +43,20 @@
 | 2 | Balance Pass | ✅ done (45-day / 6-inhabitant minimum) |
 | 3 | Mod/Content Interface | ✅ done (data/mods/ + tools/mod_template/) |
 
+## M8-iPadOS-and-Mobile sub-buckets (per ADR-0020)
+
+| Bucket | Title | Status |
+|---|---|---|
+| 1 | Touch Input | ✅ done (`_input()` + `InputMap` setup + 7 tests) |
+| 2 | Mobile UI Reflow | ✅ done (touch-friendly min sizes + 6 tests) |
+| 3 | iOS Export Preset | ✅ done (`tools/build/build_ios.sh` + `docs/ipados-deployment.md` + 5 tests) |
+
 ## Out of scope
 
-- **iPadOS preparation** — M8+
 - **Co-op** — M9+
 - **Real-money shop** — explicitly out of scope (the
   project is open-source, offline-first, per
   `docs/requirements.md` §1)
-- **Mobile UI rework** — M8+
 
 ## Recommended immediate M0 sequence
 

@@ -26,7 +26,8 @@ Portraits, Crisis-Icons) + TileSet-Resource + UI-Theme
 (Gothic-Fantasy Dark) + echte `scenes/main/
 PlayableShell.tscn` + Animation-Entry-Points.
 **M5-Closeout + M6-Release-Readiness + M7-Content-and-Balance
-komplett abgeschlossen** — alle 15 M5/M6/M7-Buckets geliefert:
++ M8-iPadOS-and-Mobile komplett abgeschlossen**
+— alle 18 M5/M6/M7/M8-Buckets geliefert:
 - **M5-Bucket 4 (Success/Failure/Restart)**
 - **M5-Bucket 1 (Six Cultures)**: 6 inhabitants,
   7 portrait PNGs
@@ -60,17 +61,17 @@ komplett abgeschlossen** — alle 15 M5/M6/M7-Buckets geliefert:
   `data/mods/example_mod/` +
   `tools/mod_template/`
 
-**273/273 GUT tests / 1652 Asserts** auf Godot 4.7+
+**291/291 GUT tests / 1678 Asserts** auf Godot 4.7+
 headless. Mutation sweeps: M5-Real-UI-Assets 6/6 REAL,
-M5-Closeout-Bucket-4 9/9 REAL. Minimum supported Godot
+M5-Closeout-Bucket-4 9/9 REAL, M8-iPadOS-and-Mobile 4/4 REAL.
+Minimum supported Godot
 version: 4.7.
 
-**PitPact v0.3.0-m7 ist bereit für die
+**PitPact v0.4.0-m8 ist bereit für die
 öffentliche Veröffentlichung.**
 
-Post-M7: iPadOS preparation (M8), Co-op (M9+).
-iPadOS + Co-op sind out-of-scope für M7 (kein
-Apple-Hardware, kein networking).
+Post-M8: Co-op (M9+). Co-op ist out-of-scope für M8 (kein
+networking).
 
 ## Start here
 
