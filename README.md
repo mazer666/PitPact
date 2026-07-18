@@ -25,8 +25,8 @@ prozedural PNGs (Tile-Atlas, UI-Icons, Inhabitant-
 Portraits, Crisis-Icons) + TileSet-Resource + UI-Theme
 (Gothic-Fantasy Dark) + echte `scenes/main/
 PlayableShell.tscn` + Animation-Entry-Points.
-**M5-Closeout + M6-Release-Readiness komplett
-abgeschlossen** — alle 12 M5/M6-Buckets geliefert:
+**M5-Closeout + M6-Release-Readiness + M7-Content-and-Balance
+komplett abgeschlossen** — alle 15 M5/M6/M7-Buckets geliefert:
 - **M5-Bucket 4 (Success/Failure/Restart)**
 - **M5-Bucket 1 (Six Cultures)**: 6 inhabitants,
   7 portrait PNGs
@@ -48,20 +48,29 @@ abgeschlossen** — alle 12 M5/M6-Buckets geliefert:
 - **M6-Bucket 5 (Licensing/IP)**: 30 PNGs + 6
   WAVs + 2 .tres, alle CC0/GPL, audit PASS
 - **M6-Bucket 6 (Known-Issues)**: 3 dokumentierte
-  Issues (game_over.wav click, M5GameState
-  recompute, atlas-4x4-migration)
+  Issues
+- **M7-Bucket 1 (Content Expansion)**: 6
+  alternative Portraits + 4 neue Tiles + 15
+  neue Events (15 tile PNGs, 13 portraits)
+- **M7-Bucket 2 (Balance)**: `M7BalanceConfig`
+  mit easy/balanced/hard factories
+  (45-day win / 6-inhab minimum)
+- **M7-Bucket 3 (Mod Interface)**:
+  `M5Events.load_from_mods()` +
+  `data/mods/example_mod/` +
+  `tools/mod_template/`
 
-**251/251 GUT tests / 1591 Asserts** auf Godot 4.7+
+**273/273 GUT tests / 1652 Asserts** auf Godot 4.7+
 headless. Mutation sweeps: M5-Real-UI-Assets 6/6 REAL,
 M5-Closeout-Bucket-4 9/9 REAL. Minimum supported Godot
 version: 4.7.
 
-**PitPact v0.2.0-m6 ist bereit für die
+**PitPact v0.3.0-m7 ist bereit für die
 öffentliche Veröffentlichung.**
 
-Post-M6: Balancing & content (M7) — additional
-content, mod/content interfaces, iPadOS vorbereitung.
-Co-op nur nach stabiler Single-Player-Architektur.
+Post-M7: iPadOS preparation (M8), Co-op (M9+).
+iPadOS + Co-op sind out-of-scope für M7 (kein
+Apple-Hardware, kein networking).
 
 ## Start here
 

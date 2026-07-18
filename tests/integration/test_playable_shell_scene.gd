@@ -57,9 +57,7 @@ func test_playable_shell_tileset_loads_with_eight_cells() -> void:
 	assert_eq(source_count, 1, "TileSet should have 1 source (the AtlasSource)")
 	# Read the source's tile count.
 	var src: TileSetAtlasSource = ts.get_source(0)
-	assert_eq(
-		src.get_tiles_count(), 12, "TileSet should have 12 atlas cells (4x3, M5-Closeout Bucket 2)"
-	)
+	assert_eq(src.get_tiles_count(), 16, "TileSet should have 16 atlas cells (4x4, M7 Bucket 1)")
 
 
 func test_playable_shell_theme_loads_with_documented_styles() -> void:
@@ -172,9 +170,7 @@ func test_world_tile_map_layer_uses_tileset_resource() -> void:
 	# has 8 cells).
 	assert_eq(ts.get_source_count(), 1, "M5 TileSet should have 1 source")
 	var src: TileSetAtlasSource = ts.get_source(0)
-	assert_eq(
-		src.get_tiles_count(), 12, "M5 TileSet should have 12 atlas cells (M5-Closeout Bucket 2)"
-	)
+	assert_eq(src.get_tiles_count(), 16, "M5 TileSet should have 16 atlas cells (M7 Bucket 1)")
 
 
 func test_playable_shell_assets_all_procedurally_generated() -> void:
@@ -189,9 +185,9 @@ func test_playable_shell_assets_all_procedurally_generated() -> void:
 	# The smoke test asserts
 	# the canonical asset count.
 	var expected: Dictionary = {
-		"res://assets/tiles/": 11,
+		"res://assets/tiles/": 15,
 		"res://assets/ui/": 10,
-		"res://assets/inhabitants/": 7,
+		"res://assets/inhabitants/": 13,
 		"res://assets/crises/": 2,
 	}
 	for dir in expected.keys():

@@ -365,6 +365,14 @@ func _build_attempt(
 		_place_room_tile(m, width, height, hearth_position + Vector2i(1, 0), 9, &"forge")
 		_place_room_tile(m, width, height, hearth_position + Vector2i(0, 1), 10, &"well")
 		_place_room_tile(m, width, height, hearth_position + Vector2i(-1, 0), 11, &"trap")
+		# M7 Bucket 1: 4 more rooms
+		# (altar, vault, garden, library)
+		# at offset positions (+2, +2, -2, -2).
+		# Out-of-bounds safe.
+		_place_room_tile(m, width, height, hearth_position + Vector2i(2, -2), 12, &"altar")
+		_place_room_tile(m, width, height, hearth_position + Vector2i(2, 2), 13, &"vault")
+		_place_room_tile(m, width, height, hearth_position + Vector2i(-2, 2), 14, &"garden")
+		_place_room_tile(m, width, height, hearth_position + Vector2i(-2, -2), 15, &"library")
 	# Compute the per-biome counts.
 	var counts: Dictionary = {}
 	for t in m.tiles:

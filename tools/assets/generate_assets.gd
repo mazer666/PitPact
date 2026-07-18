@@ -84,6 +84,12 @@ func _init() -> void:
 	_save_png(_TILES_DIR + "forge.png", _make_forge())
 	_save_png(_TILES_DIR + "well.png", _make_well())
 	_save_png(_TILES_DIR + "trap.png", _make_trap())
+	# M7 Bucket 1: 4 additional rooms
+	# (altar, vault, garden, library).
+	_save_png(_TILES_DIR + "altar.png", _make_altar())
+	_save_png(_TILES_DIR + "vault.png", _make_vault())
+	_save_png(_TILES_DIR + "garden.png", _make_garden())
+	_save_png(_TILES_DIR + "library.png", _make_library())
 	# UI icons
 	_save_png(_UI_DIR + "step.png", _make_icon_step())
 	_save_png(_UI_DIR + "auto_tick.png", _make_icon_auto_tick())
@@ -103,6 +109,16 @@ func _init() -> void:
 	_save_png(_INHAB_DIR + "ledger.png", _make_portrait_ledger())
 	_save_png(_INHAB_DIR + "silvershroud.png", _make_portrait_silvershroud())
 	_save_png(_INHAB_DIR + "tide.png", _make_portrait_tide())
+	# M7 Bucket 1: 6 alternative role portraits
+	# (2 per culture: lanternbearer_pilot,
+	# bellows_smoker, ember_keeper, ledger_scholar,
+	# silvershroud_guard, tide_warden).
+	_save_png(_INHAB_DIR + "lanternbearer_pilot.png", _make_portrait_lanternbearer_pilot())
+	_save_png(_INHAB_DIR + "bellows_smoker.png", _make_portrait_bellows_smoker())
+	_save_png(_INHAB_DIR + "ember_keeper.png", _make_portrait_ember_keeper())
+	_save_png(_INHAB_DIR + "ledger_scholar.png", _make_portrait_ledger_scholar())
+	_save_png(_INHAB_DIR + "silvershroud_guard.png", _make_portrait_silvershroud_guard())
+	_save_png(_INHAB_DIR + "tide_warden.png", _make_portrait_tide_warden())
 	# Crisis icons
 	_save_png(_CRISIS_DIR + "plague.png", _make_crisis_plague())
 	_save_png(_CRISIS_DIR + "faction.png", _make_crisis_faction())
@@ -344,6 +360,93 @@ func _make_trap() -> Image:
 	# Inset shadow
 	for x in range(5, 11):
 		img.set_pixel(x, 13, _PAL.stone_dk)
+	return img
+
+
+## M7 Bucket 1: altar tile. The
+## altar is a ritual site that
+## boosts Pactmaker powers. The
+## altar has a gold base + a
+## violet central rune.
+func _make_altar() -> Image:
+	var img: Image = Image.create(_TILE_W, _TILE_H, false, Image.FORMAT_RGBA8)
+	img.fill(_PAL.stone)
+	# Base (gold)
+	for y in range(10, 14):
+		for x in range(3, 13):
+			img.set_pixel(x, y, _PAL.gold)
+	# Rune (violet)
+	for y in range(5, 10):
+		for x in range(6, 10):
+			img.set_pixel(x, y, _PAL.violet)
+	# Top point (bone)
+	img.set_pixel(8, 4, _PAL.bone)
+	img.set_pixel(7, 5, _PAL.bone)
+	img.set_pixel(9, 5, _PAL.bone)
+	return img
+
+
+## M7 Bucket 1: vault tile. The
+## vault is a storage site for
+## resources. The vault has a
+## stone arch + an iron door.
+func _make_vault() -> Image:
+	var img: Image = Image.create(_TILE_W, _TILE_H, false, Image.FORMAT_RGBA8)
+	img.fill(_PAL.stone)
+	# Arch (parchment trim)
+	for y in range(2, 8):
+		for x in range(4, 12):
+			img.set_pixel(x, y, _PAL.parchment)
+	# Door (dark stone)
+	for y in range(8, 14):
+		for x in range(5, 11):
+			img.set_pixel(x, y, _PAL.stone_dk)
+	# Door handle (gold)
+	img.set_pixel(9, 11, _PAL.gold)
+	return img
+
+
+## M7 Bucket 1: garden tile. The
+## garden is a food source. The
+## garden has grass + sprouts.
+func _make_garden() -> Image:
+	var img: Image = Image.create(_TILE_W, _TILE_H, false, Image.FORMAT_RGBA8)
+	img.fill(_PAL.moss)
+	# Soil patches (stone)
+	for y in range(10, 13):
+		for x in range(2, 14):
+			if (x + y) % 3 == 0:
+				img.set_pixel(x, y, _PAL.stone)
+	# Sprouts (green)
+	for x in range(3, 13):
+		img.set_pixel(x, 5, _PAL.moss)
+		img.set_pixel(x, 6, _PAL.moss)
+	return img
+
+
+## M7 Bucket 1: library tile. The
+## library is a research-boost
+## site. The library has stone
+## walls + parchment books.
+func _make_library() -> Image:
+	var img: Image = Image.create(_TILE_W, _TILE_H, false, Image.FORMAT_RGBA8)
+	img.fill(_PAL.stone)
+	# Bookshelf (parchment)
+	for y in range(4, 12):
+		for x in range(3, 13):
+			img.set_pixel(x, y, _PAL.parchment)
+	# Books (alternating colors)
+	for x in range(4, 12):
+		if x % 2 == 0:
+			for y in range(6, 11):
+				img.set_pixel(x, y, _PAL.blood)
+		else:
+			for y in range(6, 11):
+				img.set_pixel(x, y, _PAL.ink)
+	# Shelf trim
+	for x in range(3, 13):
+		img.set_pixel(x, 4, _PAL.gold)
+		img.set_pixel(x, 12, _PAL.gold)
 	return img
 
 
@@ -674,6 +777,71 @@ func _make_portrait_tide() -> Image:
 	return img
 
 
+## M7 Bucket 1: 6 alternative
+## role portraits. The factory
+## is the canonical "M7 portrait"
+## entry point; the variations
+## are based on the canonical
+## 6 culture portraits but with
+## different secondary color
+## (the M7 closeout's "tier-2
+## role" indicator).
+func _make_portrait_lanternbearer_pilot() -> Image:
+	return _make_portrait_variant(_PAL.parchment, _PAL.violet, _PAL.gold, 12, 8, _PAL.ember)
+
+
+func _make_portrait_bellows_smoker() -> Image:
+	return _make_portrait_variant(_PAL.moss, _PAL.stone, _PAL.ember, 13, 6, _PAL.gold)
+
+
+func _make_portrait_ember_keeper() -> Image:
+	return _make_portrait_variant(_PAL.blood, _PAL.bone, _PAL.gold, 11, 10, _PAL.ember)
+
+
+func _make_portrait_ledger_scholar() -> Image:
+	return _make_portrait_variant(_PAL.parchment, _PAL.gold, _PAL.ink, 12, 8, _PAL.ink)
+
+
+func _make_portrait_silvershroud_guard() -> Image:
+	return _make_portrait_variant(_PAL.fog, _PAL.bone, _PAL.ink, 11, 9, _PAL.bone)
+
+
+func _make_portrait_tide_warden() -> Image:
+	return _make_portrait_variant(_PAL.marsh, _PAL.bone, _PAL.moss, 12, 9, _PAL.moss)
+
+
+## M7 Bucket 1: helper that
+## builds a portrait variant
+## from the canonical 16x24
+## template. The factory is
+## the canonical "M7 portrait
+## variant" entry point; the
+## per-variant parameters are
+## `robe_color`, `head_color`,
+## `accent_color`, `accent_x`,
+## `accent_y`, `accent_secondary`.
+func _make_portrait_variant(robe_color: Color, head_color: Color, accent_color: Color, accent_x: int, accent_y: int, accent_secondary: Color) -> Image:
+	var img: Image = Image.create(_PORTRAIT_W, _PORTRAIT_H, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	# Robe
+	for y in range(8, 24):
+		for x in range(4, 12):
+			img.set_pixel(x, y, robe_color)
+	# Head
+	for y in range(2, 8):
+		for x in range(6, 10):
+			img.set_pixel(x, y, head_color)
+	# Accent (held item)
+	img.set_pixel(accent_x, accent_y, accent_color)
+	img.set_pixel(accent_x + 1, accent_y, accent_color)
+	img.set_pixel(accent_x, accent_y + 1, accent_secondary)
+	img.set_pixel(accent_x + 1, accent_y + 1, accent_secondary)
+	# Eyes
+	img.set_pixel(7, 4, _PAL.ink)
+	img.set_pixel(9, 4, _PAL.ink)
+	return img
+
+
 # --- Crisis icon generators ---
 
 func _make_crisis_plague() -> Image:
@@ -722,19 +890,13 @@ func _make_crisis_faction() -> Image:
 # --- Atlas ---
 
 func _make_atlas_4x4() -> Image:
-	# M5-Closeout Bucket 2: atlas is
-	# now 4x3 (12 cells) — 6 M5-Foundation
-	# cells (row 0: floor_stone, floor_marsh,
-	# floor_highland, wall_stone; row 1:
-	# hearth, fog, floor_stone, wall_stone)
-	# + 4 new M5-Closeout cells (row 2:
-	# shrine, forge, well, trap). The atlas
-	# is renamed to `atlas_4x3` semantically
-	# but the file name `atlas_4x4.png` is
-	# retained for backward compatibility
-	# (the M5-Foundation importers expect
-	# the old name).
-	var img: Image = Image.create(_TILE_W * 4, _TILE_H * 3, false, Image.FORMAT_RGBA8)
+	# M7 Bucket 1: atlas is now
+	# 4x4 (16 cells) — 6 M5-Foundation
+	# + 4 M5-Closeout + 4 M7 Bucket 1
+	# cells. The atlas file name
+	# `atlas_4x4.png` is now *accurate*
+	# (4 rows x 4 cols).
+	var img: Image = Image.create(_TILE_W * 4, _TILE_H * 4, false, Image.FORMAT_RGBA8)
 	img.fill(_PAL.ink)
 	var tile_a: Image = _make_floor_stone()
 	var tile_b: Image = _make_floor_marsh()
@@ -755,6 +917,11 @@ func _make_atlas_4x4() -> Image:
 	_blit(img, _make_forge(), 1, 2)
 	_blit(img, _make_well(), 2, 2)
 	_blit(img, _make_trap(), 3, 2)
+	# Row 3 (M7 Bucket 1): altar, vault, garden, library
+	_blit(img, _make_altar(), 0, 3)
+	_blit(img, _make_vault(), 1, 3)
+	_blit(img, _make_garden(), 2, 3)
+	_blit(img, _make_library(), 3, 3)
 	return img
 
 

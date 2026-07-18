@@ -51,6 +51,11 @@ extends RefCounted
 ## via `_init`).
 static var catalogue: Array = []
 
+## M7 Bucket 3: the mod catalogue.
+## The mod catalogue holds events
+## loaded from `data/mods/*/events.json`.
+static var mod_catalogue: Array = []
+
 
 ## M5-Closeout Bucket 3: build
 ## the canonical 15-event
@@ -119,6 +124,11 @@ static func all() -> Array:
 	if catalogue.size() == 0:
 		_build_catalogue()
 	return catalogue.duplicate()
+
+
+static func _reset_catalogue_only() -> void:
+	# Helper used by `reset_for_test`.
+	catalogue = []
 
 
 ## M5-Closeout Bucket 3: return
@@ -204,6 +214,175 @@ static func all_ids() -> Array:
 ## the M5-Closeout version tag.
 static func version() -> String:
 	return "0.2.0-m5-closeout"
+
+
+## M7 Bucket 3: load events from
+## the `data/mods/` directory.
+## The method is the canonical
+## "load mod events" entry
+## point; the M7 mod-interface
+## pins the JSON format. The
+## method is idempotent: a
+## second call replaces the
+## previous mod catalogue.
+## The expected JSON format
+## (per event):
+## ```json
+## {
+##   "id": "fog_rolls_in_mod",
+##   "type": "crisis",
+##   "description": "M5_EVENT_FOG_ROLLS_IN_DESCRIPTION",
+##   "weight": 8
+## }
+## ```
+## The directory structure
+## expected:
+## ```
+## data/mods/
+##   <mod_id>/
+##     events.json
+##     manifest.json
+## ```
+static func load_from_mods(mods_dir: String) -> int:
+	mod_catalogue = []
+	var d: DirAccess = DirAccess.open(mods_dir)
+	if d == null:
+		return 0
+	var n_loaded: int = 0
+	d.list_dir_begin()
+	var entry: String = d.get_next()
+	while entry != "":
+		if d.current_is_dir() and not entry.begins_with("."):
+			var events_path: String = mods_dir + entry + "/events.json"
+			if FileAccess.file_exists(events_path):
+				var n: int = _load_mod_events(events_path)
+				n_loaded += n
+		entry = d.get_next()
+	d.list_dir_end()
+	return n_loaded
+
+
+## M7 Bucket 3: load a single
+## mod's events.json. The helper
+## is the canonical "parse a
+## mod's events" entry point.
+static func _load_mod_events(events_path: String) -> int:
+	var f: FileAccess = FileAccess.open(events_path, FileAccess.READ)
+	if f == null:
+		return 0
+	var content: String = f.get_as_text()
+	f.close()
+	# The M7 closeout uses Godot's
+	# built-in JSON parser (no
+	# external dependencies). The
+	# JSON is expected to be a
+	# top-level Array of event
+	# objects.
+	var json: JSON = JSON.new()
+	var err: int = json.parse(content)
+	if err != OK:
+		push_error(
+			(
+				"M5Events._load_mod_events: JSON parse error in %s: %s"
+				% [events_path, json.get_error_message()]
+			)
+		)
+		return 0
+	if not json.data is Array:
+		push_error("M5Events._load_mod_events: top-level is not Array in %s" % events_path)
+		return 0
+	var n: int = 0
+	for ev in json.data:
+		if not ev is Dictionary:
+			continue
+		# Validate required fields.
+		if not ev.has("id") or not ev.has("type"):
+			continue
+		(
+			mod_catalogue
+			. append(
+				{
+					"id": ev.get("id", &""),
+					"type": ev.get("type", &""),
+					"description": ev.get("description", &""),
+					"weight": int(ev.get("weight", 1)),
+				}
+			)
+		)
+		n += 1
+	return n
+
+
+## M7 Bucket 3: return the
+## combined catalogue (base +
+## mod). The method is the
+## canonical "give me all
+## events including mods" entry
+## point.
+static func all_with_mods() -> Array:
+	var out: Array = all()
+	# Reset mod_catalogue to
+	# avoid duplicates from
+	# repeated load_from_mods
+	# calls (the M7 closeout
+	# is single-test-safe).
+	var seen: Dictionary = {}
+	for ev in out:
+		seen[String(ev.get("id", ""))] = true
+	for ev in mod_catalogue:
+		var id: String = String(ev.get("id", ""))
+		if not seen.has(id):
+			out.append(ev)
+			seen[id] = true
+	return out
+
+
+## M7 Bucket 3: return the
+## number of mod events loaded.
+static func mod_event_count() -> int:
+	return mod_catalogue.size()
+
+
+## M7 Bucket 3: reset all
+## catalogue state. The method
+## is the canonical "clear
+## everything for tests" entry
+## point. The M7 test net
+## resets before each test
+## (the static `catalogue` is
+## class-level so the test
+## would otherwise see
+## cross-test pollution).
+static func reset_for_test() -> void:
+	catalogue = []
+	mod_catalogue = []
+
+
+## M7 Bucket 1: append events
+## to the base catalogue.
+static func expand_catalogue() -> int:
+	var before: int = catalogue.size()
+	# Idempotent guard: don't
+	# re-add the M7 events if
+	# they're already there.
+	if before >= 30:
+		return 0
+	_add(&"lantern_flares", &"crisis", &"M5_EVENT_LANTERN_FLICKERS_DESCRIPTION", 4)
+	_add(&"bellows_overheats", &"crisis", &"M5_EVENT_FOG_ROLLS_IN_DESCRIPTION", 5)
+	_add(&"ember_dies", &"crisis", &"M5_EVENT_MARSH_BUBBLES_DESCRIPTION", 5)
+	_add(&"ledger_lost", &"crisis", &"M5_EVENT_TRAP_SPRUNG_DESCRIPTION", 6)
+	_add(&"shroud_breaks", &"crisis", &"M5_EVENT_WELL_DRY_DESCRIPTION", 5)
+	_add(&"pilot_arrives", &"good", &"M5_EVENT_TRADER_PASSES_DESCRIPTION", 5)
+	_add(&"smoker_offers", &"good", &"M5_EVENT_OATHKEEPER_RETURNS_DESCRIPTION", 4)
+	_add(&"keeper_teaches", &"good", &"M5_EVENT_MARSH_HEALS_DESCRIPTION", 5)
+	_add(&"scholar_returns", &"good", &"M5_EVENT_HIGHLAND_PATH_OPENS_DESCRIPTION", 4)
+	_add(&"guard_promises", &"good", &"M5_EVENT_SETTLER_ARRIVES_DESCRIPTION", 5)
+	_add(&"warden_whispers", &"narrative", &"M5_EVENT_SHRINE_SMOKE_DESCRIPTION", 3)
+	_add(&"altar_glows", &"narrative", &"M5_EVENT_FORGE_SPARK_DESCRIPTION", 3)
+	_add(&"vault_opens", &"narrative", &"M5_EVENT_PACTMAKER_WHISPERS_DESCRIPTION", 2)
+	_add(&"garden_blooms", &"narrative", &"M5_EVENT_LANTERN_FLICKERS_DESCRIPTION", 2)
+	_add(&"library_speaks", &"narrative", &"M5_EVENT_LEDGER_PAGES_TURN_DESCRIPTION", 2)
+	return catalogue.size() - before
 
 
 ## M5-Closeout Bucket 3 + 5:

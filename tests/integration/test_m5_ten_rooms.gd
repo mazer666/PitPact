@@ -54,7 +54,7 @@ func test_ten_rooms_tile_count() -> void:
 			n += 1
 		name = d.get_next()
 	d.list_dir_end()
-	assert_eq(n, 11, "assets/tiles/ has 11 PNGs (7 + 4 new rooms)")
+	assert_eq(n, 15, "assets/tiles/ has 15 PNGs (7 + 4 M5-Closeout + 4 M7 Bucket 1)")
 
 
 func test_ten_rooms_atlas_twelve_cells() -> void:
@@ -66,7 +66,7 @@ func test_ten_rooms_atlas_twelve_cells() -> void:
 	var ts: TileSet = load(_TILESET_PATH)
 	assert_ne(ts, null, "world_tileset.tres loads")
 	var src: TileSetAtlasSource = ts.get_source(0)
-	assert_eq(src.get_tiles_count(), 12, "M5-Closeout atlas has 12 cells (4x3)")
+	assert_eq(src.get_tiles_count(), 16, "M5-Closeout + M7 atlas has 16 cells (4x4)")
 
 
 func test_ten_rooms_atlas_mapping_ids_8_through_11() -> void:

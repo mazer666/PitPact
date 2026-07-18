@@ -1,0 +1,14 @@
+[
+  {
+    "id": "my_mod_event_1",
+    "type": "crisis",
+    "description": "M5_EVENT_FOG_ROLLS_IN_DESCRIPTION",
+    "weight": 5
+  },
+  {
+    "id": "my_mod_event_2",
+    "type": "good",
+    "description": "M5_EVENT_SETTLER_ARRIVES_DESCRIPTION",
+    "weight": 4
+  }
+]

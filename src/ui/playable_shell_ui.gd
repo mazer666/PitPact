@@ -47,6 +47,16 @@ const _CULTURE_PORTRAIT_PATHS: Dictionary = {
 	"ledger": "res://assets/inhabitants/ledger.png",
 	"silvershroud": "res://assets/inhabitants/silvershroud.png",
 	"tide": "res://assets/inhabitants/tide.png",
+	# M7 Bucket 1: 6 alternative role
+	# portraits (2 per culture: pilot,
+	# smoker, keeper, scholar, guard,
+	# warden).
+	"lanternbearer_pilot": "res://assets/inhabitants/lanternbearer_pilot.png",
+	"bellows_smoker": "res://assets/inhabitants/bellows_smoker.png",
+	"ember_keeper": "res://assets/inhabitants/ember_keeper.png",
+	"ledger_scholar": "res://assets/inhabitants/ledger_scholar.png",
+	"silvershroud_guard": "res://assets/inhabitants/silvershroud_guard.png",
+	"tide_warden": "res://assets/inhabitants/tide_warden.png",
 	# Settlers are a generic
 	# fallback (the M4 closeout
 	# had two settler inhabitants).

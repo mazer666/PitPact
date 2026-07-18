@@ -1407,3 +1407,112 @@ Total: **251/251 GUT tests passing (1591 Asserts)** — vorher
   (v0.2.0-m6 Release-Tag kann gesetzt werden).
 - Post-M6: Balancing & content (M7).
 
+
+
+## [Unreleased] — M7-Content-and-Balance in progress
+
+### Added (M7-Content-and-Balance)
+
+- **M7 Bucket 1 (Content Expansion)**:
+  - **6 neue Portrait-PNGs** (prozedural generiert):
+    lanternbearer_pilot, bellows_smoker,
+    ember_keeper, ledger_scholar,
+    silvershroud_guard, tide_warden.
+  - **4 neue Tile-PNGs**: altar, vault, garden,
+    library. Atlas erweitert von 4x3 (12) auf
+    **4x4 (16 Cells)**.
+  - **15 neue Events** (via `M5Events.expand_catalogue()`):
+    5 crisis (lantern_flares, bellows_overheats,
+    ember_dies, ledger_lost, shroud_breaks),
+    5 good (pilot_arrives, smoker_offers,
+    keeper_teaches, scholar_returns,
+    guard_promises), 5 narrative (warden_whispers,
+    altar_glows, vault_opens, garden_blooms,
+    library_speaks).
+- **M7 Bucket 2 (Balance Pass)**:
+  - `M7BalanceConfig` carrier mit easy/balanced/
+    hard factories. M7 balanced: 45-day win,
+    6-inhab minimum, 2-inhab lose threshold.
+  - `M7BalanceConfig.is_valid()` validation.
+  - Version `0.3.0-m7-content-and-balance`.
+- **M7 Bucket 3 (Mod/Content Interface)**:
+  - `M5Events.load_from_mods(dir)` laedt Events
+    aus `data/mods/*/events.json`.
+  - `M5Events.all_with_mods()` combined catalogue.
+  - `M5Events.mod_event_count()` count helper.
+  - `M5Events.reset_for_test()` test helper.
+  - `data/mods/example_mod/` mit manifest + 2 events.
+  - `tools/mod_template/` mit manifest template
+    + sample events.json.
+
+### Tests added (M7-Content-and-Balance, 22 new)
+
+- `test_m7_content_portraits_present` (6 portraits)
+- `test_m7_content_portraits_in_ui_mapping` (6 mappings)
+- `test_m7_content_tiles_present` (4 tiles)
+- `test_m7_content_atlas_sixteen_cells`
+- `test_m7_content_atlas_mapping_ids_12_through_15`
+- `test_m7_content_expand_catalogue_adds_fifteen`
+- `test_m7_content_catalogue_total_thirty_after_expand`
+- `test_mods_example_mod_manifest_exists`
+- `test_mods_example_mod_events_exists`
+- `test_mods_template_manifest_exists`
+- `test_mods_template_events_exists`
+- `test_mods_load_from_mods_returns_two_events`
+- `test_mods_mod_catalogue_has_two_events`
+- `test_mods_all_with_mods_returns_17`
+- `test_mods_mod_ids_in_combined`
+- `test_balance_config_version`
+- `test_balance_config_m7_balanced_defaults`
+- `test_balance_config_easy`
+- `test_balance_config_hard`
+- `test_balance_config_is_valid`
+- `test_balance_config_is_valid_rejects_zero_days`
+- `test_balance_config_constants_pinned`
+
+Total: **273/273 GUT tests passing (1652 Asserts)** — vorher
+251/251 (1591 Asserts), +22 tests, +61 asserts.
+
+### Hardened (M7-Content-and-Balance)
+
+- **M5Events catalogue state-isolation**: `reset_for_test()`
+  static method clear alle static state zwischen tests.
+  Ohne diesen Helper war der `all_with_mods` test
+  anfällig für cross-test pollution.
+- **M5Events catalogue idempotent**: `expand_catalogue()`
+  returns 0 wenn bereits 30+ events (re-runs no-op).
+- **M5Events duplicate-ID dedup**: `all_with_mods()`
+  dedupliziert nach ID (fürdert deterministische
+  Catalogue-Reads).
+
+### Documentation (Best-in-Class cleanup)
+
+- **ADR-0019** (`docs/adrs/0019-m7-content-and-balance.md`):
+  M7 scope mit 3 Buckets (Content, Balance, Mods).
+- **`docs/repository-structure.md`**: vollstaendig
+  ueberarbeitet mit aktueller directory structure,
+  module-boundary table, ADR-Liste, test-count
+  progression.
+- **`docs/milestones.md`**: aktualisiert mit M6 + M7
+  status, ADRs-Liste, out-of-scope section.
+- **`docs/roadmap.md`**: aktualisiert mit M7 stats
+  (273/273, 1652 Asserts).
+- **`README.md`**: aktualisiert mit M7 highlights +
+  v0.3.0-m7 release status.
+- **`docs/adrs/` index**: jetzt 19 ADRs (0001-0019),
+  alle in `repository-structure.md` referenziert.
+
+### Notes (M7-Content-and-Balance)
+
+- M7 erweitert die Inhaltsmenge um ~2x:
+  - 7 -> 13 portrait PNGs
+  - 11 -> 15 tile PNGs
+  - 15 -> 30 events
+- M7-Bucket 3 (Mods) ist der Grundstein fuer
+  Community-Extensions; die M8 closeout kann
+  hot-reload + Mod-Konflikte-Aufloesung
+  hinzufuegen.
+- M7-Bucket 2 (Balance) ist single-pass
+  (keine A/B-Tests, keine Community-Feedback-
+  loops). M8 kann iterative balance-pass liefern.
+

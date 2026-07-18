@@ -1,0 +1,13 @@
+{
+  "id": "my_mod",
+  "name": "My Mod",
+  "version": "0.1.0",
+  "author": "Your Name",
+  "license": "CC BY-SA 4.0",
+  "description": "Adds new events + portraits to PitPact.",
+  "dependencies": [],
+  "content": {
+    "events": "events.json",
+    "portraits": "portraits/"
+  }
+}

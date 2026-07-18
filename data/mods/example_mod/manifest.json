@@ -1,0 +1,12 @@
+{
+  "id": "example_mod",
+  "name": "Example Mod (M7 test fixture)",
+  "version": "0.1.0",
+  "author": "PitPact Test Suite",
+  "license": "CC BY-SA 4.0",
+  "description": "Adds 2 test events to the M5-Closeout catalogue.",
+  "dependencies": [],
+  "content": {
+    "events": "events.json"
+  }
+}
