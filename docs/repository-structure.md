@@ -118,6 +118,7 @@ The module-boundary check is automated via
 | 0020 | M8-iPadOS-and-Mobile | M8 |
 | 0021 | M9-Co-op-Foundation | M9 |
 | 0022 | M10-Co-op-Live-Mode | M10 |
+| 0023 | M11-Art-Rework | M11 |
 
 ## Test count progression
 
@@ -146,6 +147,7 @@ The module-boundary check is automated via
 | M8-iPadOS-and-Mobile | 291 | 1678 |
 | M9-Co-op-Foundation | 333 | 1741 |
 | M10-Co-op-Live-Mode | 367 | 1791 |
+| M11-Art-Rework | 392 | 1867 |
 
 ## References
 

@@ -1,0 +1,130 @@
+{
+  "schema_version": "1.0.0",
+  "generated_by": "mavis image_synthesize",
+  "style": "Gothic Dark Fantasy + Storybook Watercolor (per ADR-0023)",
+  "license": "CC0 (per ADR-0018)",
+  "assets": [
+    {
+      "id": "lanternbearer",
+      "path": "res://assets/ai/inhabitants/lanternbearer.png",
+      "type": "portrait",
+      "culture": "lanternbearer",
+      "prompt_summary": "hooded lanternbearer cultist, glowing lantern"
+    },
+    {
+      "id": "bellows",
+      "path": "res://assets/ai/inhabitants/bellows.png",
+      "type": "portrait",
+      "culture": "bellows",
+      "prompt_summary": "bellows keeper with soot-stained apron, forge tools"
+    },
+    {
+      "id": "ember",
+      "path": "res://assets/ai/inhabitants/ember.png",
+      "type": "portrait",
+      "culture": "ember",
+      "prompt_summary": "ember priestess with glowing coals, ceremonial fire"
+    },
+    {
+      "id": "ledger",
+      "path": "res://assets/ai/inhabitants/ledger.png",
+      "type": "portrait",
+      "culture": "ledger",
+      "prompt_summary": "ledger scribe with quill and old tome"
+    },
+    {
+      "id": "silvershroud",
+      "path": "res://assets/ai/inhabitants/silvershroud.png",
+      "type": "portrait",
+      "culture": "silvershroud",
+      "prompt_summary": "silvershroud assassin in silver cloak, daggers"
+    },
+    {
+      "id": "tide",
+      "path": "res://assets/ai/inhabitants/tide.png",
+      "type": "portrait",
+      "culture": "tide",
+      "prompt_summary": "tide priest with sea-salt robes, conch shell"
+    },
+    {
+      "id": "hearth",
+      "path": "res://assets/ai/tiles/hearth.png",
+      "type": "tile",
+      "tile_id": 4,
+      "prompt_summary": "stone hearth with glowing embers"
+    },
+    {
+      "id": "shrine",
+      "path": "res://assets/ai/tiles/shrine.png",
+      "type": "tile",
+      "tile_id": 8,
+      "prompt_summary": "bone shrine with candles and offerings"
+    },
+    {
+      "id": "forge",
+      "path": "res://assets/ai/tiles/forge.png",
+      "type": "tile",
+      "tile_id": 9,
+      "prompt_summary": "forge with anvil and glowing coals"
+    },
+    {
+      "id": "well",
+      "path": "res://assets/ai/tiles/well.png",
+      "type": "tile",
+      "tile_id": 10,
+      "prompt_summary": "stone well with mossy rim"
+    },
+    {
+      "id": "trap",
+      "path": "res://assets/ai/tiles/trap.png",
+      "type": "tile",
+      "tile_id": 11,
+      "prompt_summary": "dangerous trap with iron spikes and warning runes"
+    },
+    {
+      "id": "altar",
+      "path": "res://assets/ai/tiles/altar.png",
+      "type": "tile",
+      "tile_id": 12,
+      "prompt_summary": "sacrificial altar with blood-stone runes"
+    },
+    {
+      "id": "step",
+      "path": "res://assets/ai/ui/step.png",
+      "type": "ui_icon",
+      "prompt_summary": "sand timer step button, ornate gold frame"
+    },
+    {
+      "id": "auto_tick",
+      "path": "res://assets/ai/ui/auto_tick.png",
+      "type": "ui_icon",
+      "prompt_summary": "play arrow auto-tick button, ornate gold frame"
+    },
+    {
+      "id": "restart",
+      "path": "res://assets/ai/ui/restart.png",
+      "type": "ui_icon",
+      "prompt_summary": "refresh restart button with circular arrow"
+    },
+    {
+      "id": "power",
+      "path": "res://assets/ai/ui/power.png",
+      "type": "ui_icon",
+      "prompt_summary": "magical seal power button, glowing runes"
+    },
+    {
+      "id": "faction",
+      "path": "res://assets/ai/crises/faction.png",
+      "type": "crisis",
+      "crisis_id": "faction",
+      "prompt_summary": "faction crisis with crossed swords and broken banner"
+    },
+    {
+      "id": "plague",
+      "path": "res://assets/ai/crises/plague.png",
+      "type": "crisis",
+      "crisis_id": "plague",
+      "prompt_summary": "plague crisis with skull and crow"
+    }
+  ]
+}

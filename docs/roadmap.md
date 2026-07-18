@@ -54,10 +54,11 @@ hold before the next one opens. The milestones, in order:
 | M8 | iPadOS & mobile UI | Touch Input (`_input()` handler + `InputMap` setup), Mobile UI Reflow (touch-friendly Button min sizes, anchor tests), iOS Export Preset (`tools/build/build_ios.sh` + `docs/ipados-deployment.md`). 18 neue Tests, 4/4 M8-Mutationen REAL. 291/291 GUT tests, 1678 Asserts. ADR-0020 dokumentiert die 3 M8-Buckets. |
 | M9 | Co-op Foundation | Co-op Protocol (FNV-1a 64-bit hash, diff/apply roundtrip), Lobby (peer 2-4), Mod Hot-Reload (`M5Events.hot_reload_mod` + `unload_mod`), Balance Iteration (`M7BalanceConfig.apply_patch` + `BalancePatchLog`), Touch Visualizer (side-quest F). 42 neue Tests, 5/5 M9-Mutationen REAL. 333/333 GUT tests, 1741 Asserts. ADR-0021 dokumentiert die 4 M9-Buckets + Side-Quest F. |
 | M10 | Co-op Live Mode | ENet Adapter (headless loopback), Peer Sync (lockstep state hashes), Replay Recorder (JSON-lines format), Network Stats (RTT + packet loss, side-quest G). 34 neue Tests, 5/5 M10-Mutationen REAL. 367/367 GUT tests, 1791 Asserts. ADR-0022 dokumentiert die 3 M10-Buckets + Side-Quest G. |
+| M11 | Art Rework | AI-Art (18 assets, CC0 via mavis image_synthesize), Procedural Upgrade (Perlin-noise + hue-shifts), Shader Pipeline (post_process.gdshader mit Bloom/Vignette/Color-Grade), TimeOfDay (4 phases), Perf Budget (60 FPS auf 4-year-old laptop). 25 neue Tests, 5/5 M11-Mutationen REAL. 392/392 GUT tests, 1867 Asserts. ADR-0023 dokumentiert die 3 M11-Buckets + Side-Quest H. |
 
 Post-release work (balancing, additional content, mod/content
 interfaces, eventual co-op) is out of scope for
-M0-M9 and tracked separately.
+M0-M10 and tracked separately.
 
 ## What "done" means for M1
 

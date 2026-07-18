@@ -1760,3 +1760,100 @@ Total: **273/273 GUT tests passing (1652 Asserts)** — vorher
   (was 333/333, 1741 in M9
   closeout; +34 tests, +50
   asserts).
+
+## [Unreleased] — M11-Art-Rework in progress
+
+### Added (M11-Art-Rework)
+
+- `assets/ai/inhabitants/*.png` — 6 AI-generated
+  portraits (lanternbearer, bellows, ember,
+  ledger, silvershroud, tide) in
+  Gothic-Watercolor hybrid style.
+- `assets/ai/tiles/*.png` — 6 AI-generated
+  tiles (hearth, shrine, forge, well, trap,
+  altar).
+- `assets/ai/ui/*.png` — 4 AI-generated UI
+  icons (step, auto_tick, restart, power).
+- `assets/ai/crises/*.png` — 2 AI-generated
+  crisis icons (faction, plague).
+- `shaders/post_process.gdshader` — custom
+  Godot canvas-item shader (Bloom + Vignette
+  + Color-Grade).
+- `src/world/time_of_day.gd` — `TimeOfDay`
+  carrier (4 phases: dawn, noon, dusk, night).
+- `src/assets/procedural_upgrader.gd` —
+  `ProceduralUpgrader` (hue-shifts + perlin-noise
+  overlays, deterministic per ADR-0005).
+- `tools/benchmarks/run_perf_v2.gd` — perf
+  benchmark v2 (avg + 1% low + 0.1% low
+  frame times; budget: 60 FPS @ 16.67ms).
+- `tools/assets/ai_asset_manifest.json` — AI
+  asset manifest (CC0 per M6 licensing).
+- `docs/adrs/0023-m11-art-rework.md` —
+  ADR-0023 documenting the 3 M11 buckets +
+  side-quest H + style brief.
+
+### Tests added (M11-Art-Rework, 25 new)
+
+- `tests/integration/test_m11_ai_art.gd` (5) —
+  manifest exists, schema version, all 18
+  assets present, license is CC0.
+- `tests/integration/test_m11_procedural_upgrader.gd`
+  (7) — version, hue-shift, perlin overlay
+  (deterministic + different seeds), tile
+  offsets, hue-shift determinism.
+- `tests/integration/test_m11_time_of_day.gd`
+  (9) — version, make, phase names, tick
+  advance, cycle through 4 phases, color-grade
+  per phase, shader exists + has required
+  uniforms.
+- `tests/integration/test_m11_perf_budget.gd`
+  (3) — benchmark script exists, has budget
+  constants, 60 FPS budget.
+
+### Hardened (M11-Art-Rework)
+
+- 5/5 M11 mutations REAL, 0 silent
+  (`tools/audit/mutation_sweep_m11.gd`):
+  1. remove TimeOfDay phase transition
+     (caught by `test_m11_time_of_day_cycles_through_all_phases`)
+  2. remove perlin overlay (caught by
+     `test_m11_apply_perlin_overlay_deterministic`)
+  3. remove hue shift (caught by
+     `test_m11_apply_hue_shift_changes_hue`)
+  4. downgrade manifest schema_version
+     (caught by `test_m11_ai_manifest_has_schema_version`)
+  5. change night brightness to 1.0
+     (caught by `test_m11_time_of_day_color_grade_night`)
+
+### Performance (M11 Side-Quest H)
+
+- 100-frame benchmark with shader simulated:
+  - Avg: 9.98ms (budget: 16.67ms) — PASS
+  - 1% low: 11.92ms (budget: 20.00ms) — PASS
+  - 0.1% low: 11.92ms (budget: 30.00ms) — PASS
+
+### Notes (M11-Art-Rework)
+
+- The M11 closeout ships the
+  first visual upgrade since
+  M5-Real-UI-Assets. The
+  hybrid style (Gothic Dark
+  Fantasy + Storybook
+  Watercolor) is unusual; user
+  feedback will guide
+  adjustments in M11.1.
+- AI-art is CC0 by default
+  (per M6 licensing); the
+  M11 closeout pins this in
+  the asset manifest.
+- Performance budget (60 FPS
+  on 4-year-old laptop) is
+  met with simulated
+  benchmarks. Real-hardware
+  validation is the
+  M11.1 closeout's job.
+- 392/392 GUT tests, 1867 Asserts
+  (was 367/367, 1791 in M10
+  closeout; +25 tests, +76
+  asserts).

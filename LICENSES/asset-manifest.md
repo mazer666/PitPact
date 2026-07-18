@@ -107,3 +107,21 @@
   M0-baseline audit checklist)
 - `tools/audit/check_licenses.sh`
   (the M6 closeout audit script)
+
+## M11-Art-Rework additions
+
+| Asset | Type | License | Source | M11 status |
+|-------|------|---------|--------|------------|
+| `assets/ai/inhabitants/*.png` | AI-generated portraits (6) | CC0 | `mavis image_synthesize` | ✅ shipped |
+| `assets/ai/tiles/*.png` | AI-generated tiles (6) | CC0 | `mavis image_synthesize` | ✅ shipped |
+| `assets/ai/ui/*.png` | AI-generated UI icons (4) | CC0 | `mavis image_synthesize` | ✅ shipped |
+| `assets/ai/crises/*.png` | AI-generated crisis icons (2) | CC0 | `mavis image_synthesize` | ✅ shipped |
+| `shaders/post_process.gdshader` | Custom Godot shader | CC0 (per ADR-0023) | hand-written | ✅ shipped |
+| `tools/benchmarks/run_perf_v2.gd` | Performance benchmark v2 | GPL-3.0+ | hand-written | ✅ shipped |
+| `tools/assets/ai_asset_manifest.json` | AI asset manifest | CC0 | hand-written | ✅ shipped |
+
+**Style brief**: Gothic Dark Fantasy + Storybook Watercolor
+(reference: Darkest Dungeon + Hades + Slay the Spire).
+
+**Total AI-generated assets**: 18 (6 portraits + 6 tiles + 4 ui + 2 crises).
+**All CC0** per M6 licensing (no copyright on AI-generated art).
