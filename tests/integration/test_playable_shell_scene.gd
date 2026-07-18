@@ -177,14 +177,17 @@ func test_playable_shell_assets_all_procedurally_generated() -> void:
 	# The M5-Foundation assets are
 	# procedural: the
 	# `tools/assets/generate_assets.gd`
-	# script produces 21 PNGs (7 tiles
-	# + 10 UI + 2 inhabitants + 2
-	# crises). The smoke test asserts
+	# script produces 26 PNGs (7 tiles
+	# + 10 UI + 7 inhabitants + 2
+	# crises). The M5-Closeout Bucket 1
+	# added 5 portrait PNGs
+	# (bellows, ember, ledger, silvershroud, tide).
+	# The smoke test asserts
 	# the canonical asset count.
 	var expected: Dictionary = {
 		"res://assets/tiles/": 7,
 		"res://assets/ui/": 10,
-		"res://assets/inhabitants/": 2,
+		"res://assets/inhabitants/": 7,
 		"res://assets/crises/": 2,
 	}
 	for dir in expected.keys():

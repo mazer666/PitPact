@@ -33,6 +33,26 @@ extends CanvasLayer
 ## the M2 sim's documented time.
 const AUTO_TICK_INTERVAL: float = 1.0
 
+## M5-Closeout Bucket 1: the
+## canonical culture-id to
+## portrait-path mapping.
+## The 6 cultures are the
+## M2 Track A + M3 Closeout
+## setup (per
+## `src/sim/cultures/*.gd`).
+const _CULTURE_PORTRAIT_PATHS: Dictionary = {
+	"lanternbearer": "res://assets/inhabitants/lanternbearer_scribe.png",
+	"bellows": "res://assets/inhabitants/bellows.png",
+	"ember": "res://assets/inhabitants/ember.png",
+	"ledger": "res://assets/inhabitants/ledger.png",
+	"silvershroud": "res://assets/inhabitants/silvershroud.png",
+	"tide": "res://assets/inhabitants/tide.png",
+	# Settlers are a generic
+	# fallback (the M4 closeout
+	# had two settler inhabitants).
+	"settler": "res://assets/inhabitants/settler.png",
+}
+
 ## The reference to the canonical M5
 ## playable sim (the `build()` factory's
 ## output). The UI mutates this sim in
@@ -319,6 +339,22 @@ func build_ui() -> void:
 		_pactmaker_panel.add_child(btn)
 
 
+## M5-Closeout Bucket 1: return
+## the portrait path for a
+## culture. The method is the
+## canonical "give me the
+## portrait for this culture"
+## entry point; the test
+## pins the mapping for all
+## 6 cultures.
+func _portrait_path_for_culture(culture: String) -> String:
+	if _CULTURE_PORTRAIT_PATHS.has(culture):
+		return String(_CULTURE_PORTRAIT_PATHS[culture])
+	# Fallback: lanternbearer
+	# portrait (the M4 default).
+	return "res://assets/inhabitants/lanternbearer_scribe.png"
+
+
 ## Build a single inhabitant row (HBoxContainer
 ## with portrait + label). The factory is the
 ## canonical "row per inhabitant" entry point;
@@ -333,11 +369,18 @@ func _build_inhabitant_row(inh: Inhabitant) -> HBoxContainer:
 	# Load the portrait from the
 	# assets directory. The M4 closeout
 	# portraits are keyed by culture +
-	# role; the M5-Foundation uses
-	# lanternbearer + settler.
-	var portrait_path: String = "res://assets/inhabitants/lanternbearer_scribe.png"
-	if String(inh.role) == "settler":
-		portrait_path = "res://assets/inhabitants/settler.png"
+	# role. The M5-Closeout Bucket 1
+	# supports 6 cultures (per ADR-0017):
+	# lanternbearer, bellows, ember,
+	# ledger, silvershroud, tide.
+	# The default portrait is
+	# `lanternbearer_scribe`; the
+	# per-culture override is a
+	# `res://assets/inhabitants/<culture>.png`
+	# lookup. The factory is the
+	# canonical "portrait for
+	# culture" entry point.
+	var portrait_path: String = _portrait_path_for_culture(String(inh.culture))
 	if ResourceLoader.exists(portrait_path):
 		portrait.texture = load(portrait_path)
 	row.add_child(portrait)

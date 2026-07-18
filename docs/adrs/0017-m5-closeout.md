@@ -19,20 +19,20 @@ M5-Closeout wird in **sechs orthogonalen Buckets** geliefert. Jeder Bucket hat e
 
 ### Bucket 1 — Six Cultures
 
-M4 hat zwei Inhabitant-Rollen (settler, lanternbearer_scribe) mit zwei Portrait-Assets. M5-Closeout erweitert auf **sechs Kulturen** mit je einer Rolle und einem Portrait-Asset:
+M4 hat zwei Inhabitant-Rollen (settler, lanternbearer_scribe) mit zwei Portrait-Assets. M5-Closeout erweitert auf **sechs Kulturen** mit je einer Rolle und einem Portrait-Asset. Die 6 Kultur-IDs sind die etablierten `src/sim/cultures/*.gd` IDs (M2 Track A + M3-Closeout Track B Setup):
 
 | # | Kultur | Rolle | Portrait | Special |
 |---|---|---|---|---|
 | 1 | Lanternbearer | scribe | `lanternbearer_scribe.png` | night-vision bonus |
-| 2 | Settler | settler | `settler.png` | baseline |
-| 3 | Marshdweller | frog-catcher | `marshdweller.png` | marsh-healing |
-| 4 | Highland | scout | `highlander.png` | highland-navigation |
-| 5 | Bonewright | mason | `bonewright.png` | wall-build speed |
-| 6 | Pact-Broken | oathbreaker | `oathbreaker.png` | crisis-amplification risk |
+| 2 | Bellows | bellows-tender | `bellows.png` | forge-boost |
+| 3 | Ember | fire-keeper | `ember.png` | hearth-stability |
+| 4 | Ledger | scribe-archivist | `ledger.png` | research-boost |
+| 5 | Silvershroud | oath-keeper | `silvershroud.png` | pact-stability |
+| 6 | Tide | tide-reader | `tide.png` | marsh-navigation |
 
 **Definition-of-Done**:
-- `data/cultures.json` listet 6 Kulturen mit `id`, `name`, `portrait_path`, `role`, `special`.
-- 4 neue Portrait-PNGs prozedural generiert (marshdweller, highlander, bonewright, oathbreaker).
+- `data/cultures/` listet 6 .tres Files mit `id`, `display_name`, `body_form`, `values`.
+- 4 neue Portrait-PNGs prozedural generiert (bellows, ember, ledger, silvershroud, tide — 5 neue, lanternbearer existiert).
 - `PlayableShell.build()` zieht 6 Inhabitants (eine pro Kultur), SEED-pinned.
 - Test `test_six_cultures` pinnt die kanonische Anzahl + alle 6 IDs.
 
@@ -150,7 +150,7 @@ M4 hat keinen Audio. M5-Closeout liefert:
 
 ## Prio-Order
 
-1. **Bucket 4 (Success/Failure/Restart)** — high leverage, low cost, gives the game a "win state".
+1. **Bucket 4 (Success/Failure/Restart)** — DONE (commit 4d206a0).
 2. **Bucket 1 (Six Cultures)** — high content, gives the inhabitants variety.
 3. **Bucket 3 (Fifteen Events)** — high replayability, reuses M4 crisis-mechanics.
 4. **Bucket 2 (Ten Rooms)** — atlas extension, low cost (just sprites + mapping).

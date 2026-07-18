@@ -94,6 +94,11 @@ func _init() -> void:
 	# Inhabitant portraits
 	_save_png(_INHAB_DIR + "lanternbearer_scribe.png", _make_portrait_lanternbearer_scribe())
 	_save_png(_INHAB_DIR + "settler.png", _make_portrait_settler())
+	_save_png(_INHAB_DIR + "bellows.png", _make_portrait_bellows())
+	_save_png(_INHAB_DIR + "ember.png", _make_portrait_ember())
+	_save_png(_INHAB_DIR + "ledger.png", _make_portrait_ledger())
+	_save_png(_INHAB_DIR + "silvershroud.png", _make_portrait_silvershroud())
+	_save_png(_INHAB_DIR + "tide.png", _make_portrait_tide())
 	# Crisis icons
 	_save_png(_CRISIS_DIR + "plague.png", _make_crisis_plague())
 	_save_png(_CRISIS_DIR + "faction.png", _make_crisis_faction())
@@ -409,6 +414,151 @@ func _make_portrait_settler() -> Image:
 		img.set_pixel(12, y, _PAL.stone_dk)
 	img.set_pixel(12, 10, _PAL.stone_dk)
 	img.set_pixel(13, 10, _PAL.stone_dk)
+	# Eyes
+	img.set_pixel(7, 4, _PAL.ink)
+	img.set_pixel(9, 4, _PAL.ink)
+	return img
+
+
+## M5-Closeout Bucket 1: bellows
+## culture portrait. The bellows-
+## tender carries a leather
+## bellows at their hip; the
+## bellows are used to fan
+## forge-fires. The portrait
+## has a leather-bag shape on
+## the right side.
+func _make_portrait_bellows() -> Image:
+	var img: Image = Image.create(_PORTRAIT_W, _PORTRAIT_H, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	# Robe (moss)
+	for y in range(8, 24):
+		for x in range(4, 12):
+			img.set_pixel(x, y, _PAL.moss)
+	# Head
+	for y in range(2, 8):
+		for x in range(6, 10):
+			img.set_pixel(x, y, _PAL.bone)
+	# Bellows (leather bag)
+	for y in range(12, 18):
+		for x in range(11, 14):
+			img.set_pixel(x, y, _PAL.stone_dk)
+	img.set_pixel(11, 12, _PAL.stone)
+	img.set_pixel(13, 12, _PAL.stone)
+	# Nozzle (gold tip)
+	img.set_pixel(14, 14, _PAL.gold)
+	img.set_pixel(14, 15, _PAL.gold)
+	# Eyes
+	img.set_pixel(7, 4, _PAL.ink)
+	img.set_pixel(9, 4, _PAL.ink)
+	return img
+
+
+## M5-Closeout Bucket 1: ember
+## culture portrait. The fire-
+## keeper carries a glowing
+## ember; the ember is the
+## defining silhouette.
+func _make_portrait_ember() -> Image:
+	var img: Image = Image.create(_PORTRAIT_W, _PORTRAIT_H, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	# Robe (blood-red)
+	for y in range(8, 24):
+		for x in range(4, 12):
+			img.set_pixel(x, y, _PAL.blood)
+	# Head
+	for y in range(2, 8):
+		for x in range(6, 10):
+			img.set_pixel(x, y, _PAL.bone)
+	# Ember (glowing orange)
+	for y in range(10, 16):
+		for x in range(11, 14):
+			img.set_pixel(x, y, _PAL.ember)
+	img.set_pixel(12, 12, _PAL.gold)
+	# Eyes
+	img.set_pixel(7, 4, _PAL.ink)
+	img.set_pixel(9, 4, _PAL.ink)
+	return img
+
+
+## M5-Closeout Bucket 1: ledger
+## culture portrait. The ledger
+## scribe carries a book at
+## their side; the book is the
+## defining feature.
+func _make_portrait_ledger() -> Image:
+	var img: Image = Image.create(_PORTRAIT_W, _PORTRAIT_H, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	# Robe (parchment with gold trim)
+	for y in range(8, 24):
+		for x in range(4, 12):
+			img.set_pixel(x, y, _PAL.parchment)
+	# Head
+	for y in range(2, 8):
+		for x in range(6, 10):
+			img.set_pixel(x, y, _PAL.bone)
+	# Book (gold-edged)
+	for y in range(12, 18):
+		for x in range(11, 14):
+			img.set_pixel(x, y, _PAL.gold)
+	img.set_pixel(11, 12, _PAL.ink)
+	img.set_pixel(13, 12, _PAL.ink)
+	img.set_pixel(11, 17, _PAL.ink)
+	img.set_pixel(13, 17, _PAL.ink)
+	# Eyes
+	img.set_pixel(7, 4, _PAL.ink)
+	img.set_pixel(9, 4, _PAL.ink)
+	return img
+
+
+## M5-Closeout Bucket 1: silvershroud
+## culture portrait. The oath-
+## keeper carries a silver
+## chain; the chain is the
+## defining feature.
+func _make_portrait_silvershroud() -> Image:
+	var img: Image = Image.create(_PORTRAIT_W, _PORTRAIT_H, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	# Robe (fog)
+	for y in range(8, 24):
+		for x in range(4, 12):
+			img.set_pixel(x, y, _PAL.fog)
+	# Head
+	for y in range(2, 8):
+		for x in range(6, 10):
+			img.set_pixel(x, y, _PAL.bone)
+	# Chain (silver thread)
+	for y in range(10, 18):
+		img.set_pixel(12, y, _PAL.bone)
+	img.set_pixel(11, 12, _PAL.bone)
+	img.set_pixel(13, 12, _PAL.bone)
+	# Eyes
+	img.set_pixel(7, 4, _PAL.ink)
+	img.set_pixel(9, 4, _PAL.ink)
+	return img
+
+
+## M5-Closeout Bucket 1: tide
+## culture portrait. The tide-
+## reader carries a kelp
+## strand; the kelp is the
+## defining feature.
+func _make_portrait_tide() -> Image:
+	var img: Image = Image.create(_PORTRAIT_W, _PORTRAIT_H, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	# Robe (marsh)
+	for y in range(8, 24):
+		for x in range(4, 12):
+			img.set_pixel(x, y, _PAL.marsh)
+	# Head
+	for y in range(2, 8):
+		for x in range(6, 10):
+			img.set_pixel(x, y, _PAL.bone)
+	# Kelp (green strand)
+	for y in range(10, 18):
+		img.set_pixel(12, y, _PAL.moss)
+	img.set_pixel(11, 14, _PAL.moss)
+	img.set_pixel(13, 14, _PAL.moss)
 	# Eyes
 	img.set_pixel(7, 4, _PAL.ink)
 	img.set_pixel(9, 4, _PAL.ink)

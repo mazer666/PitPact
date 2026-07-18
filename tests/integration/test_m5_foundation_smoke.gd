@@ -66,7 +66,9 @@ func test_playable_shell_factory_builds_canonical_sim() -> void:
 	assert_ne(sim.exploration_map, null, "exploration_map should be registered")
 	# 4. Three inhabitants.
 	var inhabitants: Array = built["inhabitants"]
-	assert_eq(inhabitants.size(), 3, "PlayableShell should create 3 inhabitants")
+	assert_eq(
+		inhabitants.size(), 6, "PlayableShell should create 6 inhabitants (M5-Closeout Bucket 1)"
+	)
 	# 5. One crisis (plague_outbreak).
 	var crises: Array = built["crises"]
 	assert_eq(crises.size(), 1, "PlayableShell should create 1 crisis")

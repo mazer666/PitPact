@@ -72,7 +72,11 @@ func test_playable_shell_renders_in_viewport() -> void:
 	# have 3 children (one per
 	# inhabitant).
 	var inhabitant_list: Node = shell.get_node("InhabitantPanel/VBox/InhabitantList")
-	assert_eq(inhabitant_list.get_child_count(), 3, "InhabitantList should have 3 rows")
+	assert_eq(
+		inhabitant_list.get_child_count(),
+		6,
+		"InhabitantList should have 6 rows (M5-Closeout Bucket 1)"
+	)
 	# 7. The powers list should have
 	# 3 children (one per power).
 	var powers_list: Node = shell.get_node("PactmakerPanel/VBox/PowersList")

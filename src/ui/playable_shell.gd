@@ -147,7 +147,8 @@ static func build_with_seed(p_seed: int) -> Dictionary:
 ## - `world: World` — the M3 world
 ##   (24x24, two biomes)
 ## - `inhabitants: Array[Inhabitant]`
-##   — three inhabitants
+##   — six inhabitants (M5-Closeout
+##   Bucket 1, one per culture)
 ## - `crises: Array[Crisis]` — one
 ##   crisis (plague_outbreak, with the
 ##   M4 14-day autonomous resolution)
@@ -189,14 +190,22 @@ static func build() -> Dictionary:
 	var emap: ExplorationMap = ExplorationMap.new(WORLD_W, WORLD_H, REALM_ANCHOR, 1)
 	sim.register_exploration(emap)
 	sim.anchor = REALM_ANCHOR
-	# Inhabitants: three (1 Lanternbearer
-	# + 2 generic). The M5-Foundation uses
-	# the M2 Track A inhabitant carrier
-	# (id, culture, name, role, position).
+	# Inhabitants: M5-Closeout Bucket 1
+	# ships 6 inhabitants (one per
+	# culture: lanternbearer, bellows,
+	# ember, ledger, silvershroud, tide).
+	# The win condition (M5-Closeout
+	# Bucket 4) requires at least 4
+	# inhabitants; the M5-Closeout
+	# Bucket 1 satisfies the requirement
+	# with margin.
 	var inhabitants: Array = []
 	inhabitants.append(_make_inhabitant(&"lanternbearer_lia", &"lanternbearer", &"scribe"))
-	inhabitants.append(_make_inhabitant(&"generic_aren", &"lanternbearer", &"settler"))
-	inhabitants.append(_make_inhabitant(&"generic_bex", &"lanternbearer", &"settler"))
+	inhabitants.append(_make_inhabitant(&"bellows_corin", &"bellows", &"bellows-tender"))
+	inhabitants.append(_make_inhabitant(&"ember_vesh", &"ember", &"fire-keeper"))
+	inhabitants.append(_make_inhabitant(&"ledger_owen", &"ledger", &"scribe-archivist"))
+	inhabitants.append(_make_inhabitant(&"silvershroud_ila", &"silvershroud", &"oath-keeper"))
+	inhabitants.append(_make_inhabitant(&"tide_maren", &"tide", &"tide-reader"))
 	for inh in inhabitants:
 		inh.position = REALM_ANCHOR
 	# Contracts: one standard pact per
