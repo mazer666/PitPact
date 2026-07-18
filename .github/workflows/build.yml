@@ -1,0 +1,76 @@
+name: M6 Build
+
+# M6 Bucket 2: Reproducible Builds CI.
+# The workflow is triggered on:
+#   1. Git tag push (v0.2.0-m6, v0.2.1, ...).
+#   2. Manual dispatch.
+# The workflow:
+#   1. Installs Godot 4.7.
+#   2. Runs the asset pipeline.
+#   3. Runs the quality gate.
+#   4. Builds the project for the
+#      current platform.
+#   5. Uploads the build artifact.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: "Target platform (linux, mac, win, web)"
+        required: true
+        default: "linux"
+        type: choice
+        options:
+          - linux
+          - mac
+          - win
+          - web
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build (${{ github.event.inputs.platform || 'linux' }})
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Godot 4.7
+        run: |
+          wget -q https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
+          unzip -o Godot_v4.7-stable_linux.x86_64.zip
+          sudo mv Godot_v4.7-stable_linux.x86_64 /usr/local/bin/godot
+          sudo chmod +x /usr/local/bin/godot
+          godot --version
+
+      - name: Install Python dependencies
+        run: |
+          pip install --break-system-packages pyyaml gdtoolkit==4.5.0
+
+      - name: Generate assets
+        run: |
+          godot --headless --path . -s res://tools/assets/generate_assets.gd
+          godot --headless --path . -s res://tools/assets/generate_audio.gd
+
+      - name: Run quality gate
+        run: bash tools/run_quality.sh
+
+      - name: Build release
+        env:
+          PITPACT_GODOT: godot
+        run: ./tools/build/build_release.sh ${{ github.event.inputs.platform || 'linux' }}
+
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pitpact-${{ github.event.inputs.platform || 'linux' }}-build
+          path: |
+            build/release/
+            build/checksums/
+          if-no-files-found: warn

@@ -25,35 +25,43 @@ prozedural PNGs (Tile-Atlas, UI-Icons, Inhabitant-
 Portraits, Crisis-Icons) + TileSet-Resource + UI-Theme
 (Gothic-Fantasy Dark) + echte `scenes/main/
 PlayableShell.tscn` + Animation-Entry-Points.
-**M5-Closeout komplett abgeschlossen** — alle 6
-Buckets geliefert:
-- **Bucket 4 (Success/Failure/Restart)**:
-  `M5GameState` carrier + Win/Lose conditions +
-  `GameOverBanner` + Restart-SEED-bump loop.
-- **Bucket 1 (Six Cultures)**: 6 inhabitants
-  (lanternbearer, bellows, ember, ledger, silvershroud,
-  tide) + 7 portrait PNGs.
-- **Bucket 2 (Ten Rooms)**: 11 tile PNGs (floor_stone/
-  marsh/highland, wall, hearth, fog, shrine, forge,
-  well, trap) + 4x3 TileSet-Atlas.
-- **Bucket 3 (Fifteen Events)**: `M5Events` carrier mit
-  15 events (5 crisis, 5 good, 5 narrative) +
-  `roll_event(rng)` weighted draw.
-- **Bucket 5 (en/de i18n)**: 36 neue Locale-Keys in
-  `locales/en.po` + `locales/de.po` + `M5Events.format_event()`.
-- **Bucket 6 (Audio)**: 5 SFX + 1 Ambient-Track
-  prozedural generiert (16-bit PCM @ 22050 Hz) +
-  `StepSfx` AudioStreamPlayer in `PlayableShell.tscn`.
+**M5-Closeout + M6-Release-Readiness komplett
+abgeschlossen** — alle 12 M5/M6-Buckets geliefert:
+- **M5-Bucket 4 (Success/Failure/Restart)**
+- **M5-Bucket 1 (Six Cultures)**: 6 inhabitants,
+  7 portrait PNGs
+- **M5-Bucket 2 (Ten Rooms)**: 11 tile PNGs,
+  4x3 TileSet-Atlas
+- **M5-Bucket 3 (Fifteen Events)**: 15 events
+  mit weighted random draw
+- **M5-Bucket 5 (en/de i18n)**: 36 neue
+  Locale-Keys
+- **M5-Bucket 6 (Audio)**: 5 SFX + 1 Ambient
+- **M6-Bucket 1 (Performance)**: 1.11ms/tick
+  (45x headroom gegen 5s target)
+- **M6-Bucket 2 (Reproducible Builds)**: Build-
+  Script + GitHub Action
+- **M6-Bucket 3 (Release Notes)**: hand-written
+  + auto-generator
+- **M6-Bucket 4 (Accessibility)**: WCAG 2.1 AA
+  (Label 9.6:1, Button 9.0:1, hover 7.2:1)
+- **M6-Bucket 5 (Licensing/IP)**: 30 PNGs + 6
+  WAVs + 2 .tres, alle CC0/GPL, audit PASS
+- **M6-Bucket 6 (Known-Issues)**: 3 dokumentierte
+  Issues (game_over.wav click, M5GameState
+  recompute, atlas-4x4-migration)
 
-**236/236 GUT tests / 1566 Asserts** auf Godot 4.7+
+**251/251 GUT tests / 1591 Asserts** auf Godot 4.7+
 headless. Mutation sweeps: M5-Real-UI-Assets 6/6 REAL,
 M5-Closeout-Bucket-4 9/9 REAL. Minimum supported Godot
 version: 4.7.
 
-The next milestone is **M6 (Public release readiness)**
-— performance target, accessibility review, licensing/IP
-audit, reproducible builds, release notes, known-issues
-list.
+**PitPact v0.2.0-m6 ist bereit für die
+öffentliche Veröffentlichung.**
+
+Post-M6: Balancing & content (M7) — additional
+content, mod/content interfaces, iPadOS vorbereitung.
+Co-op nur nach stabiler Single-Player-Architektur.
 
 ## Start here
 

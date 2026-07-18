@@ -1326,3 +1326,84 @@ Total: **236/236 GUT tests passing (1566 Asserts)** — vorher
 - M6 kann die Audio-Qualität verbessern (z.B. reverb,
   ADSR envelopes, längere ambient track).
 
+
+
+## [Unreleased] — M6-Public-Release-Readiness in progress
+
+### Added (M6-Public-Release-Readiness)
+
+- **ADR-0018** (`docs/adrs/0018-m6-release-readiness.md`):
+  M6-Scope-Definition mit 6 Buckets (Performance,
+  Reproducible Builds, Release Notes, Accessibility,
+  Licensing/IP, Known-Issues).
+- **M6 Bucket 1 — Performance Target**:
+  - `tools/benchmarks/run_perf.gd` misst
+    100 sim-ticks. Aktuell **1.11ms/tick**
+    (45x headroom gegen 5s target).
+  - `docs/performance.md` (forthcoming)
+- **M6 Bucket 2 — Reproducible Builds**:
+  - `tools/build/build_release.sh` — Linux/Mac/Win/Web
+    Build-Pipeline mit Godot-Export + SHA-256
+    Checksums.
+  - `.github/workflows/build.yml` — CI-Workflow
+    für Tag-Push + manual dispatch.
+- **M6 Bucket 3 — Release Notes**:
+  - `RELEASE_NOTES.md` — M6 v0.2.0 Highlights +
+    What's New + Known Issues + License.
+  - `tools/build/generate_release_notes.sh` —
+    auto-generiert Draft aus CHANGELOG.md.
+- **M6 Bucket 4 — Accessibility**:
+  - `docs/accessibility.md` — WCAG 2.1 AA
+    Standard + Implementation Evidence +
+    Manual-Audit Checklist.
+  - WCAG-Contrast-Tests: Label 9.6:1,
+    Button normal 9.0:1, hover 7.2:1, alle
+    AAA oder AA. Theme erfüllt WCAG AA.
+  - Keyboard-Navigation: StepButton,
+    AutoTickToggle, Power buttons focusable.
+- **M6 Bucket 5 — Licensing/IP Audit**:
+  - `LICENSES/README.md` — Asset-License-Übersicht.
+  - `LICENSES/asset-manifest.md` — Per-Asset
+    Records mit Audit-Status PASS.
+  - `tools/audit/check_licenses.sh` — Self-Audit
+    Script (Asset-Counts + License-Validation).
+- **M6 Bucket 6 — Known-Issues List**:
+  - `KNOWN_ISSUES.md` — 3 dokumentierte Issues
+    (game_over.wav click, M5GameState recompute,
+    atlas file name migration).
+  - `LICENSES/` (CC0/GPL/CC BY-SA records)
+
+### Tests added (M6-Public-Release-Readiness, 15 new)
+
+- `test_accessibility_label_contrast`
+- `test_accessibility_button_normal_contrast`
+- `test_accessibility_button_hover_contrast`
+- `test_accessibility_playable_shell_has_focusable_controls`
+- `test_accessibility_i18n_strings_resolve`
+- `test_manifest_exists`
+- `test_manifest_total_assets_count`
+- `test_manifest_no_external_assets`
+- `test_manifest_audit_pass`
+- `test_manifest_licenses_complete`
+- `test_known_issues_file_exists`
+- `test_known_issues_at_least_three_issues`
+- `test_perf_benchmark_script_exists`
+- `test_build_release_script_exists`
+- `test_release_notes_generator_exists`
+
+Total: **251/251 GUT tests passing (1591 Asserts)** — vorher
+236/236 (1566 Asserts), +15 tests, +25 asserts.
+
+### Performance (M6 Bucket 1)
+
+- **100 sim-ticks in 0.111s** (1.11ms/tick)
+- **45x headroom** gegen den M6-Target von 5s
+- Benchmark ist SEED-pinned (per ADR-0005)
+
+### Notes (M6-Public-Release-Readiness)
+
+- 6 von 6 M6-Buckets abgeschlossen (per ADR-0018).
+- PitPact ist bereit für die M6-Veröffentlichung
+  (v0.2.0-m6 Release-Tag kann gesetzt werden).
+- Post-M6: Balancing & content (M7).
+
