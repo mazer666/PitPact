@@ -1680,3 +1680,83 @@ Total: **273/273 GUT tests passing (1652 Asserts)** — vorher
   (was 291/291, 1678 in M8
   closeout; +42 tests, +63
   asserts).
+
+## [Unreleased] — M10-Co-op-Live-Mode in progress
+
+### Added (M10-Co-op-Live-Mode)
+
+- `src/net/enet_adapter.gd` — `EnetAdapter`
+  carrier wrapping Godot's
+  `ENetMultiplayerPeer` (headless
+  loopback; production path uses
+  real ENet).
+- `src/net/peer_sync.gd` — `PeerSync`
+  carrier (lockstep state-hash
+  broadcast + desync detection).
+- `src/net/replay_recorder.gd` —
+  `ReplayRecorder` carrier
+  (JSON-lines format, save/load
+  roundtrip).
+- `src/net/network_stats.gd` —
+  `NetworkStats` carrier (per-peer
+  RTT + packet loss, side-quest G).
+- `docs/adrs/0022-m10-coop-live.md` —
+  ADR-0022 documenting the 3 M10
+  buckets + side-quest G.
+
+### Tests added (M10-Co-op-Live-Mode, 34 new)
+
+- `tests/integration/test_m10_enet_adapter.gd`
+  (11) — version, host/client,
+  accept/connect, send, poll,
+  close, multiple peers, dup
+  accept.
+- `tests/integration/test_m10_peer_sync.gd`
+  (9) — version, make, tick,
+  peers_in_sync, local_state,
+  loopback, desync detection,
+  unknown peer.
+- `tests/integration/test_m10_replay_recorder.gd`
+  (8) — version, make, record,
+  events, save/load roundtrip,
+  load nonexistent, clear.
+- `tests/integration/test_m10_network_stats.gd`
+  (6) — version, RTT recording,
+  average RTT, packet loss rate,
+  unknown peer, no-sent, per-peer
+  isolation.
+
+### Hardened (M10-Co-op-Live-Mode)
+
+- 5/5 M10 mutations REAL, 0
+  silent-pass
+  (`tools/audit/mutation_sweep_m10.gd`):
+  1. remove `EnetAdapter.send` body
+     (caught by `test_m10_enet_adapter_send_returns_count`)
+  2. remove `PeerSync.tick` broadcast
+     (caught by `test_m10_peer_sync_*`)
+  3. remove `ReplayRecorder.record_event` body
+     (caught by `test_m10_replay_recorder_record_event`)
+  4. remove `NetworkStats.record_rtt` append
+     (caught by `test_m10_network_stats_record_rtt`)
+  5. remove `CoopLobby.add_peer` body
+     (regression check; caught by
+     `test_m9_coop_lobby_add_peer`)
+
+### Notes (M10-Co-op-Live-Mode)
+
+- The M10 closeout ships the
+  live-mode headless loopback
+  (host + client in the same
+  process). Real internet co-op
+  (NAT-traversal, hole-punching,
+  production ENet) is the
+  M11+ closeout's job.
+- `is_connected()` was renamed
+  to `is_adapter_active()` to
+  avoid a name collision with
+  `Object.is_connected()`.
+- 367/367 GUT tests, 1791 Asserts
+  (was 333/333, 1741 in M9
+  closeout; +34 tests, +50
+  asserts).

@@ -26,8 +26,8 @@ Portraits, Crisis-Icons) + TileSet-Resource + UI-Theme
 (Gothic-Fantasy Dark) + echte `scenes/main/
 PlayableShell.tscn` + Animation-Entry-Points.
 **M5-Closeout + M6-Release-Readiness + M7-Content-and-Balance
-+ M8-iPadOS-and-Mobile + M9-Co-op-Foundation komplett abgeschlossen**
-— alle 22 M5/M6/M7/M8/M9-Buckets + 1 Side-Quest geliefert:
++ M8-iPadOS-and-Mobile + M9-Co-op-Foundation + M10-Co-op-Live-Mode komplett abgeschlossen**
+— alle 25 M5/M6/M7/M8/M9/M10-Buckets + 2 Side-Quests geliefert:
 - **M5-Bucket 4 (Success/Failure/Restart)**
 - **M5-Bucket 1 (Six Cultures)**: 6 inhabitants,
   7 portrait PNGs
@@ -61,20 +61,19 @@ PlayableShell.tscn` + Animation-Entry-Points.
   `data/mods/example_mod/` +
   `tools/mod_template/`
 
-**333/333 GUT tests / 1741 Asserts** auf Godot 4.7+
+**367/367 GUT tests / 1791 Asserts** auf Godot 4.7+
 headless. Mutation sweeps: M5-Real-UI-Assets 6/6 REAL,
-M5-Closeout-Bucket-4 9/9 REAL, M8-iPadOS-and-Mobile 4/4 REAL, M9-Co-op-Foundation 5/5 REAL.
+M5-Closeout-Bucket-4 9/9 REAL, M8-iPadOS-and-Mobile 4/4 REAL, M9-Co-op-Foundation 5/5 REAL, M10-Co-op-Live-Mode 5/5 REAL.
 Minimum supported Godot
 version: 4.7.
 
-**PitPact v0.5.0-m9 ist bereit für die
+**PitPact v0.6.0-m10 ist bereit für die
 öffentliche Veröffentlichung.**
 
-Post-M9: Co-op (full mode) (M10+). Die M9 closeout liefert die
-Co-op-Foundation (lockstep protocol, lobby, mod hot-reload,
-balance iteration, touch visualizer); die M10 closeout
-implementiert den vollen Co-op-Modus mit ENet-Adapter
-und Echtzeit-Sync.
+Post-M10: Echtes Internet-Co-op (M11+). Die M10 closeout
+liefert den Live-Modus (ENet-Adapter, Peer-Sync, Replay,
+Network-Stats) im headless-Loopback-Modus; die M11 closeout
+aktiviert echtes Internet-Co-op mit NAT-Traversal.
 
 ## Start here
 

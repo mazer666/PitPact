@@ -117,6 +117,7 @@ The module-boundary check is automated via
 | 0019 | M7-Content-and-Balance | M7 |
 | 0020 | M8-iPadOS-and-Mobile | M8 |
 | 0021 | M9-Co-op-Foundation | M9 |
+| 0022 | M10-Co-op-Live-Mode | M10 |
 
 ## Test count progression
 
@@ -144,6 +145,7 @@ The module-boundary check is automated via
 | M7-Content-and-Balance | 273 | 1652 |
 | M8-iPadOS-and-Mobile | 291 | 1678 |
 | M9-Co-op-Foundation | 333 | 1741 |
+| M10-Co-op-Live-Mode | 367 | 1791 |
 
 ## References
 
