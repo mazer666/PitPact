@@ -280,13 +280,13 @@ func _recompute_room_counts_from_world(world: Variant) -> void:
 			match tile_id:
 				4:  # hearth
 					hearth_count += 1
-				6:  # shrine (M5-Closeout)
+				8:  # shrine (M5-Closeout Bucket 2)
 					shrine_count += 1
-				7:  # forge (M5-Closeout)
+				9:  # forge (M5-Closeout Bucket 2)
 					forge_count += 1
-				8:  # well (M5-Closeout)
+				10:  # well (M5-Closeout Bucket 2)
 					well_count += 1
-				9:  # trap (M5-Closeout)
+				11:  # trap (M5-Closeout Bucket 2)
 					trap_count += 1
 
 
@@ -333,13 +333,13 @@ func _recompute_room_counts(sim: Variant) -> void:
 			match tile_id:
 				4:  # hearth
 					hearth_count += 1
-				6:  # shrine (M5-Closeout)
+				8:  # shrine (M5-Closeout Bucket 2)
 					shrine_count += 1
-				7:  # forge (M5-Closeout)
+				9:  # forge (M5-Closeout Bucket 2)
 					forge_count += 1
-				8:  # well (M5-Closeout)
+				10:  # well (M5-Closeout Bucket 2)
 					well_count += 1
-				9:  # trap (M5-Closeout)
+				11:  # trap (M5-Closeout Bucket 2)
 					trap_count += 1
 
 

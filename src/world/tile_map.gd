@@ -44,9 +44,14 @@ const _TILE_ATLAS_PATH: String = "res://assets/tiles/world_tileset.tres"
 ## is pinned in the test
 ## `test_world_tile_map_atlas_mapping` (regression
 ## net for the M5-Foundation atlas layout).
+## M5-Closeout Bucket 2: the atlas is now
+## 4x3 = 12 cells (4 new rooms: shrine, forge,
+## well, trap). The mapping is
+## `(tile_id % 4, tile_id / 4)` — tiles 0..3 in
+## row 0, 4..7 in row 1, 8..11 in row 2.
 func tile_id_to_atlas_coord(tile_id: int) -> Vector2i:
-	# The atlas is 4x2 = 8 cells. Tiles 0..3 in row 0,
-	# tiles 4..7 in row 1.
+	# The atlas is 4x3 = 12 cells. Tiles 0..3
+	# in row 0, 4..7 in row 1, 8..11 in row 2.
 	return Vector2i(tile_id % 4, tile_id / 4)
 
 

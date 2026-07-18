@@ -267,6 +267,30 @@ func _hex_to_int64(hex_str: String) -> int:
 
 ## Build one attempt's `WorldMap`. The function is
 ## the per-attempt deterministic generator: a
+## M5-Closeout Bucket 2: place a
+## single room tile. The method is
+## the canonical "place a room
+## tile" entry point; the M5-
+## Closeout room placement uses
+## it to drop shrine/forge/well/
+## trap tiles around the hearth.
+## Out-of-bounds positions are
+## silently skipped (the realm's
+## edge is a wall).
+func _place_room_tile(
+	m, width: int, height: int, pos: Vector2i, room_id: int, _room_id_str: StringName
+) -> void:
+	if pos.x < 0 or pos.y < 0 or pos.x >= width or pos.y >= height:
+		return
+	var idx: int = pos.y * width + pos.x
+	if idx < 0 or idx >= m.tiles.size():
+		return
+	var tile: Tile = m.tiles[idx]
+	if tile == null:
+		return
+	tile.id = room_id
+
+
 ## `SplitMix64` constructed from `attempt_seed`, the
 ## tile grid filled with the two biomes using a
 ## height-value threshold, the Hearth's tile
@@ -319,6 +343,28 @@ func _build_attempt(
 			&"burden": 0.3,
 			&"height": 0.0,
 		}
+	# M5-Closeout Bucket 2: place
+	# the 4 new rooms (shrine, forge,
+	# well, trap) at fixed positions
+	# relative to the hearth. The
+	# positions are pinned in
+	# `test_m5_ten_rooms_*.gd`
+	# (the regression net for the
+	# room placement). The rooms
+	# form a "cross" around the
+	# hearth: shrine (north),
+	# forge (east), well (south),
+	# trap (west).
+	if (
+		hearth_position.x >= 0
+		and hearth_position.y >= 0
+		and hearth_position.x < width
+		and hearth_position.y < height
+	):
+		_place_room_tile(m, width, height, hearth_position + Vector2i(0, -1), 8, &"shrine")
+		_place_room_tile(m, width, height, hearth_position + Vector2i(1, 0), 9, &"forge")
+		_place_room_tile(m, width, height, hearth_position + Vector2i(0, 1), 10, &"well")
+		_place_room_tile(m, width, height, hearth_position + Vector2i(-1, 0), 11, &"trap")
 	# Compute the per-biome counts.
 	var counts: Dictionary = {}
 	for t in m.tiles:

@@ -80,6 +80,10 @@ func _init() -> void:
 	_save_png(_TILES_DIR + "wall_stone.png", _make_wall_stone())
 	_save_png(_TILES_DIR + "hearth.png", _make_hearth())
 	_save_png(_TILES_DIR + "fog.png", _make_fog())
+	_save_png(_TILES_DIR + "shrine.png", _make_shrine())
+	_save_png(_TILES_DIR + "forge.png", _make_forge())
+	_save_png(_TILES_DIR + "well.png", _make_well())
+	_save_png(_TILES_DIR + "trap.png", _make_trap())
 	# UI icons
 	_save_png(_UI_DIR + "step.png", _make_icon_step())
 	_save_png(_UI_DIR + "auto_tick.png", _make_icon_auto_tick())
@@ -235,6 +239,111 @@ func _make_fog() -> Image:
 		var x: int = randi() % _TILE_W
 		var y: int = randi() % _TILE_H
 		img.set_pixel(x, y, _PAL.parchment)
+	return img
+
+
+## M5-Closeout Bucket 2: shrine
+## tile. The shrine is a ritual
+## site; the win condition
+## (M5-Closeout Bucket 4) requires
+## at least 1 shrine. The shrine
+## has a gold-trimmed base + a
+## violet altar in the center.
+func _make_shrine() -> Image:
+	var img: Image = Image.create(_TILE_W, _TILE_H, false, Image.FORMAT_RGBA8)
+	img.fill(_PAL.stone)
+	# Base (parchment slab)
+	for y in range(8, 14):
+		for x in range(4, 12):
+			img.set_pixel(x, y, _PAL.parchment)
+	# Altar (violet)
+	for y in range(6, 8):
+		for x in range(6, 10):
+			img.set_pixel(x, y, _PAL.violet)
+	# Gold trim
+	for x in range(4, 12):
+		img.set_pixel(x, 8, _PAL.gold)
+		img.set_pixel(x, 13, _PAL.gold)
+	img.set_pixel(4, 8, _PAL.gold)
+	img.set_pixel(11, 8, _PAL.gold)
+	img.set_pixel(4, 13, _PAL.gold)
+	img.set_pixel(11, 13, _PAL.gold)
+	return img
+
+
+## M5-Closeout Bucket 2: forge
+## tile. The forge is a crafting
+## site; the bellows culture
+## (M5-Closeout Bucket 1) gets
+## a bonus here. The forge has
+## a stone base + an ember-glow
+## center.
+func _make_forge() -> Image:
+	var img: Image = Image.create(_TILE_W, _TILE_H, false, Image.FORMAT_RGBA8)
+	img.fill(_PAL.stone)
+	# Anvil (dark stone)
+	for y in range(6, 10):
+		for x in range(4, 12):
+			img.set_pixel(x, y, _PAL.stone_dk)
+	# Ember glow (center)
+	for y in range(10, 14):
+		for x in range(6, 10):
+			img.set_pixel(x, y, _PAL.ember)
+	img.set_pixel(7, 11, _PAL.gold)
+	img.set_pixel(8, 11, _PAL.gold)
+	img.set_pixel(7, 12, _PAL.gold)
+	img.set_pixel(8, 12, _PAL.gold)
+	return img
+
+
+## M5-Closeout Bucket 2: well
+## tile. The well is a water
+## source; the tide culture
+## (M5-Closeout Bucket 1) gets
+## a bonus here. The well has
+## a stone rim + a blue (highland)
+## water surface.
+func _make_well() -> Image:
+	var img: Image = Image.create(_TILE_W, _TILE_H, false, Image.FORMAT_RGBA8)
+	img.fill(_PAL.stone)
+	# Rim
+	for y in range(5, 12):
+		for x in range(3, 13):
+			img.set_pixel(x, y, _PAL.stone_dk)
+	# Water (highland blue)
+	for y in range(7, 10):
+		for x in range(5, 11):
+			img.set_pixel(x, y, _PAL.highland)
+	# Center post
+	for y in range(2, 5):
+		img.set_pixel(8, y, _PAL.bone)
+	img.set_pixel(7, 2, _PAL.bone)
+	img.set_pixel(9, 2, _PAL.bone)
+	return img
+
+
+## M5-Closeout Bucket 2: trap
+## tile. The trap is a
+## crisis-amplifier (the
+## M5-Closeout Bucket 3 events
+## can trigger a trap effect).
+## The trap has a blood-red
+## pressure plate + a stone
+## base.
+func _make_trap() -> Image:
+	var img: Image = Image.create(_TILE_W, _TILE_H, false, Image.FORMAT_RGBA8)
+	img.fill(_PAL.stone)
+	# Pressure plate (blood)
+	for y in range(8, 12):
+		for x in range(4, 12):
+			img.set_pixel(x, y, _PAL.blood)
+	# Teeth (bone spikes)
+	for x in range(5, 11):
+		img.set_pixel(x, 5, _PAL.bone)
+		img.set_pixel(x, 6, _PAL.bone)
+	# Inset shadow
+	for x in range(5, 11):
+		img.set_pixel(x, 13, _PAL.stone_dk)
 	return img
 
 
@@ -613,8 +722,19 @@ func _make_crisis_faction() -> Image:
 # --- Atlas ---
 
 func _make_atlas_4x4() -> Image:
-	# 4x4 grid of 16x16 tiles = 64x64 atlas
-	var img: Image = Image.create(_TILE_W * 4, _TILE_H * 4, false, Image.FORMAT_RGBA8)
+	# M5-Closeout Bucket 2: atlas is
+	# now 4x3 (12 cells) — 6 M5-Foundation
+	# cells (row 0: floor_stone, floor_marsh,
+	# floor_highland, wall_stone; row 1:
+	# hearth, fog, floor_stone, wall_stone)
+	# + 4 new M5-Closeout cells (row 2:
+	# shrine, forge, well, trap). The atlas
+	# is renamed to `atlas_4x3` semantically
+	# but the file name `atlas_4x4.png` is
+	# retained for backward compatibility
+	# (the M5-Foundation importers expect
+	# the old name).
+	var img: Image = Image.create(_TILE_W * 4, _TILE_H * 3, false, Image.FORMAT_RGBA8)
 	img.fill(_PAL.ink)
 	var tile_a: Image = _make_floor_stone()
 	var tile_b: Image = _make_floor_marsh()
@@ -625,15 +745,16 @@ func _make_atlas_4x4() -> Image:
 	_blit(img, tile_b, 1, 0)
 	_blit(img, tile_c, 2, 0)
 	_blit(img, tile_d, 3, 0)
-	# Row 1: hearth + fog
+	# Row 1: hearth + fog + filler
 	_blit(img, _make_hearth(), 0, 1)
 	_blit(img, _make_fog(), 1, 1)
 	_blit(img, tile_a, 2, 1)
 	_blit(img, tile_d, 3, 1)
-	# Row 2-3: empty / padding
-	for r in range(2, 4):
-		for c in range(4):
-			_blit(img, tile_a, c, r)
+	# Row 2 (M5-Closeout): shrine, forge, well, trap
+	_blit(img, _make_shrine(), 0, 2)
+	_blit(img, _make_forge(), 1, 2)
+	_blit(img, _make_well(), 2, 2)
+	_blit(img, _make_trap(), 3, 2)
 	return img
 
 

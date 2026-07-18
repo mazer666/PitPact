@@ -1102,3 +1102,61 @@ Total: **202/202 GUT tests passing (1045 Asserts)** — vorher
 - Tile IDs für shrine/forge/well/trap (6/7/8/9) sind im
   `M5GameState` schon gemappt; die Atlas-Erweiterung + die
   Tile-PNGs kommen in Bucket 2.
+
+
+## [Unreleased] — M5-Closeout-Bucket-2 (Ten Rooms) in progress
+
+### Added (M5-Closeout-Bucket-2)
+
+- **4 neue Tile-PNGs** (prozedural generiert, SEED-pinned):
+  - `assets/tiles/shrine.png` — Gold-getrimmte Parchment-
+    Platte mit violettem Altar (16x16).
+  - `assets/tiles/forge.png` — Dunkler Amboss + Ember-Glow
+    Zentrum (16x16).
+  - `assets/tiles/well.png` — Steinerner Rand + Highland-
+    blaues Wasser + Knochengerüst (16x16).
+  - `assets/tiles/trap.png` — Blutrote Druckplatte + Knochen-
+    Stacheln (16x16).
+- **TileSet-Resource erweitert** (`assets/tiles/world_tileset.tres`):
+  Atlas von 4x2 (8 Cells) auf **4x3 (12 Cells)**. Neue Cells:
+  shrine=8, forge=9, well=10, trap=11.
+- **Atlas-PNG erweitert** (`assets/tiles/atlas_4x4.png`):
+  48x48 Pixel (4 cols x 3 rows of 16x16). File-Name bleibt
+  für Backward-Compat.
+- **WorldGenerator platziert 4 neue Räume** automatisch
+  um den Hearth: shrine (Nord), forge (Ost), well (Süd),
+  trap (West). Out-of-bounds safe (silent skip).
+- **M5GameState zählt die 4 neuen Räume**:
+  `shrine_count`, `forge_count`, `well_count`, `trap_count`
+  werden aus dem world-grid recomputed (tile.id
+  matches 8, 9, 10, 11).
+- **Win condition (M5-Closeout Bucket 4)** ist jetzt
+  erreichbar: 30 Tage + 1 hearth + 1 shrine + 1 forge
+  + 1 well + 1 trap + 4 inhabitants.
+- **Tile-ID-Mapping** (`WorldTileMapLayer.tile_id_to_atlas_coord`):
+  `(id % 4, id / 4)` deckt jetzt 0..11 ab (vorher 0..7).
+  Shrine=8 → (0,2), Forge=9 → (1,2), Well=10 → (2,2),
+  Trap=11 → (3,2).
+
+### Tests added (M5-Closeout-Bucket-2, 6 new)
+
+- `test_ten_rooms_new_tile_pngs_exist`
+- `test_ten_rooms_tile_count`
+- `test_ten_rooms_atlas_twelve_cells`
+- `test_ten_rooms_atlas_mapping_ids_8_through_11`
+- `test_ten_rooms_world_has_shrine_forge_well_trap`
+- `test_ten_rooms_win_requires_all_four_new_rooms`
+
+Total: **215/215 GUT tests passing (1104 Asserts)** — vorher
+209/209 (1086 Asserts), +6 tests, +18 asserts.
+
+### Notes (M5-Closeout-Bucket-2)
+
+- Der Atlas-File heißt weiterhin `atlas_4x4.png` (nicht
+  `atlas_4x3.png`) für Backward-Compat mit existierenden
+  M5-Real-UI-Assets Imports. Die Grösse hat sich von
+  64x64 auf 48x48 geändert.
+- Der Atlas hat jetzt 12 Cells (vorher 8), die Win-
+  Condition (Bucket 4) ist damit vollständig testbar.
+- ADR-0017 Bucket 2 ist jetzt vollständig abgeschlossen.
+
