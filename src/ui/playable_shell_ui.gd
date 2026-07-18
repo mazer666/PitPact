@@ -177,6 +177,16 @@ var _game_over_summary: Label
 ## on every restart.
 var _current_seed: int = 0
 
+## M5-Closeout Bucket 6: the
+## step SFX player. The player
+## is loaded from the .tscn
+## (the production path); the
+## code-driven fallback path
+## does not initialize it
+## (the headless test path
+## does not need audio).
+var _step_sfx: AudioStreamPlayer
+
 ## Build-once guard. The M5-Foundation
 ## `build_ui` is idempotent: `_ready`
 ## (scene path) and `bind` (test path)
@@ -294,6 +304,11 @@ func build_ui() -> void:
 		# a crisis is pending.
 		_crisis_banner = get_node("CrisisBanner")
 		_crisis_banner.visible = false
+		# M5-Closeout Bucket 6: the
+		# step SFX player.
+		_step_sfx = null
+		if has_node("StepSfx"):
+			_step_sfx = get_node("StepSfx")
 		# M5-Closeout: hide the game-over
 		# banner (the player is alive).
 		_game_over_banner = null
@@ -457,6 +472,14 @@ func _on_step_pressed() -> void:
 	# can assert the day.
 	if _time_label != null:
 		_time_label.text = format_day_label(int(sim.time_days))
+	# M5-Closeout Bucket 6: play
+	# the step SFX (the canonical
+	# "audio cue for the step
+	# action" entry point). The
+	# player is null in headless
+	# mode (the test path).
+	if _step_sfx != null and _step_sfx.stream != null:
+		_step_sfx.play()
 
 
 ## Format the day label. The method is
@@ -623,3 +646,4 @@ func _reset_built() -> void:
 	_game_over_banner = null
 	_game_over_title = null
 	_game_over_summary = null
+	_step_sfx = null

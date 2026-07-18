@@ -25,24 +25,35 @@ prozedural PNGs (Tile-Atlas, UI-Icons, Inhabitant-
 Portraits, Crisis-Icons) + TileSet-Resource + UI-Theme
 (Gothic-Fantasy Dark) + echte `scenes/main/
 PlayableShell.tscn` + Animation-Entry-Points.
-**M5-Closeout Bucket 4 (Success/Failure/Restart)**,
-**Bucket 1 (Six Cultures)**, **Bucket 2 (Ten Rooms)**,
-**Bucket 3 (Fifteen Events)**, and **Bucket 5 (en/de
-i18n)** are complete: `M5GameState` carrier + Win/
-Lose conditions + `GameOverBanner` + 6 cultures
-(lanternbearer, bellows, ember, ledger, silvershroud,
-tide) + 10 rooms (floor_stone/marsh/highland, wall,
-hearth, fog, shrine, forge, well, trap) + 15 events
-(5 crisis, 5 good, 5 narrative) + 36 Locale-Keys in
-`locales/en.po` + `locales/de.po` + `M5Events.format_event()`
-+ `tr()` integration. **229/229 GUT tests / 1496
-Asserts** auf Godot 4.7+ headless. Mutation sweeps:
-M5-Real-UI-Assets 6/6 REAL, M5-Closeout-Bucket-4 9/9
-REAL. Minimum supported Godot version: 4.7.
+**M5-Closeout komplett abgeschlossen** — alle 6
+Buckets geliefert:
+- **Bucket 4 (Success/Failure/Restart)**:
+  `M5GameState` carrier + Win/Lose conditions +
+  `GameOverBanner` + Restart-SEED-bump loop.
+- **Bucket 1 (Six Cultures)**: 6 inhabitants
+  (lanternbearer, bellows, ember, ledger, silvershroud,
+  tide) + 7 portrait PNGs.
+- **Bucket 2 (Ten Rooms)**: 11 tile PNGs (floor_stone/
+  marsh/highland, wall, hearth, fog, shrine, forge,
+  well, trap) + 4x3 TileSet-Atlas.
+- **Bucket 3 (Fifteen Events)**: `M5Events` carrier mit
+  15 events (5 crisis, 5 good, 5 narrative) +
+  `roll_event(rng)` weighted draw.
+- **Bucket 5 (en/de i18n)**: 36 neue Locale-Keys in
+  `locales/en.po` + `locales/de.po` + `M5Events.format_event()`.
+- **Bucket 6 (Audio)**: 5 SFX + 1 Ambient-Track
+  prozedural generiert (16-bit PCM @ 22050 Hz) +
+  `StepSfx` AudioStreamPlayer in `PlayableShell.tscn`.
 
-The next milestone is M5-Closeout-Bucket-6 (Audio),
-per ADR-0017 — kann auf M6 deferred werden wenn
-Zeit knapp ist.
+**236/236 GUT tests / 1566 Asserts** auf Godot 4.7+
+headless. Mutation sweeps: M5-Real-UI-Assets 6/6 REAL,
+M5-Closeout-Bucket-4 9/9 REAL. Minimum supported Godot
+version: 4.7.
+
+The next milestone is **M6 (Public release readiness)**
+— performance target, accessibility review, licensing/IP
+audit, reproducible builds, release notes, known-issues
+list.
 
 ## Start here
 

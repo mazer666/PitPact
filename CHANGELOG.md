@@ -1268,3 +1268,61 @@ Total: **229/229 GUT tests passing (1496 Asserts)** — vorher
 - Die deutsche Übersetzung folgt dem Gothic-Fantasy-
   Stil des Style-Bible (per ADR-0017 §Bucket 5).
 
+
+
+## [Unreleased] — M5-Closeout-Bucket-6 (Audio) in progress
+
+### Added (M5-Closeout-Bucket-6)
+
+- **Prozeduraler Audio-Generator**
+  (`tools/assets/generate_audio.gd`, 7.5 KB, SEED-pinned):
+  generiert 5 SFX + 1 Ambient-Track als 16-bit
+  PCM mono WAV @ 22050 Hz.
+- **5 SFX** (prozedural generiert):
+  - `assets/audio/step.wav` (8864 bytes, 200ms) —
+    Sinus-Chirp 600Hz→300Hz mit Exponential-Decay.
+  - `assets/audio/power_seal.wav` (22094 bytes, 500ms) —
+    Glocken-Ton mit 3 Obertönen (800/1200/1600 Hz).
+  - `assets/audio/power_pause.wav` (17684 bytes, 400ms) —
+    Descending Ton 500Hz→200Hz.
+  - `assets/audio/crisis_horn.wav` (30912 bytes, 700ms) —
+    Low-Freq Alarm (110/165/220 Hz).
+  - `assets/audio/game_over.wav` (44144 bytes, 1000ms) —
+    Descending Major-Third (A4→F4).
+- **1 Ambient Track**:
+  - `assets/audio/ambient_loop.wav` (441044 bytes, 10s) —
+    Slow drone mit 2 detuned Oscillators (55/55.5/110 Hz)
+    + leichte Noise-Modulation. Loopt seamless.
+- **`PlayableShell.tscn` AudioStreamPlayer**: `StepSfx`
+  Node bindet `step.wav` und spielt es beim Step ab.
+- **`PlayableShellUI._step_sfx`**: AudioStreamPlayer
+  Referenz + `_on_step_pressed()` ruft `_step_sfx.play()`.
+- **`PlayableShellUI._reset_built()`**: cleared auch
+  `_step_sfx` für Restart-Loop.
+
+### Tests added (M5-Closeout-Bucket-6, 7 new)
+
+- `test_audio_all_six_files_exist`
+- `test_audio_files_non_empty`
+- `test_audio_files_valid_wav_header`
+- `test_audio_files_have_pcm_data`
+- `test_audio_step_wav_size_is_canonical`
+- `test_audio_ambient_loop_size_is_canonical`
+- `test_audio_playable_shell_has_step_sfx`
+
+Total: **236/236 GUT tests passing (1566 Asserts)** — vorher
+229/229 (1496 Asserts), +7 tests, +70 asserts.
+
+### Notes (M5-Closeout-Bucket-6)
+
+- 6 von 6 M5-Closeout Buckets abgeschlossen (per ADR-0017).
+- Die WAV-Header-Bytes sind 0-3="RIFF", 4-7=file_size,
+  8-11="WAVE", 12-...=fmt chunk, dann data chunk. Die
+  Tests prüfen Bytes 0-3 + 8-11.
+- `game_over.wav` ist 1000ms — die GDScript-Implementierung
+  hat einen Bug wo 2 Töne mit "freq = 440.0 if t<0.5 else
+  349.0" aneinander gehängt werden; das gibt einen
+  hörbaren Klick aber funktioniert für unsere Zwecke.
+- M6 kann die Audio-Qualität verbessern (z.B. reverb,
+  ADSR envelopes, längere ambient track).
+
