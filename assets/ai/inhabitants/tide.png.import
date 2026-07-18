@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dj136ttfp64ox"
-valid=false
+uid="uid://wgidwdb46eor"
+path="res://.godot/imported/tide.png-c1b336ebdebc2a9a361307ba531c980d.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/inhabitants/tide.png"
+dest_files=["res://.godot/imported/tide.png-c1b336ebdebc2a9a361307ba531c980d.ctex"]
 
 [params]
 

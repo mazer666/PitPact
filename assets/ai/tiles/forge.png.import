@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cctglupl7w5gx"
-valid=false
+uid="uid://bppkps64pva3d"
+path="res://.godot/imported/forge.png-e6becdce4dd8115a5b2a9c148ca910d4.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/tiles/forge.png"
+dest_files=["res://.godot/imported/forge.png-e6becdce4dd8115a5b2a9c148ca910d4.ctex"]
 
 [params]
 

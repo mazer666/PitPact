@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bxmsrti4uehps"
-valid=false
+uid="uid://dmqrd1cgl4sa4"
+path="res://.godot/imported/ledger.png-6aa934c68a6898797d0f1200478db55a.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/inhabitants/ledger.png"
+dest_files=["res://.godot/imported/ledger.png-6aa934c68a6898797d0f1200478db55a.ctex"]
 
 [params]
 

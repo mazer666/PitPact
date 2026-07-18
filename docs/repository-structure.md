@@ -119,6 +119,7 @@ The module-boundary check is automated via
 | 0021 | M9-Co-op-Foundation | M9 |
 | 0022 | M10-Co-op-Live-Mode | M10 |
 | 0023 | M11-Art-Rework | M11 |
+| 0024 | M12-UI-Grafical-Rework | M12 |
 
 ## Test count progression
 
@@ -148,6 +149,7 @@ The module-boundary check is automated via
 | M9-Co-op-Foundation | 333 | 1741 |
 | M10-Co-op-Live-Mode | 367 | 1791 |
 | M11-Art-Rework | 392 | 1867 |
+| M12-UI-Grafical-Rework | 407 | 1888 |
 
 ## References
 

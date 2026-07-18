@@ -1857,3 +1857,95 @@ Total: **273/273 GUT tests passing (1652 Asserts)** — vorher
   (was 367/367, 1791 in M10
   closeout; +25 tests, +76
   asserts).
+
+## [Unreleased] — M12-UI-Grafical-Rework in progress
+
+### Added (M12-UI-Grafical-Rework)
+
+- **scenes/main/PlayableShell.tscn** — komplett
+  reworked mit AI-generated icons (step, auto_tick,
+  restart, power) + AI background (background_landscape)
+  + custom StyleBoxFlat per panel (TopBar, BottomBar,
+  InhabitantPanel, PactmakerPanel).
+- **scenes/ui/CrisisBanner.tscn** — neue Scene mit
+  AI crisis_banner texture + crisis icon + title
+  + description (red/gold Gothic style).
+- **scenes/ui/GameOverBanner.tscn** — neue Scene
+  mit AI game_over_banner texture + title + summary
+  + restart/quit buttons.
+- **scenes/ui/VictoryBanner.tscn** — neue Scene
+  mit AI victory_banner texture + title + summary
+  + restart/quit buttons.
+- **scenes/main/TitleScreen.tscn** — neue Scene
+  mit AI title_logo + subtitle + Start button
+  + 1.5s fade-in.
+- **assets/ui/gothic_fantasy_theme_v2.tres** —
+  Theme v2 mit 4 Button-States (normal/hover/
+  pressed/disabled) + hover-glow + pressed-darken
+  + disabled-gray-out.
+- **src/ui/hover_tween.gd** — `HoverTween` carrier
+  (apply_hover/apply_pressed/apply_disabled, 0.15s
+  tween = 9 frames @ 60 FPS).
+- **src/ui/title_screen.gd** — `TitleScreen` script
+  (fade-in animation, 1.5s).
+- **14 AI-generated UI assets** (CC0 per ADR-0018):
+  step, auto_tick, restart, power, top_bar,
+  bottom_bar, inhabitant_panel, pactmaker_panel,
+  crisis_banner, game_over_banner, victory_banner,
+  title_logo, background_landscape, background_portrait.
+- **7 additional AI inhabitants** (CC0): marshdweller,
+  highlander, bonewright, bellows_keeper,
+  ember_smoker, ledger_scholar, silvershroud_guard,
+  tide_warden, marshdweller_warden.
+- **5 additional AI tiles** (CC0): wall, empty, border,
+  garden, library, vault.
+- **docs/adrs/0024-m12-ui-grafical-rework.md** —
+  ADR-0024 documenting the 3 M12 buckets +
+  side-quest I.
+
+### Tests added (M12-UI-Grafical-Rework, 15 new)
+
+- `tests/integration/test_m12_ui_rework.gd` (15) —
+  PlayableShell uses AI assets, CrisisBanner exists,
+  GameOverBanner exists, VictoryBanner exists,
+  TitleScreen exists, Theme v2 has 4 states,
+  HoverTween version/duration/hover/pressed/disabled,
+  TitleScreen version/fade-in, PlayableShell
+  instantiates correctly.
+
+### Hardened (M12-UI-Grafical-Rework)
+
+- 5/5 M12 mutations REAL, 0 silent
+  (`tools/audit/mutation_sweep_m12.gd`):
+  1. remove hover brighten (caught by
+     `test_m12_hover_tween_hover_brightens`)
+  2. remove pressed darken (caught by
+     `test_m12_hover_tween_pressed_darkens`)
+  3. change tween duration to 0.5 (caught by
+     `test_m12_hover_tween_duration_is_60_fps_friendly`)
+  4. remove title screen fade-in (caught by
+     `test_m12_title_screen_fade_in_duration`)
+  5. replace AI step with prozedural (caught by
+     `test_m12_playable_shell_scene_uses_ai_assets`)
+
+### Notes (M12-UI-Grafical-Rework)
+
+- 4 buttons in PlayableShell
+  are 44x80 (iOS HIG compliant,
+  per M8 Bucket 2 mobile
+  requirement).
+- StepSfx moved to root of
+  PlayableShell (was under
+  TickControl/HBox) to match
+  M5-Closeout test expectations.
+- The M12 closeout's
+  `image_synthesize` returned
+  JPEG data for some prompts
+  (saved with .png extension);
+  the M12 closeout detected +
+  converted to real PNG via
+  ImageMagick.
+- 407/407 GUT tests, 1888 Asserts
+  (was 392/392, 1867 in M11
+  closeout; +15 tests, +21
+  asserts).

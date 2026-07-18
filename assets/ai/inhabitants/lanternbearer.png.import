@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cp27sl3j2r3fc"
-valid=false
+uid="uid://dfc112u1oueji"
+path="res://.godot/imported/lanternbearer.png-7d2f0bca5f74e91cb2266c048a8bfe8e.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/inhabitants/lanternbearer.png"
+dest_files=["res://.godot/imported/lanternbearer.png-7d2f0bca5f74e91cb2266c048a8bfe8e.ctex"]
 
 [params]
 

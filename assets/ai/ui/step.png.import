@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://pa56tpt76688"
-valid=false
+uid="uid://qlo25c8sa1e5"
+path="res://.godot/imported/step.png-bae01f32237f213f899a70f4cb028303.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/ui/step.png"
+dest_files=["res://.godot/imported/step.png-bae01f32237f213f899a70f4cb028303.ctex"]
 
 [params]
 

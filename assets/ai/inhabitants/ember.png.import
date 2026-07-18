@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3q7xy7t74nyr"
-valid=false
+uid="uid://dm21jbg38bo07"
+path="res://.godot/imported/ember.png-45ac6f0c2dc06fd92e3e2e2cc61f619b.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/inhabitants/ember.png"
+dest_files=["res://.godot/imported/ember.png-45ac6f0c2dc06fd92e3e2e2cc61f619b.ctex"]
 
 [params]
 

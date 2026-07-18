@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ddof3o5rgmech"
-valid=false
+uid="uid://dvuwe20ax7kp6"
+path="res://.godot/imported/bellows.png-67e556b8012c7691ba66579c15181917.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/inhabitants/bellows.png"
+dest_files=["res://.godot/imported/bellows.png-67e556b8012c7691ba66579c15181917.ctex"]
 
 [params]
 

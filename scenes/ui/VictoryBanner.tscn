@@ -1,0 +1,68 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1m1pitpactvictory01"]
+
+[ext_resource type="Texture2D" path="res://assets/ai/ui/victory_banner.png" id="1_banner"]
+[ext_resource type="Theme" uid="uid://b1m1pitpactt01" path="res://assets/ui/gothic_fantasy_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_victory"]
+bg_color = Color(0.05, 0.05, 0, 0.95)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.9, 0.7, 0.2, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="VictoryBanner" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -80.0
+offset_right = 240.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+theme_override_styles/panel = SubResource("StyleBoxFlat_victory")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+
+[node name="Title" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "VICTORY"
+theme_override_font_sizes/font_size = 36
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Summary" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Your realm has triumphed."
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+
+[node name="RestartButton" type="Button" parent="VBox/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "Restart"
+
+[node name="QuitButton" type="Button" parent="VBox/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "Quit"

@@ -26,8 +26,8 @@ Portraits, Crisis-Icons) + TileSet-Resource + UI-Theme
 (Gothic-Fantasy Dark) + echte `scenes/main/
 PlayableShell.tscn` + Animation-Entry-Points.
 **M5-Closeout + M6-Release-Readiness + M7-Content-and-Balance
-+ M8-iPadOS-and-Mobile + M9-Co-op-Foundation + M10-Co-op-Live-Mode + M11-Art-Rework komplett abgeschlossen**
-— alle 28 M5/M6/M7/M8/M9/M10/M11-Buckets + 3 Side-Quests geliefert:
++ M8-iPadOS-and-Mobile + M9-Co-op-Foundation + M10-Co-op-Live-Mode + M11-Art-Rework + M12-UI-Grafical-Rework komplett abgeschlossen**
+— alle 31 M5/M6/M7/M8/M9/M10/M11/M12-Buckets + 4 Side-Quests geliefert:
 - **M5-Bucket 4 (Success/Failure/Restart)**
 - **M5-Bucket 1 (Six Cultures)**: 6 inhabitants,
   7 portrait PNGs
@@ -61,20 +61,20 @@ PlayableShell.tscn` + Animation-Entry-Points.
   `data/mods/example_mod/` +
   `tools/mod_template/`
 
-**392/392 GUT tests / 1867 Asserts** auf Godot 4.7+
+**407/407 GUT tests / 1888 Asserts** auf Godot 4.7+
 headless. Mutation sweeps: M5-Real-UI-Assets 6/6 REAL,
-M5-Closeout-Bucket-4 9/9 REAL, M8-iPadOS-and-Mobile 4/4 REAL, M9-Co-op-Foundation 5/5 REAL, M10-Co-op-Live-Mode 5/5 REAL, M11-Art-Rework 5/5 REAL.
+M5-Closeout-Bucket-4 9/9 REAL, M8-iPadOS-and-Mobile 4/4 REAL, M9-Co-op-Foundation 5/5 REAL, M10-Co-op-Live-Mode 5/5 REAL, M11-Art-Rework 5/5 REAL, M12-UI-Grafical-Rework 5/5 REAL.
 Minimum supported Godot
 version: 4.7.
 
-**PitPact v0.7.0-m11 ist bereit für die
+**PitPact v0.8.0-m12 ist bereit für die
 öffentliche Veröffentlichung.**
 
-Post-M11: Echtes Internet-Co-op (M12+). Die M11 closeout
-liefert das Art-Rework (AI-generierte Art, prozedurales
-Upgrade, Shader-Pipeline, TimeOfDay) im Gothic-Watercolor
-Hybrid-Stil; die M12 closeout aktiviert echtes
-Internet-Co-op mit NAT-Traversal.
+Post-M12: Echtes Internet-Co-op (M13+). Die M12 closeout
+liefert das UI-Grafical-Rework (AI-driven .tscn scenes,
+Theme v2 mit Hover-States, Title-Screen fade-in); die
+M13 closeout aktiviert echtes Internet-Co-op mit
+NAT-Traversal.
 
 ## Start here
 

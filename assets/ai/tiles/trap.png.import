@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dr442bk75lwtt"
-valid=false
+uid="uid://cuhecpo70rr5a"
+path="res://.godot/imported/trap.png-bc296f764bfde607d143eee634950b96.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/tiles/trap.png"
+dest_files=["res://.godot/imported/trap.png-bc296f764bfde607d143eee634950b96.ctex"]
 
 [params]
 

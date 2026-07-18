@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://n80tdcf1unw1"
-valid=false
+uid="uid://bvgmjf4v78qv4"
+path="res://.godot/imported/faction.png-1513faa146676c538a93c3ab1f3b02c7.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/crises/faction.png"
+dest_files=["res://.godot/imported/faction.png-1513faa146676c538a93c3ab1f3b02c7.ctex"]
 
 [params]
 

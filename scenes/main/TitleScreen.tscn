@@ -1,0 +1,67 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1m1pitpacttitle01"]
+
+[ext_resource type="Script" path="res://src/ui/title_screen.gd" id="1_ts"]
+[ext_resource type="Texture2D" path="res://assets/ai/ui/title_logo.png" id="2_logo"]
+[ext_resource type="Texture2D" path="res://assets/ai/ui/background_landscape.png" id="3_bg"]
+[ext_resource type="Theme" uid="uid://b1m1pitpacttv2" path="res://assets/ui/gothic_fantasy_theme_v2.tres" id="4_theme"]
+
+[node name="TitleScreen" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_ts")
+theme = ExtResource("4_theme")
+
+[node name="Background" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("3_bg")
+expand_mode = 1
+stretch_mode = 6
+modulate = Color(0.5, 0.5, 0.5, 1)
+
+[node name="Logo" type="TextureRect" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 100.0
+offset_right = 200.0
+offset_bottom = 280.0
+grow_horizontal = 2
+texture = ExtResource("2_logo")
+expand_mode = 1
+stretch_mode = 5
+modulate = Color(1, 1, 1, 0)
+
+[node name="Subtitle" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 290.0
+offset_right = 200.0
+offset_bottom = 330.0
+grow_horizontal = 2
+text = "A Pit-Pact Simulator"
+horizontal_alignment = 1
+vertical_alignment = 1
+modulate = Color(1, 1, 1, 0)
+theme_override_font_sizes/font_size = 18
+
+[node name="StartButton" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -100.0
+offset_right = 80.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Start"
+modulate = Color(1, 1, 1, 0)
+theme_override_font_sizes/font_size = 24

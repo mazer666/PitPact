@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bswmsowntij6x"
-valid=false
+uid="uid://cvymcktp8wdsb"
+path="res://.godot/imported/well.png-230d8503f8453ba956b92aebfe0b3a87.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/tiles/well.png"
+dest_files=["res://.godot/imported/well.png-230d8503f8453ba956b92aebfe0b3a87.ctex"]
 
 [params]
 

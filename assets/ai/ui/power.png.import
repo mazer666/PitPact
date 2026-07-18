@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drp3astjb8fb7"
-valid=false
+uid="uid://dkh0c03ud26lj"
+path="res://.godot/imported/power.png-2cf30bff7a0824bbb045768bada60149.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/ui/power.png"
+dest_files=["res://.godot/imported/power.png-2cf30bff7a0824bbb045768bada60149.ctex"]
 
 [params]
 

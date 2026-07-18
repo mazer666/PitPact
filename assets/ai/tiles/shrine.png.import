@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bg4ll22drevvw"
-valid=false
+uid="uid://bypcphenif1u1"
+path="res://.godot/imported/shrine.png-4482e8fae08c5f7d1a698bbcd0c5a109.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/tiles/shrine.png"
+dest_files=["res://.godot/imported/shrine.png-4482e8fae08c5f7d1a698bbcd0c5a109.ctex"]
 
 [params]
 

@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://croelxlch6flg"
-valid=false
+uid="uid://qspmrjb6l6cq"
+path="res://.godot/imported/plague.png-4ad76e6e40b5ffe6470545d951365d5c.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/crises/plague.png"
+dest_files=["res://.godot/imported/plague.png-4ad76e6e40b5ffe6470545d951365d5c.ctex"]
 
 [params]
 

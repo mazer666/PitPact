@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djbxji41rw232"
-valid=false
+uid="uid://lpbu8rqh8vd8"
+path="res://.godot/imported/restart.png-5602be58400c22db3feb5a33568bbaf8.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/ui/restart.png"
+dest_files=["res://.godot/imported/restart.png-5602be58400c22db3feb5a33568bbaf8.ctex"]
 
 [params]
 

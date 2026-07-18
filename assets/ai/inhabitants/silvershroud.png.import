@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0t30vtm7skw6"
-valid=false
+uid="uid://bpm00cfusb16v"
+path="res://.godot/imported/silvershroud.png-14a3e2abdcc06bb98ed6ea4155242cf3.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/inhabitants/silvershroud.png"
+dest_files=["res://.godot/imported/silvershroud.png-14a3e2abdcc06bb98ed6ea4155242cf3.ctex"]
 
 [params]
 

@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4bip28h3wite"
-valid=false
+uid="uid://boqdbwhh8rmoq"
+path="res://.godot/imported/hearth.png-ca022e789b45b5942fbb09f73193338a.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/ai/tiles/hearth.png"
+dest_files=["res://.godot/imported/hearth.png-ca022e789b45b5942fbb09f73193338a.ctex"]
 
 [params]
 
