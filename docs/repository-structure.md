@@ -120,6 +120,7 @@ The module-boundary check is automated via
 | 0022 | M10-Co-op-Live-Mode | M10 |
 | 0023 | M11-Art-Rework | M11 |
 | 0024 | M12-UI-Grafical-Rework | M12 |
+| 0025 | M13-Visual-Polish | M13 |
 
 ## Test count progression
 
@@ -150,6 +151,7 @@ The module-boundary check is automated via
 | M10-Co-op-Live-Mode | 367 | 1791 |
 | M11-Art-Rework | 392 | 1867 |
 | M12-UI-Grafical-Rework | 407 | 1888 |
+| M13-Visual-Polish | 444 | 1942 |
 
 ## References
 

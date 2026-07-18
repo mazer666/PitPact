@@ -15,6 +15,7 @@
 | M10: Co-op Live Mode | ENet adapter, peer sync, replay recording, network stats. |
 | M11: Art Rework | AI-generated art (18 assets, CC0), procedural upgrader, post-process shader, time-of-day cycle, perf budget (60 FPS). |
 | M12: UI Grafical Rework | AI-driven .tscn scenes (PlayableShell + CrisisBanner + GameOverBanner + VictoryBanner + TitleScreen), gothic-fantasy theme v2 (4 button states), hover-tween (60 FPS), title-screen fade-in. |
+| M13: Visual Polish & Animation | Idle animator (3-frame breathing), particle spawner (fire/smoke/magic/blood), DayNight integrator (TimeOfDay → shader), audio-reactive visuals (step/crisis/power). |
 | Post-release | Balancing, additional content, mod/content interfaces, and later iPadOS preparation; co-op only after the single-player architecture is stable. |
 
 ## M5-Closeout sub-buckets (per ADR-0017)
@@ -57,7 +58,7 @@
 
 ## Out of scope
 
-- **Co-op (full networking)** — M13+ (the M10 closeout ships the live-mode headless loopback; the M13 closeout adds real internet co-op)
+- **Co-op (full networking)** — M14+ (the M10 closeout ships the live-mode headless loopback; the M14 closeout adds real internet co-op)
 - **Real-money shop** — explicitly out of scope (the
   project is open-source, offline-first, per
   `docs/requirements.md` §1)

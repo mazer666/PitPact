@@ -1949,3 +1949,64 @@ Total: **273/273 GUT tests passing (1652 Asserts)** — vorher
   (was 392/392, 1867 in M11
   closeout; +15 tests, +21
   asserts).
+
+## [Unreleased] — M13-Visual-Polish in progress
+
+### Added (M13-Visual-Polish)
+
+- `src/world/day_night_integrator.gd` — `DayNightIntegrator`
+  carrier (M11 TimeOfDay → M11 shader uniforms,
+  0.5s tick interval = 30 frames @ 60 FPS).
+- `src/ui/idle_animator.gd` — `IdleAnimator` carrier
+  (3-frame breathing cycle, 2.0s = 120 frames @ 60 FPS,
+  scale values 1.0/1.05/0.95).
+- `src/effects/particle_spawner.gd` — `ParticleSpawner`
+  carrier (fire 20, smoke 15, magic 25, blood 10).
+- `src/ui/audio_reactive_visual.gd` — `AudioReactiveVisual`
+  carrier (step-pulse, crisis-flash, power-glow,
+  0.3s decay = 18 frames @ 60 FPS).
+- `docs/adrs/0025-m13-visual-polish.md` — ADR-0025
+  documenting the 3 M13 buckets + side-quest J.
+
+### Tests added (M13-Visual-Polish, 33 new)
+
+- `tests/integration/test_m13_day_night_integrator.gd`
+  (8) — version, make, tick advance, partial tick,
+  brightness, phase name, last params, tick interval.
+- `tests/integration/test_m13_idle_animator.gd` (9) —
+  version, make, add node, add with offset, duplicate
+  no-op, tick advance, scale values, unknown node,
+  cycle duration.
+- `tests/integration/test_m13_particle_spawner.gd` (11) —
+  version, make, spawn fire/smoke/magic/blood, unknown
+  type, last position, deactivate, supported types,
+  count for type.
+- `tests/integration/test_m13_audio_reactive_visual.gd`
+  (9) — version, make, on_step, on_crisis, on_power,
+  tick decay, tick clamps to 0, pulse duration,
+  independent events.
+
+### Hardened (M13-Visual-Polish)
+
+- 5/5 M13 mutations REAL, 0 silent
+  (`tools/audit/mutation_sweep_m13.gd`):
+  1. remove DNI warm_shift update
+  2. change IA scale values to 1.0
+  3. change fire particle count to 5
+  4. remove ARV step decay
+  5. change DNI tick interval to 0.1
+
+### Notes (M13-Visual-Polish)
+
+- `CanvasItem` is abstract
+  in Godot 4.7; the M13
+  closeout uses `Node`
+  for the scene_root
+  parameter (instead of
+  `CanvasItem`).
+- 444/444 GUT tests (4 risky
+  due to M8 StepSfx node
+  hierarchy; no failures),
+  1942 Asserts (was 407,
+  1888 in M12; +33 tests,
+  +54 asserts).
