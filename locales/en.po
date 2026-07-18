@@ -369,3 +369,115 @@ msgstr "Back the ledger_cabal. ledger_cabal +0.2"
 # EVENT_CRISIS_AUTONOMOUS_RESOLVED
 msgid "EVENT_CRISIS_AUTONOMOUS_RESOLVED"
 msgstr "Crisis {crisis_id} has been auto-resolved with choice {chosen_id}."
+
+# M5-Closeout Bucket 2: 4 new room names
+msgid "ROOM_SHRINE_NAME"
+msgstr "Shrine"
+
+msgid "ROOM_SHRINE_DESC"
+msgstr "A ritual site where inhabitants commune with the Pactmaker. Required for the win condition."
+
+msgid "ROOM_FORGE_NAME"
+msgstr "Forge"
+
+msgid "ROOM_FORGE_DESC"
+msgstr "A crafting site where stone is shaped and tools are made. Boosts the bellows culture."
+
+msgid "ROOM_WELL_NAME"
+msgstr "Well"
+
+msgid "ROOM_WELL_DESC"
+msgstr "A water source that anchors the realm. Boosts the tide culture."
+
+msgid "ROOM_TRAP_NAME"
+msgstr "Trap"
+
+msgid "ROOM_TRAP_DESC"
+msgstr "A hidden pressure plate that amplifies crises. Use with caution."
+
+# M5-Closeout Bucket 3: 15 event descriptions
+msgid "M5_EVENT_FOG_ROLLS_IN_DESCRIPTION"
+msgstr "Fog rolls in from the marshlands. Visibility drops; fog-of-war expands."
+
+msgid "M5_EVENT_MARSH_BUBBLES_DESCRIPTION"
+msgstr "The marsh bubbles and churns. Movement slows for marsh-dwellers."
+
+msgid "M5_EVENT_HIGHLAND_ROCKSLIDE_DESCRIPTION"
+msgstr "A rockslide blocks the highland path. Masonry projects are delayed."
+
+msgid "M5_EVENT_WELL_DRY_DESCRIPTION"
+msgstr "The well runs dry. Water becomes scarce."
+
+msgid "M5_EVENT_TRAP_SPRUNG_DESCRIPTION"
+msgstr "A trap springs! An inhabitant is injured."
+
+msgid "M5_EVENT_SETTLER_ARRIVES_DESCRIPTION"
+msgstr "A settler arrives at the realm. Population grows by one."
+
+msgid "M5_EVENT_TRADER_PASSES_DESCRIPTION"
+msgstr "A trader passes through. Resources are exchanged."
+
+msgid "M5_EVENT_OATHKEEPER_RETURNS_DESCRIPTION"
+msgstr "An oath-keeper returns. Crisis risk is reduced for a few days."
+
+msgid "M5_EVENT_MARSH_HEALS_DESCRIPTION"
+msgstr "The marsh heals. Marsh-dwellers recover faster."
+
+msgid "M5_EVENT_HIGHLAND_PATH_OPENS_DESCRIPTION"
+msgstr "The highland path opens. Highland navigation improves."
+
+msgid "M5_EVENT_SHRINE_SMOKE_DESCRIPTION"
+msgstr "Smoke rises from the shrine. A hint of the Pactmaker's presence."
+
+msgid "M5_EVENT_FORGE_SPARK_DESCRIPTION"
+msgstr "A spark flies from the forge. Crafting projects move faster."
+
+msgid "M5_EVENT_PACTMAKER_WHISPERS_DESCRIPTION"
+msgstr "The Pactmaker whispers. A power's effect is amplified."
+
+msgid "M5_EVENT_LANTERN_FLICKERS_DESCRIPTION"
+msgstr "A lantern flickers in the dark. Night-vision is briefly enhanced."
+
+msgid "M5_EVENT_LEDGER_PAGES_TURN_DESCRIPTION"
+msgstr "A ledger's pages turn on their own. Research projects advance."
+
+# M5-Closeout Bucket 4: game over UI
+msgid "M5_GAMEOVER_TITLE_WIN"
+msgstr "Victory!"
+
+msgid "M5_GAMEOVER_TITLE_LOSE"
+msgstr "Defeat"
+
+msgid "M5_GAMEOVER_REASON_NO_INHABITANTS"
+msgstr "All inhabitants have abandoned the realm."
+
+msgid "M5_GAMEOVER_REASON_NO_HEARTH"
+msgstr "The hearth has gone cold. The realm is no longer viable."
+
+msgid "M5_GAMEOVER_REASON_WIN"
+msgstr "You survived %d days and built a viable realm."
+
+msgid "M5_GAMEOVER_BUTTON_RESTART"
+msgstr "Restart"
+
+msgid "M5_GAMEOVER_BUTTON_QUIT"
+msgstr "Quit"
+
+# M5-Closeout Bucket 1: culture display names
+msgid "CULTURE_LANTERNBEARER_NAME"
+msgstr "Lanternbearer"
+
+msgid "CULTURE_BELLOWS_NAME"
+msgstr "Bellows"
+
+msgid "CULTURE_EMBER_NAME"
+msgstr "Ember"
+
+msgid "CULTURE_LEDGER_NAME"
+msgstr "Ledger"
+
+msgid "CULTURE_SILVERSHROUD_NAME"
+msgstr "Silvershroud"
+
+msgid "CULTURE_TIDE_NAME"
+msgstr "Tide"

@@ -369,3 +369,115 @@ msgstr "Unterstütze den Buchhalter-Kabal. Buchhalter-Kabal +0,2, Laternen-Clan 
 # EVENT_CRISIS_AUTONOMOUS_RESOLVED
 msgid "EVENT_CRISIS_AUTONOMOUS_RESOLVED"
 msgstr "Krise {crisis_id} wurde automatisch mit Wahl {chosen_id} gelöst."
+
+# M5-Closeout Bucket 2: 4 neue Raum-Namen
+msgid "ROOM_SHRINE_NAME"
+msgstr "Schrein"
+
+msgid "ROOM_SHRINE_DESC"
+msgstr "Ein ritueller Ort, an dem die Bewohner mit dem Pactmaker verkehren. Erforderlich für die Siegbedingung."
+
+msgid "ROOM_FORGE_NAME"
+msgstr "Schmiede"
+
+msgid "ROOM_FORGE_DESC"
+msgstr "Eine Werkstatt, in der Stein geformt und Werkzeuge hergestellt werden. Stärkt die Blasebalg-Kultur."
+
+msgid "ROOM_WELL_NAME"
+msgstr "Brunnen"
+
+msgid "ROOM_WELL_DESC"
+msgstr "Eine Wasserquelle, die das Reich verankert. Stärkt die Gezeiten-Kultur."
+
+msgid "ROOM_TRAP_NAME"
+msgstr "Falle"
+
+msgid "ROOM_TRAP_DESC"
+msgstr "Eine versteckte Druckplatte, die Krisen verstärkt. Mit Vorsicht zu verwenden."
+
+# M5-Closeout Bucket 3: 15 Event-Beschreibungen
+msgid "M5_EVENT_FOG_ROLLS_IN_DESCRIPTION"
+msgstr "Nebel rollt aus den Sümpfen herein. Die Sicht sinkt; der Nebel des Krieges breitet sich aus."
+
+msgid "M5_EVENT_MARSH_BUBBLES_DESCRIPTION"
+msgstr "Der Sumpf brodelt und kocht. Die Bewegung verlangsamt sich für Sumpfbewohner."
+
+msgid "M5_EVENT_HIGHLAND_ROCKSLIDE_DESCRIPTION"
+msgstr "Ein Erdrutsch blockiert den Hochland-Pfad. Mauerarbeiten verzögern sich."
+
+msgid "M5_EVENT_WELL_DRY_DESCRIPTION"
+msgstr "Der Brunnen ist ausgetrocknet. Wasser wird knapp."
+
+msgid "M5_EVENT_TRAP_SPRUNG_DESCRIPTION"
+msgstr "Eine Falle schnappt zu! Ein Bewohner wird verletzt."
+
+msgid "M5_EVENT_SETTLER_ARRIVES_DESCRIPTION"
+msgstr "Ein Siedler kommt im Reich an. Die Bevölkerung wächst um eine Person."
+
+msgid "M5_EVENT_TRADER_PASSES_DESCRIPTION"
+msgstr "Ein Händler zieht vorbei. Ressourcen werden ausgetauscht."
+
+msgid "M5_EVENT_OATHKEEPER_RETURNS_DESCRIPTION"
+msgstr "Ein Eideshüter kehrt zurück. Das Krisenrisiko ist für einige Tage reduziert."
+
+msgid "M5_EVENT_MARSH_HEALS_DESCRIPTION"
+msgstr "Der Sumpf heilt. Sumpfbewohner erholen sich schneller."
+
+msgid "M5_EVENT_HIGHLAND_PATH_OPENS_DESCRIPTION"
+msgstr "Der Hochland-Pfad öffnet sich. Die Hochland-Navigation verbessert sich."
+
+msgid "M5_EVENT_SHRINE_SMOKE_DESCRIPTION"
+msgstr "Rauch steigt vom Schrein auf. Ein Hinweis auf die Gegenwart des Pactmakers."
+
+msgid "M5_EVENT_FORGE_SPARK_DESCRIPTION"
+msgstr "Ein Funke fliegt aus der Schmiede. Handwerksprojekte gehen schneller voran."
+
+msgid "M5_EVENT_PACTMAKER_WHISPERS_DESCRIPTION"
+msgstr "Der Pactmaker flüstert. Der Effekt einer Kraft wird verstärkt."
+
+msgid "M5_EVENT_LANTERN_FLICKERS_DESCRIPTION"
+msgstr "Eine Laterne flackert in der Dunkelheit. Die Nachtsicht ist kurzzeitig verbessert."
+
+msgid "M5_EVENT_LEDGER_PAGES_TURN_DESCRIPTION"
+msgstr "Die Seiten eines Buches wenden sich von selbst. Forschungsprojekte schreiten voran."
+
+# M5-Closeout Bucket 4: Game-Over UI
+msgid "M5_GAMEOVER_TITLE_WIN"
+msgstr "Sieg!"
+
+msgid "M5_GAMEOVER_TITLE_LOSE"
+msgstr "Niederlage"
+
+msgid "M5_GAMEOVER_REASON_NO_INHABITANTS"
+msgstr "Alle Bewohner haben das Reich verlassen."
+
+msgid "M5_GAMEOVER_REASON_NO_HEARTH"
+msgstr "Die Herdglut ist erkaltet. Das Reich ist nicht mehr lebensfähig."
+
+msgid "M5_GAMEOVER_REASON_WIN"
+msgstr "Du hast %d Tage überlebt und ein lebensfähiges Reich aufgebaut."
+
+msgid "M5_GAMEOVER_BUTTON_RESTART"
+msgstr "Neustart"
+
+msgid "M5_GAMEOVER_BUTTON_QUIT"
+msgstr "Beenden"
+
+# M5-Closeout Bucket 1: Kultur-Anzeigenamen
+msgid "CULTURE_LANTERNBEARER_NAME"
+msgstr "Laternträger"
+
+msgid "CULTURE_BELLOWS_NAME"
+msgstr "Blasebalg"
+
+msgid "CULTURE_EMBER_NAME"
+msgstr "Glut"
+
+msgid "CULTURE_LEDGER_NAME"
+msgstr "Buch"
+
+msgid "CULTURE_SILVERSHROUD_NAME"
+msgstr "Silberschleier"
+
+msgid "CULTURE_TIDE_NAME"
+msgstr "Gezeit"

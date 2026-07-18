@@ -1217,3 +1217,54 @@ Total: **222/222 GUT tests passing (1251 Asserts)** — vorher
   M6 upgraden.
 - ADR-0017 Bucket 3 ist jetzt vollständig abgeschlossen.
 
+
+
+## [Unreleased] — M5-Closeout-Bucket-5 (English/German i18n) in progress
+
+### Added (M5-Closeout-Bucket-5)
+
+- **36 neue Locale-Keys** in `locales/en.po` und
+  `locales/de.po` (vorher 104, jetzt 140 Keys):
+  - **4 Raum-Namen + Beschreibungen** (Bucket 2):
+    ROOM_SHRINE, ROOM_FORGE, ROOM_WELL, ROOM_TRAP
+  - **15 Event-Beschreibungen** (Bucket 3):
+    M5_EVENT_FOG_ROLLS_IN_DESCRIPTION etc.
+  - **7 Game-Over UI-Strings** (Bucket 4):
+    M5_GAMEOVER_TITLE_WIN/LOSE, REASON_*,
+    BUTTON_RESTART/QUIT
+  - **6 Kultur-Anzeigenamen** (Bucket 1):
+    CULTURE_LANTERNBEARER_NAME etc.
+  - **4 Raum-Beschreibungen** (Bucket 2):
+    ROOM_SHRINE_DESC etc.
+- **`M5Events.format_event(ev)`**: nicht-static helper
+  der `tr(String(key))` aufruft, um den player-facing
+  String zu resolven.
+- **`M5Events.description_key_count()`**: returns die
+  Anzahl der Description-Keys (canonical "how many
+  event keys" entry point).
+- **Documentation**: ADR-0017 Bucket 5 abgeschlossen.
+
+### Tests added (M5-Closeout-Bucket-5, 7 new)
+
+- `test_i18n_both_po_files_exist`
+- `test_i18n_m5_keys_present_in_en`
+- `test_i18n_m5_keys_present_in_de`
+- `test_i18n_en_has_translations`
+- `test_i18n_de_has_translations`
+- `test_i18n_m5events_format_event_returns_string`
+- `test_i18n_key_count_is_thirtysix_plus`
+
+Total: **229/229 GUT tests passing (1496 Asserts)** — vorher
+222/222 (1251 Asserts), +7 tests, +245 asserts.
+
+### Notes (M5-Closeout-Bucket-5)
+
+- ADR-0017 Bucket 5 ("mind. 30 Schlüssel") ist deutlich
+  übererfüllt mit 36 M5-Closeout-Keys (insgesamt 140
+  Keys in en.po + de.po).
+- `M5Events.format_event()` ist non-static weil `tr()`
+  einen Tree-Context braucht; der M5-Closeout UI ruft
+  die Methode auf der M5Events-Instanz.
+- Die deutsche Übersetzung folgt dem Gothic-Fantasy-
+  Stil des Style-Bible (per ADR-0017 §Bucket 5).
+

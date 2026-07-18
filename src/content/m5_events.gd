@@ -204,3 +204,38 @@ static func all_ids() -> Array:
 ## the M5-Closeout version tag.
 static func version() -> String:
 	return "0.2.0-m5-closeout"
+
+
+## M5-Closeout Bucket 3 + 5:
+## format an event for the player
+## UI. The method is the canonical
+## "give me the player-facing
+## string" entry point; the
+## description is a locale key
+## resolved via `tr()`. The
+## `M5-Closeout Bucket 5` (en/de
+## i18n) ships the matching
+## entries in `locales/en.po`
+## and `locales/de.po`. The
+## method is non-static (it
+## calls the global `tr()`,
+## which requires a tree
+## context).
+func format_event(ev: Dictionary) -> String:
+	if not ev.has("description"):
+		return ""
+	var key: StringName = ev.get("description", &"")
+	return String(tr(String(key)))
+
+
+## M5-Closeout Bucket 3 + 5:
+## count the catalogue's
+## description keys. The
+## method is the canonical
+## "how many event keys" entry
+## point; the Bucket 5 test
+## asserts the count.
+static func description_key_count() -> int:
+	if catalogue.size() == 0:
+		_build_catalogue()
+	return catalogue.size()
