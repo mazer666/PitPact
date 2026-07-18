@@ -65,6 +65,22 @@ var settings: Settings
 ## content).
 var factions: Array
 
+## M5-Closeout: the game state
+## carrier (`M5GameState`). The
+## carrier tracks the player's
+## survival progress and exposes
+## the win/lose predicates. The
+## UI's `GameOverBanner` reads the
+## carrier to render the game-over
+## screen.
+var game_state: M5GameState
+
+## M5-Closeout: the world map. The
+## UI holds the world reference so
+## the `GameOverBanner` can render
+## the realm's final state.
+var world: Variant
+
 ## Auto-tick enabled. The UI ticks
 ## the sim every `AUTO_TICK_INTERVAL`
 ## seconds when this is true.
@@ -113,6 +129,34 @@ var _pactmaker_panel: VBoxContainer
 ## button + the auto-tick toggle.
 var _tick_control: HBoxContainer
 
+## M5-Closeout: the original
+## built-dictionary from
+## `PlayableShell.build()`. The
+## UI holds the reference so the
+## Restart button can rebuild a
+## fresh sim with a new SEED.
+var _built_dict: Dictionary
+
+## M5-Closeout: the game-over
+## banner. The banner is hidden
+## while the game is `playing`;
+## visible when the outcome is
+## `win` or `lose`.
+var _game_over_banner: PanelContainer
+
+## M5-Closeout: the game-over
+## title label.
+var _game_over_title: Label
+
+## M5-Closeout: the game-over
+## summary label.
+var _game_over_summary: Label
+
+## M5-Closeout: the current
+## SEED. The seed is bumped
+## on every restart.
+var _current_seed: int = 0
+
 ## Build-once guard. The M5-Foundation
 ## `build_ui` is idempotent: `_ready`
 ## (scene path) and `bind` (test path)
@@ -138,6 +182,18 @@ func bind(built: Dictionary) -> void:
 	pactmaker = built["pactmaker"]
 	settings = built["settings"]
 	factions = built["factions"]
+	game_state = built.get("game_state", null)
+	world = built.get("world", null)
+	_built_dict = built
+	_current_seed = int(built.get("seed", 0))
+	# M5-Closeout: sync the game
+	# state's `inhabitant_count`
+	# with the bound inhabitants
+	# array. The `evaluate` method
+	# uses the count for the
+	# win/lose checks.
+	if game_state != null and inhabitants != null:
+		game_state.inhabitant_count = inhabitants.size()
 	# The bind path is the canonical
 	# "set the data" entry point;
 	# the .tscn production path runs
@@ -183,6 +239,8 @@ func build_ui() -> void:
 	if _built:
 		return
 	_built = true
+	for c2 in get_children():
+		print("  child: ", c2.name, " type=", c2.get_class())
 	# Try to bind to the .tscn-defined
 	# nodes first (the canonical M5
 	# production path). Fall back to
@@ -216,6 +274,18 @@ func build_ui() -> void:
 		# a crisis is pending.
 		_crisis_banner = get_node("CrisisBanner")
 		_crisis_banner.visible = false
+		# M5-Closeout: hide the game-over
+		# banner (the player is alive).
+		_game_over_banner = null
+		if has_node("GameOverBanner"):
+			_game_over_banner = get_node("GameOverBanner")
+			_game_over_title = get_node("GameOverBanner/VBox/GameOverTitle")
+			_game_over_summary = get_node("GameOverBanner/VBox/GameOverSummary")
+			var restart_btn: Button = get_node("GameOverBanner/VBox/HBox/RestartButton")
+			var quit_btn: Button = get_node("GameOverBanner/VBox/HBox/QuitButton")
+			restart_btn.pressed.connect(_on_restart_pressed)
+			quit_btn.pressed.connect(_on_quit_pressed)
+			_game_over_banner.visible = false
 		return
 	# Code-driven fallback (headless
 	# test path: no .tscn, build the
@@ -326,6 +396,18 @@ func _on_step_pressed() -> void:
 	if sim == null:
 		return
 	sim.tick(1.0, inhabitants, [])
+	# M5-Closeout: tick the game
+	# state carrier. The carrier
+	# increments `days_survived`,
+	# recomputes the room counts,
+	# and re-evaluates the win/
+	# lose conditions.
+	if game_state != null:
+		game_state.tick_day_with_world(sim, world)
+		# If the game ended, show
+		# the game-over banner.
+		if game_state.check_win_condition() or game_state.check_lose_condition():
+			_show_game_over()
 	# Update the time label
 	# immediately so headless
 	# tests (no _process loop)
@@ -383,3 +465,118 @@ func _on_power_pressed(power_id: StringName) -> void:
 		"anchor": sim.anchor if sim.anchor != null else Vector2i(12, 12),
 	}
 	pactmaker.apply_power(power_id, sim_dict, sim.time_days)
+
+
+## M5-Closeout: show the game-over
+## banner. The method is the canonical
+## "the game is over, show the UI"
+## entry point; the test pins the
+## banner visibility + title + summary.
+func _show_game_over() -> void:
+	if _game_over_banner == null:
+		return
+	_game_over_banner.visible = true
+	if game_state == null:
+		return
+	# Win: green-tinted "Victory!"
+	# Lose: red-tinted "Defeat".
+	if game_state.check_win_condition():
+		if _game_over_title != null:
+			_game_over_title.text = "Victory!"
+		if _game_over_summary != null:
+			_game_over_summary.text = (
+				"You survived %d days and built a viable realm." % int(game_state.days_survived)
+			)
+	else:
+		if _game_over_title != null:
+			_game_over_title.text = "Defeat"
+		if _game_over_summary != null:
+			_game_over_summary.text = "Reason: %s" % String(game_state.reason)
+
+
+## M5-Closeout: hide the game-over
+## banner. The method is the canonical
+## "reset the game-over UI" entry
+## point; the test pins the banner
+## visibility (false after restart).
+func _hide_game_over() -> void:
+	if _game_over_banner != null:
+		_game_over_banner.visible = false
+
+
+## M5-Closeout: restart the game. The
+## method is the canonical "start a
+## new game" entry point; the
+## `RestartButton` calls it after the
+## player loses or wins. The method
+## bumps the SEED, rebuilds the sim,
+## and re-binds the UI. The M5-Closeout
+## ADR-0017 §Bucket 4 pins the
+## restart loop's invariants.
+func _on_restart_pressed() -> void:
+	_hide_game_over()
+	# Bump the SEED so the next
+	# game has a different
+	# outcome (the M5-Closeout
+	# restart loop).
+	_current_seed += 1
+	# Rebuild the sim with the
+	# new SEED. The `PlayableShell.build()`
+	# factory is SEED-pinned (per
+	# ADR-0005).
+	var PS: GDScript = load("res://src/ui/playable_shell.gd")
+	if PS == null:
+		return
+	var fresh: Dictionary = PS.call("build_with_seed", _current_seed)
+	if fresh.is_empty():
+		return
+	# Re-bind the UI to the
+	# fresh sim. The `bind()` call
+	# resets the UI state (the
+	# `_built` guard is reset by
+	# the call).
+	_reset_built()
+	bind(fresh)
+
+
+## M5-Closeout: quit the game. The
+## method is the canonical "exit
+## the game" entry point; the
+## `QuitButton` calls it. The
+## M5-Foundation headless mode
+## simply calls `quit()`; the
+## M5-Closeout can swap in a
+## "are you sure?" dialog.
+func _on_quit_pressed() -> void:
+	get_tree().quit()
+
+
+## M5-Closeout: reset the
+## build-once guard. The
+## method is the canonical
+## "allow `build_ui` to run
+## again" entry point; the
+## restart path calls it
+## before `bind()` so the
+## fresh sim's data
+## re-populates the UI.
+func _reset_built() -> void:
+	_built = false
+	# Clear the existing UI
+	# children so the fresh
+	# build_ui call does not
+	# duplicate them.
+	if _inhabitant_panel != null:
+		for child in _inhabitant_panel.get_children():
+			child.queue_free()
+	if _pactmaker_panel != null:
+		for child in _pactmaker_panel.get_children():
+			child.queue_free()
+	_inhabitant_panel = null
+	_pactmaker_panel = null
+	_counter_label = null
+	_time_label = null
+	_fps_label = null
+	_game_over_banner = null
+	_game_over_title = null
+	_game_over_summary = null

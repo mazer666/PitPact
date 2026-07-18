@@ -313,6 +313,7 @@ func _build_attempt(
 	):
 		var hearth_idx: int = hearth_position.y * width + hearth_position.x
 		var ht: Tile = m.tiles[hearth_idx]
+		ht.id = 4  # hearth tile id (M5-Closeout)
 		ht.biome = &"marshlands"
 		ht.surface_meta = {
 			&"burden": 0.3,

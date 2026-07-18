@@ -137,3 +137,48 @@ expand_icon = true
 unique_name_in_owner = true
 layout_mode = 2
 text = "Auto-tick"
+
+[node name="GameOverBanner" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -100.0
+offset_right = 260.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="GameOverBanner"]
+
+[node name="GameOverTitle" type="Label" parent="GameOverBanner/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+text = "Game Over"
+
+[node name="GameOverSummary" type="Label" parent="GameOverBanner/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+text = "Reason goes here."
+
+[node name="HBox" type="HBoxContainer" parent="GameOverBanner/VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="RestartButton" type="Button" parent="GameOverBanner/VBox/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+text = "Restart"
+
+[node name="QuitButton" type="Button" parent="GameOverBanner/VBox/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+text = "Quit"

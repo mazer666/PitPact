@@ -25,13 +25,16 @@ prozedural PNGs (Tile-Atlas, UI-Icons, Inhabitant-
 Portraits, Crisis-Icons) + TileSet-Resource + UI-Theme
 (Gothic-Fantasy Dark) + echte `scenes/main/
 PlayableShell.tscn` + Animation-Entry-Points.
-**184/184 GUT tests / 1007 Asserts** auf Godot 4.7+
-headless. M5-Real-UI-Assets mutation sweep: 6/6 REAL.
-Minimum supported Godot version: 4.7.
+**M5-Closeout Bucket 4 (Success/Failure/Restart)** is
+also complete: `M5GameState` carrier + Win/Lose
+conditions + `GameOverBanner` + restart-SEED-bump
+loop. **202/202 GUT tests / 1045 Asserts** auf Godot
+4.7+ headless. Mutation sweeps: M5-Real-UI-Assets 6/6
+REAL, M5-Closeout-Bucket-4 9/9 REAL. Minimum
+supported Godot version: 4.7.
 
-The next milestone is M5-Closeout (six cultures, ten
-rooms, fifteen events, complete success/failure/
-restart loop, English/German localization, audio).
+The next milestone is M5-Closeout-Bucket-1 (six
+cultures), per ADR-0017.
 
 ## Start here
 

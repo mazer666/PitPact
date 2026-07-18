@@ -101,6 +101,12 @@ var crises: Dictionary = {}
 ## reference via `register_exploration`.
 var exploration_map: RefCounted = null
 
+## M5-Closeout: the realm's world
+## map (`WorldMap`). The sim holds
+## the reference so `M5GameState`
+## can recompute room counts.
+var world: RefCounted = null
+
 ## M4-Closeout: the realm's knowledge
 ## state. The per-tick step 7c walks the
 ## `KnowledgeState` and advances active
@@ -168,25 +174,21 @@ var narrative_anchors: Variant = null
 ## / conflict nudges from the tick's events.
 var relationships: Dictionary = {}
 
-## The per-tick RNG state. `SplitMix64` is the project's
-## only sanctioned source of randomness (see
-## `src/core/rng.gd` and ADR-0005). Held as a private
-## member so the public surface cannot leak a writable
-## handle to a subsystem. The seed is supplied at
-## construction; the deterministic-replay invariant
-## depends on the seed being recorded into the save body
-## (ADR-0003) and re-supplied at load time.
+## The per-tick RNG state (`SplitMix64`,
+## ADR-0005). Held as a private member
+## so the public surface cannot leak a
+## writable handle. The seed is recorded
+## into the save body (ADR-0003) and
+## re-supplied at load time.
 var _rng: SplitMix64 = SplitMix64.new(0)
 
 ## M4-Closeout: the realm's auto-resolve
-## day count. The M4 default is `0.0`
-## (no auto-resolve gating); the
-## per-tick step 7c increments this
-## by `delta_days` and resets the
-## Pactmaker intervention counter
-## every 360 in-game days (the M4
-## closeout default is "yearly
-## reset").
+## day count. The per-tick step 7c
+## increments this by `delta_days`
+## and resets the Pactmaker
+## intervention counter every 360
+## in-game days (the M4 closeout
+## default is "yearly reset").
 var _last_auto_resolve_day: float = 0.0
 
 ## M3-Closeout (Track B): inhabitants array

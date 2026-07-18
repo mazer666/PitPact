@@ -77,6 +77,25 @@ const DEFAULT_DIFFICULTY: int = 1  # BALANCED
 ## content lands.
 const _VERSION: String = "0.1.0-m5-foundation"
 
+## M5-Closeout: per-call seed
+## override. The field is `-1` by
+## default (use the `SEED` const);
+## `build_with_seed(p_seed)` sets
+## it to `p_seed` for one call,
+## then resets it.
+static var _current_seed_override: int = -1
+
+
+## M5-Closeout: the effective
+## seed. The method returns
+## the override seed if one is
+## set, otherwise the canonical
+## `SEED` const.
+static func _effective_seed() -> int:
+	if _current_seed_override >= 0:
+		return _current_seed_override
+	return SEED
+
 
 ## Return the carrier's version tag.
 ## The method is the canonical "give
@@ -89,12 +108,37 @@ static func version() -> String:
 	return _VERSION
 
 
+## M5-Closeout: build a fresh
+## playable sim with an explicit
+## seed. The factory is the
+## canonical "give me a new game"
+## entry point; the UI's
+## `RestartButton` calls it with
+## a bumped seed.
+static func build_with_seed(p_seed: int) -> Dictionary:
+	# The factory temporarily
+	# overrides the SEED via a
+	# class-level temp field; the
+	# override is restored after
+	# `build()` returns. The
+	# M5-Closeout ADR-0017
+	# §Bucket 4 pins the restart
+	# loop's invariants.
+	_current_seed_override = p_seed
+	var result: Dictionary = build()
+	_current_seed_override = -1
+	return result
+
+
 ## Build the canonical M5-Foundation
 ## playable sim. The factory is the
 ## canonical "give me a playable
 ## realm" entry point; the UI scene
 ## and the end-to-end smoke test
-## both call this.
+## both call this. The M5-Closeout
+## `build_with_seed` factory
+## temporarily overrides the seed
+## via `_current_seed_override`.
 ##
 ## The factory returns a `Dictionary`
 ## with the following keys:
@@ -124,7 +168,7 @@ static func version() -> String:
 ##   event log
 static func build() -> Dictionary:
 	var log: EventLog = EventLog.new()
-	var sim: Sim = Sim.new(SEED)
+	var sim: Sim = Sim.new(_effective_seed())
 	# World: 24x24 with two biomes
 	# (Marshlands + Highlands).
 	var gen: WorldGenerator = WorldGenerator.new()
@@ -134,7 +178,12 @@ static func build() -> Dictionary:
 		"min_biome_count": 2,
 		"required_biome_ids": [&"marshlands", &"highlands"],
 	}
-	var world: Variant = gen.generate(SEED, WORLD_W, WORLD_H, constraints)
+	var world: Variant = gen.generate(_effective_seed(), WORLD_W, WORLD_H, constraints)
+	sim.world = world
+	# M5-Closeout: game state carrier
+	# (tracks days survived + room counts;
+	# evaluates win/lose conditions).
+	var game_state: M5GameState = M5GameState.make()
 	# Exploration map: 24x24, fog-of-war
 	# centered on the realm anchor, radius 1.
 	var emap: ExplorationMap = ExplorationMap.new(WORLD_W, WORLD_H, REALM_ANCHOR, 1)
@@ -234,6 +283,8 @@ static func build() -> Dictionary:
 		"exploration_map": emap,
 		"narrative_anchors": anchors,
 		"log": log,
+		"game_state": game_state,
+		"seed": _effective_seed(),
 		"version": _VERSION,
 	}
 

@@ -1005,3 +1005,100 @@ Total: **184/184 GUT tests passing (1007 Asserts)** — vorher
 - Phase 2.5 abgeschlossen. Bereit für M5-Closeout (six cultures,
   ten rooms, fifteen events, success/failure/restart loop, en/de
   localization, audio) — auf User-Direction.
+
+
+## [Unreleased] — M5-Closeout-Bucket-4 (Success/Failure/Restart) in progress
+
+### Added (M5-Closeout-Bucket-4)
+
+- **`M5GameState` carrier** (`src/sim/m5_game_state.gd`):
+  kanonische "is the player winning or losing" Daten-Carrier.
+  Tracking: `days_survived`, `hearth_count`, `shrine_count`,
+  `forge_count`, `well_count`, `trap_count`, `inhabitant_count`,
+  `outcome` (playing|win|lose), `reason`. Version
+  `0.2.0-m5-closeout`.
+- **Win condition** (ADR-0017 §Bucket 4): überlebe 30 Tage +
+  1 hearth + 1 shrine + 1 forge + 1 well + 1 trap +
+  4 inhabitants.
+- **Lose conditions** (in order): 0 inhabitants, 0 hearths.
+- **`PlayableShell.build_with_seed(p_seed)`**: factory mit
+  per-call SEED-Override (per `_current_seed_override` static
+  var). `build()` ruft `_effective_seed()` das entweder den
+  override oder den kanonischen SEED (4242) zurückgibt.
+- **`PlayableShell.build()` return-dict**: neue Keys
+  `game_state` (M5GameState) und `seed` (int).
+- **`Sim.world` field**: M5-Closeout exposed das
+  `WorldMap`-Referenz am sim, sodass `M5GameState` die
+  Room-Counts ohne Doppel-Walk recomputen kann.
+- **`WorldGenerator` hearth-tile id 4**: der Hearth-Tile hat
+  jetzt `tile.id = 4` (vorher `0` = floor_stone) — der
+  M5-Closeout Tile-Mapping ist deterministisch.
+- **`PlayableShellUI` game-state integration**: `bind()`
+  synct `game_state.inhabitant_count` mit dem inhabitants
+  array. `_on_step_pressed()` tickt `game_state` und triggert
+  `_show_game_over()` wenn outcome wechselt.
+- **`PlayableShellUI.GameOverBanner`**: neues PanelContainer
+  in `scenes/main/PlayableShell.tscn` mit Title + Summary +
+  RestartButton + QuitButton. Sichtbar bei `win` oder `lose`.
+- **`PlayableShellUI._on_restart_pressed()`**: bumped
+  `_current_seed`, ruft `PlayableShell.build_with_seed()`,
+  reset UI, ruft `bind()` neu.
+- **`PlayableShellUI._on_quit_pressed()`**: `get_tree().quit()`.
+- **`PlayableShellUI._show_game_over()` / `_hide_game_over()`**:
+  helpers für Banner-Visibility + Title/Summary-Text.
+- **ADR-0017** (`docs/adrs/0017-m5-closeout.md`): M5-Closeout
+  Scope-Definition (6 Buckets: Six Cultures, Ten Rooms,
+  Fifteen Events, Success/Failure/Restart, en/de, Audio).
+
+### Tests added (M5-Closeout-Bucket-4, 18 new)
+
+- `test_m5_game_state_make_creates_default`
+- `test_m5_game_state_version_is_pinned`
+- `test_m5_game_state_tick_increments_days`
+- `test_m5_game_state_idempotent_tick`
+- `test_m5_game_state_lose_no_inhabitants`
+- `test_m5_game_state_lose_no_hearth`
+- `test_m5_game_state_win_requires_all_rooms`
+- `test_m5_game_state_win_requires_30_days`
+- `test_m5_game_state_reset`
+- `test_playable_shell_includes_game_state`
+- `test_playable_shell_includes_world`
+- `test_playable_shell_includes_seed`
+- `test_playable_shell_build_with_seed_overrides`
+- `test_playable_shell_world_has_hearth_tile`
+- `test_playable_shell_game_state_counts_hearth`
+- `test_playable_shell_ui_shows_game_over_banner`
+- `test_playable_shell_ui_hides_game_over_banner_on_restart`
+- `test_playable_shell_ui_step_ticks_game_state`
+
+Total: **202/202 GUT tests passing (1045 Asserts)** — vorher
+184/184 (1007 Asserts), +18 tests, +38 asserts.
+
+### Hardened (M5-Closeout-Bucket-4, best-in-class audit)
+
+- **Mutation sweep M5-Closeout-Bucket-4**
+  (`tools/audit/mutation_sweep_m5_closeout.gd`): 9/9 mutations
+  REAL, 0 silent-pass. Mutations:
+  1. gs-version-typo: `0.2.0-m5-closeout` → `9.9.9-bad`
+  2. gs-win-days-typo: `WIN_DAYS_SURVIVED = 30` → `0`
+  3. gs-lose-reason-typo: `lose_no_inhabitants` → `win_survived`
+  4. gs-evaluate-skip: `evaluate()` returns immediately
+  5. ps-build-with-seed-no-override: override entfernt
+  6. ps-effective-seed-typo: returns 0 statt SEED
+  7. ui-show-game-over-typo: visible=false statt true
+  8. ui-restart-no-bump: `_current_seed += 0`
+  9. ui-tick-no-game-state: `pass # skip tick`
+
+### Notes (M5-Closeout-Bucket-4)
+
+- 5 von 6 M5-Closeout-Buckets noch offen (Six Cultures, Ten
+  Rooms, Fifteen Events, en/de, Audio). Bucket 4 ist das
+  "Game-Feel"-Fundament; die anderen Buckets bauen darauf
+  auf.
+- Win condition braucht 4 inhabitants — M5-Foundation
+  PlayableShell hat nur 3 (1 lanternbearer_scribe + 2
+  generic). Bucket 1 (Six Cultures) muss die Inhabitants
+  aufstocken.
+- Tile IDs für shrine/forge/well/trap (6/7/8/9) sind im
+  `M5GameState` schon gemappt; die Atlas-Erweiterung + die
+  Tile-PNGs kommen in Bucket 2.
