@@ -11,6 +11,7 @@
 | M6: Public release readiness | Performance target, accessibility review, licensing/IP audit, reproducible builds, release notes, known-issues list. |
 | M7: Content and balance | Additional content (2x), balance pass (45-day win / 6-inhabitant minimum), mod/content interface. |
 | M8: iPadOS & mobile UI | Touch input, mobile UI reflow, iOS export preset. |
+| M9: Co-op Foundation | Co-op protocol (deterministic lockstep), lobby, mod hot-reload, balance iteration, touch visualizer. |
 | Post-release | Balancing, additional content, mod/content interfaces, and later iPadOS preparation; co-op only after the single-player architecture is stable. |
 
 ## M5-Closeout sub-buckets (per ADR-0017)
@@ -53,7 +54,7 @@
 
 ## Out of scope
 
-- **Co-op** — M9+
+- **Co-op (full)** — M10+ (the M9 closeout ships the foundation; the M10 closeout adds the actual co-op mode)
 - **Real-money shop** — explicitly out of scope (the
   project is open-source, offline-first, per
   `docs/requirements.md` §1)

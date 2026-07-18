@@ -216,6 +216,56 @@ static func version() -> String:
 	return "0.2.0-m5-closeout"
 
 
+## M9 Bucket 3: hot-reload a
+## single mod's events. The
+## M9 closeout removes the
+## existing events from the
+## mod (matched by
+## `_source_mod` field) and
+## re-loads the events.json.
+## Returns the new event count
+## for the mod.
+##
+## The M9 closeout is
+## idempotent: calling
+## `hot_reload_mod` twice with
+## the same mod results in the
+## same state.
+static func hot_reload_mod(mod_path: String) -> int:
+	# Remove existing events
+	# from this mod.
+	var mod_id: String = mod_path.get_file() if "/" in mod_path else mod_path
+	_remove_mod_events(mod_id)
+	# Re-load the mod's
+	# events.json.
+	return _load_mod_events(mod_path + "/events.json")
+
+
+## M9 Bucket 3: unload a mod's
+## events. Returns the number
+## of events removed.
+static func unload_mod(mod_id: String) -> int:
+	return _remove_mod_events(mod_id)
+
+
+## M9 Bucket 3: helper to
+## remove all events from a
+## given mod. The M9 closeout
+## matches events by
+## `_source_mod` field (set by
+## `_load_mod_events`).
+static func _remove_mod_events(mod_id: String) -> int:
+	var removed: int = 0
+	var i: int = mod_catalogue.size() - 1
+	while i >= 0:
+		var ev: Dictionary = mod_catalogue[i]
+		if ev.get("_source_mod", "") == mod_id:
+			mod_catalogue.remove_at(i)
+			removed += 1
+		i -= 1
+	return removed
+
+
 ## M7 Bucket 3: load events from
 ## the `data/mods/` directory.
 ## The method is the canonical
@@ -298,6 +348,17 @@ static func _load_mod_events(events_path: String) -> int:
 		# Validate required fields.
 		if not ev.has("id") or not ev.has("type"):
 			continue
+		# M9 Bucket 3: tag each
+		# event with its source
+		# mod (for hot-reload).
+		# The M9 closeout derives
+		# the mod_id from the
+		# events_path
+		# ("<dir>/<mod_id>/events.json").
+		var mod_id: String = ""
+		var path_parts: PackedStringArray = events_path.split("/")
+		if path_parts.size() >= 2:
+			mod_id = path_parts[path_parts.size() - 2]
 		(
 			mod_catalogue
 			. append(
@@ -306,6 +367,7 @@ static func _load_mod_events(events_path: String) -> int:
 					"type": ev.get("type", &""),
 					"description": ev.get("description", &""),
 					"weight": int(ev.get("weight", 1)),
+					"_source_mod": mod_id,
 				}
 			)
 		)

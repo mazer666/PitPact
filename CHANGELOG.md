@@ -1590,3 +1590,93 @@ Total: **273/273 GUT tests passing (1652 Asserts)** — vorher
 - 291/291 GUT tests, 1678 Asserts (was
   273/273, 1652 in M7 closeout; +18 tests,
   +26 asserts).
+
+## [Unreleased] — M9-Co-op-Foundation in progress
+
+### Added (M9-Co-op-Foundation)
+
+- `src/net/coop_protocol.gd` — `CoopProtocol`
+  carrier with FNV-1a 64-bit hashing
+  (deterministic lockstep), `diff_states` +
+  `apply_diff` for state sync.
+- `src/net/coop_lobby.gd` — `CoopLobby` carrier
+  (2-4 peers, host/client, seed management).
+- `src/content/m5_events.gd::hot_reload_mod()`
+  + `unload_mod()` — mod hot-reload (removes
+  existing events by `_source_mod` tag, then
+  re-loads).
+- `src/sim/m7_balance.gd::apply_patch()` —
+  live balance iteration (returns a new
+  `M7BalanceConfig`).
+- `src/sim/balance_patch_log.gd` —
+  `BalancePatchLog` carrier (record/history/
+  revert).
+- `src/debug/touch_visualizer.gd` —
+  `TouchVisualizer` carrier (tap/drag tracking,
+  step-zone detection; side-quest F).
+- `docs/adrs/0021-m9-coop-foundation.md` —
+  ADR-0021 documenting the 4 M9 buckets +
+  side-quest F.
+
+### Tests added (M9-Co-op-Foundation, 42 new)
+
+- `tests/integration/test_m9_coop_protocol.gd`
+  (11) — version, determinism, key order
+  independence, diff_states, apply_diff,
+  roundtrip, idempotency, 100-tick determinism.
+- `tests/integration/test_m9_coop_lobby.gd`
+  (10) — version, host/client, add_peer,
+  max peers, remove_peer, no-op remove,
+  is_valid (seed + peer count), peers list.
+- `tests/integration/test_m9_mod_hot_reload.gd`
+  (6) — hot_reload_mod replaces existing,
+  reflects new events, idempotent; unload_mod
+  removes events, no-op for non-existent mods;
+  `_source_mod` tag.
+- `tests/integration/test_m9_balance_iteration.gd`
+  (9) — version, record/history, revert_to,
+  empty revert, clear, apply_patch (numeric,
+  immutable, negative, unknown key).
+- `tests/integration/test_m9_touch_visualizer.gd`
+  (6) — version, record_tap, record_drag,
+  is_in_step_zone (center, edge, outside),
+  clear, counters.
+
+### Hardened (M9-Co-op-Foundation)
+
+- 5/5 M9 mutations REAL, 0 silent-pass
+  (`tools/audit/mutation_sweep_m9.gd`):
+  1. remove FNV_PRIME mul in `_hashed_int`
+     (caught by determinism tests)
+  2. remove `add_peer` body (caught by
+     `test_m9_coop_lobby_add_peer`)
+  3. remove `record` body in `BalancePatchLog`
+     (caught by `test_m9_balance_patch_log_record_and_history`)
+  4. remove `record_tap` body (caught by
+     `test_m9_touch_visualizer_record_tap`)
+  5. invert `diff_states` remove detection
+     (caught by `test_m9_coop_protocol_apply_diff_roundtrip`)
+
+### Notes (M9-Co-op-Foundation)
+
+- The M9 closeout ships the
+  foundation for co-op (lockstep
+  protocol, lobby, mod hot-reload,
+  balance iteration, touch
+  visualizer). The actual co-op
+  mode (real ENet adapter, real
+  multiplayer testing) is out of
+  scope for M9 (no real
+  network in CI) and is the
+  M10 closeout's job.
+- FNV-1a 64-bit hashing is
+  implemented in signed 64-bit
+  GDScript int (with explicit
+  wrap-around for unsigned
+  modulo). The protocol is
+  byte-order independent (sorts
+  dictionary keys canonically).
+- 333/333 GUT tests, 1741 Asserts
+  (was 291/291, 1678 in M8
+  closeout; +42 tests, +63
+  asserts).

@@ -217,3 +217,34 @@ func is_valid() -> bool:
 		and lose_min_inhabitants > 0
 		and lose_min_hearths >= 0
 	)
+
+
+## M9 Bucket 4: apply a balance
+## patch. The method is the
+## canonical "modify a config
+## live" entry point; the M9
+## closeout supports numeric
+## patches (int/float) and
+## string patches. The M9
+## closeout returns a new
+## `M7BalanceConfig` (the
+## original is unchanged).
+func apply_patch(patch: Dictionary) -> M7BalanceConfig:
+	var result: M7BalanceConfig = M7BalanceConfig.new()
+	result.win_days_survived = win_days_survived
+	result.win_min_inhabitants = win_min_inhabitants
+	result.win_min_hearths = win_min_hearths
+	result.win_min_shrines = win_min_shrines
+	result.win_min_forges = win_min_forges
+	result.win_min_wells = win_min_wells
+	result.win_min_traps = win_min_traps
+	result.lose_min_inhabitants = lose_min_inhabitants
+	result.lose_min_hearths = lose_min_hearths
+	for key in patch.keys():
+		if key in result:
+			var v: Variant = patch[key]
+			if v is int or v is float:
+				result[key] = result[key] + v
+			else:
+				result[key] = v
+	return result
