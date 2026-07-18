@@ -26,19 +26,21 @@ Portraits, Crisis-Icons) + TileSet-Resource + UI-Theme
 (Gothic-Fantasy Dark) + echte `scenes/main/
 PlayableShell.tscn` + Animation-Entry-Points.
 **M5-Closeout Bucket 4 (Success/Failure/Restart)**,
-**Bucket 1 (Six Cultures)**, and **Bucket 2 (Ten
-Rooms)** are complete: `M5GameState` carrier + Win/
-Lose conditions + `GameOverBanner` + 6 cultures
-(lanternbearer, bellows, ember, ledger, silvershroud,
-tide) + 10 rooms (floor_stone/marsh/highland, wall,
-hearth, fog, shrine, forge, well, trap). **215/215
-GUT tests / 1104 Asserts** auf Godot 4.7+ headless.
-Mutation sweeps: M5-Real-UI-Assets 6/6 REAL, M5-
-Closeout-Bucket-4 9/9 REAL. Minimum supported Godot
+**Bucket 1 (Six Cultures)**, **Bucket 2 (Ten Rooms)**,
+and **Bucket 3 (Fifteen Events)** are complete:
+`M5GameState` carrier + Win/Lose conditions +
+`GameOverBanner` + 6 cultures (lanternbearer, bellows,
+ember, ledger, silvershroud, tide) + 10 rooms
+(floor_stone/marsh/highland, wall, hearth, fog, shrine,
+forge, well, trap) + 15 events (5 crisis, 5 good, 5
+narrative) + `M5Events.roll_event(rng)` weighted draw.
+**222/222 GUT tests / 1251 Asserts** auf Godot 4.7+
+headless. Mutation sweeps: M5-Real-UI-Assets 6/6 REAL,
+M5-Closeout-Bucket-4 9/9 REAL. Minimum supported Godot
 version: 4.7.
 
-The next milestone is M5-Closeout-Bucket-3 (fifteen
-events), per ADR-0017.
+The next milestone is M5-Closeout-Bucket-5 (en/de
+i18n), per ADR-0017.
 
 ## Start here
 

@@ -167,6 +167,18 @@ static func build_with_seed(p_seed: int) -> Dictionary:
 ##   three narrative anchors
 ## - `log: EventLog` — the sim's
 ##   event log
+## - `events: Array[Dictionary]` —
+##   the M5-Closeout Bucket 3
+##   event catalogue (15 events:
+##   5 crisis + 5 good + 5 narrative)
+## - `game_state: M5GameState` —
+##   the M5-Closeout Bucket 4 carrier
+## - `seed: int` — the SEED used to
+##   build this realm (the M5-Closeout
+##   restart loop reads this)
+## - `version: String` — the
+##   M5-Foundation / M5-Closeout
+##   version tag
 static func build() -> Dictionary:
 	var log: EventLog = EventLog.new()
 	var sim: Sim = Sim.new(_effective_seed())
@@ -293,6 +305,7 @@ static func build() -> Dictionary:
 		"narrative_anchors": anchors,
 		"log": log,
 		"game_state": game_state,
+		"events": M5Events.all(),
 		"seed": _effective_seed(),
 		"version": _VERSION,
 	}

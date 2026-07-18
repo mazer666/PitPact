@@ -1160,3 +1160,60 @@ Total: **215/215 GUT tests passing (1104 Asserts)** — vorher
   Condition (Bucket 4) ist damit vollständig testbar.
 - ADR-0017 Bucket 2 ist jetzt vollständig abgeschlossen.
 
+
+
+## [Unreleased] — M5-Closeout-Bucket-3 (Fifteen Events) in progress
+
+### Added (M5-Closeout-Bucket-3)
+
+- **`M5Events` carrier** (`src/content/m5_events.gd`):
+  kanonische M5-Closeout Event-Katalog mit 15 Events
+  (5 crisis + 5 good + 5 narrative). Jedes Event ist
+  ein `Dictionary` mit `id`, `type`, `description`,
+  `weight` Feldern.
+- **5 Crisis Events** (negative Outcomes):
+  `fog_rolls_in`, `marsh_bubbles`, `highland_rockslide`,
+  `well_dry`, `trap_sprung`. Total weight 32.
+- **5 Good Events** (positive Outcomes):
+  `settler_arrives`, `trader_passes`, `oathkeeper_returns`,
+  `marsh_heals`, `highland_path_opens`. Total weight 27.
+- **5 Narrative Events** (Flavour):
+  `shrine_smoke`, `forge_spark`, `pactmaker_whispers`,
+  `lantern_flickers`, `ledger_pages_turn`. Total weight 12.
+- **`M5Events.all()`**: gibt das volle 15-Event-Katalog
+  zurück (canonical entry point).
+- **`M5Events.count_by_type(type)`**: zählt Events
+  eines Typs.
+- **`M5Events.roll_event(rng)`**: weighted random draw
+  (linear-gewichtet). Fallback auf `randi()` wenn
+  keine RNG gegeben.
+- **`M5Events.all_ids()`**: gibt alle 15 IDs zurück.
+- **`PlayableShell.build()` return-dict**: neuer
+  `events` Key (Array mit 15 Dictionary-Entries).
+
+### Tests added (M5-Closeout-Bucket-3, 7 new)
+
+- `test_fifteen_events_count`
+- `test_fifteen_events_types`
+- `test_fifteen_events_ids`
+- `test_fifteen_events_have_required_fields`
+- `test_fifteen_events_roll_event_returns_valid`
+- `test_fifteen_events_roll_event_seeded_deterministic`
+- `test_fifteen_events_playable_shell_includes_events`
+
+Total: **222/222 GUT tests passing (1251 Asserts)** — vorher
+215/215 (1104 Asserts), +7 tests, +147 asserts.
+
+### Notes (M5-Closeout-Bucket-3)
+
+- Die 15 Events sind in 3 Kategorien aufgeteilt: crisis
+  (5), good (5), narrative (5). Die Gewichtung ist
+  so kalibriert, dass Crisis-Events häufiger auftreten
+  (Summe 32) als Good-Events (27) und Narrative
+  deutlich seltener (12).
+- Die `roll_event(rng)` Funktion nutzt eine
+  linear-gewichtete Verteilung; der M5-Closeout kann
+  auf eine glattere Verteilung (z.B. exponential) für
+  M6 upgraden.
+- ADR-0017 Bucket 3 ist jetzt vollständig abgeschlossen.
+
