@@ -2183,3 +2183,120 @@ Total: **273/273 GUT tests passing (1652 Asserts)** — vorher
   2127 Asserts (was 492,
   2016 in M14; +71 tests,
   +111 asserts).
+
+## [Unreleased] — M16-Docs-EoL in progress
+
+### Added (M16-Docs-EoL)
+
+- `docs/adrs/0028-m16-docs-eol.md` — ADR-0028
+  documenting the 5 M16 buckets
+  + side-quest M.
+- `docs/style-bible.md` — fully
+  updated with M11/M12/M13
+  visual style: Gothic Dark
+  Fantasy + Storybook Watercolor,
+  palette with 9 hex-codes,
+  6 culture silhouettes, 8
+  animation principles.
+- `docs/localization.md` — fully
+  updated with 3 locales
+  (en, de, ja), PO-format,
+  msgctxt convention, future-
+  locales roadmap.
+- `docs/sound-guide.md` (NEW) —
+  6 SFX + 1 ambient, 16-bit
+  PCM, per-event mapping.
+- `docs/animation-guide.md`
+  (NEW) — 8 animations, 60 FPS
+  budget, Reduce-Motion table.
+- `docs/accessibility.md` —
+  Reduce-Motion + color-blind
+  modes added.
+- `docs/data-schema.md` —
+  M5-M15 datatypes added
+  (events, achievements,
+  chapters, save-slot,
+  help-topics).
+- `src/config/reduce_motion.gd`
+  — `ReduceMotion` carrier
+  (10 animations, WCAG 2.1
+  §2.5.4).
+- `src/save/quick_save.gd` —
+  `QuickSave` carrier (sentinel
+  slot 99, F5/F9).
+- `src/ui/pause_indicator.gd` —
+  `PauseIndicator` carrier
+  (window-unfocused + manual
+  + auto).
+- `src/ui/help_topic.gd` —
+  `HelpTopic` carrier.
+- `src/ui/help_system.gd` —
+  `HelpSystem` carrier (5 default
+  topics, F1).
+- `src/debug/performance_overlay.gd`
+  — `PerformanceOverlay` carrier
+  (F3, FPS+frame-ms+draw-calls+
+  memory).
+
+### Tests added (M16-Docs-EoL, 49 new)
+
+- `tests/integration/test_m16_reduce_motion.gd`
+  (13) — version, default_active,
+  make, set_active, allowed,
+  blocked-when-active,
+  functional-allowed, static,
+  is_blocked, names, blocked,
+  allowed (2x).
+- `tests/integration/test_m16_quick_save.gd`
+  (8) — version, sentinel, make,
+  save, save-overwrites, load-
+  no-save, timestamp, delete,
+  save_count.
+- `tests/integration/test_m16_pause_indicator.gd`
+  (9) — version, make, reasons,
+  set_focused, set_manual_pause,
+  manual-precedence, resume,
+  should_show_overlay.
+- `tests/integration/test_m16_help_system.gd`
+  (12) — version, make, default,
+  get_topic, get_unknown,
+  topics_for_context, add,
+  add_invalid, remove,
+  remove_unknown, related,
+  contexts.
+- `tests/integration/test_m16_perf_overlay.gd`
+  (7) — version, make, set_visible,
+  toggle, update_metrics,
+  metrics_dict, default, fps_target.
+
+### Hardened (M16-Docs-EoL)
+
+- 10/10 M16 mutations REAL, 0
+  silent (`tools/audit/mutation_sweep_m16.gd`):
+  1. change ReduceMotion default
+  2. remove from animation registry
+  3. change QuickSave sentinel
+  4. remove timestamp on save
+  5. change pause reason string
+  6. remove manual precedence
+  7. remove default topics
+  8. change context_gameplay
+  9. change default _visible
+  10. remove update_metrics
+
+### Notes (M16-Docs-EoL)
+
+- Documentation synced to M15
+  state (was M0 skeleton for
+  8/11 docs).
+- Reduce-Motion follows WCAG
+  2.1 §2.5.4 (Motion
+  Actuation).
+- 612/612 GUT tests, 2235
+  Asserts (was 563, 2127 in
+  M15; +49 tests, +108 asserts).
+- `pip install pyyaml
+  --break-system-packages` and
+  `pip install gdtoolkit==4.5.0
+  --break-system-packages` were
+  required for the quality gate.

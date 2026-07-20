@@ -123,6 +123,7 @@ The module-boundary check is automated via
 | 0025 | M13-Visual-Polish | M13 |
 | 0026 | M14-Engine-Perf-Content | M14 |
 | 0027 | M15-Final-Polish-Coop | M15 |
+| 0028 | M16-Docs-EoL | M16 |
 
 ## Test count progression
 
@@ -156,6 +157,7 @@ The module-boundary check is automated via
 | M13-Visual-Polish | 444 | 1942 |
 | M14-Engine-Perf-Content | 492 | 2016 |
 | M15-Final-Polish-Coop | 563 | 2127 |
+| M16-Docs-EoL | 612 | 2235 |
 
 ## References
 

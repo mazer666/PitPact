@@ -18,6 +18,7 @@
 | M13: Visual Polish & Animation | Idle animator (3-frame breathing), particle spawner (fire/smoke/magic/blood), DayNight integrator (TimeOfDay → shader), audio-reactive visuals (step/crisis/power). |
 | M14: Engine Perf & Content | Achievement system (10 built-in), Campaign (5 chapters), FrameProfiler (avg + p99), ObjectPool (16 default), SpeedRun timer. |
 | M15: Final Polish & Real Co-op | Cloud Save (5 slots, hash validation), GameSettings (10 defaults), Tutorial (5 steps), RunStats (win-rate, avg days, best time), LobbyServer (in-memory + filtering), NAT Traversal stub, Localization (en/de/ja). |
+| M16: Final Documentation & Ease of Life | Doc-Sync (style-bible, localization, sound-guide, animation-guide, accessibility update), ReduceMotion (5 blocked + 5 allowed anims, WCAG 2.1), QuickSave (F5/F9 sentinel slot 99), PauseIndicator (window-unfocused + manual + auto), HelpSystem (5 default topics, F1 dialog), PerformanceOverlay (F3 FPS+frame-ms+draw-calls+memory). |
 | Post-release | Balancing, additional content, mod/content interfaces, and later iPadOS preparation; co-op only after the single-player architecture is stable. |
 
 ## M5-Closeout sub-buckets (per ADR-0017)
@@ -60,7 +61,7 @@
 
 ## Out of scope
 
-- **Cloud-Backend / real STUN-TURN** — M16+ (the M15 closeout ships in-memory LobbyServer + NAT-Traversal-Stub; M16 closeout adds real cloud-backend + real STUN/TURN)
+- **Cloud-Backend / real STUN-TURN** — M17+ (the M15 closeout ships in-memory LobbyServer + NAT-Traversal-Stub; the M16 closeout ships docs + QoL; M17 closeout adds real cloud-backend + real STUN/TURN)
 - **Real-money shop** — explicitly out of scope (the
   project is open-source, offline-first, per
   `docs/requirements.md` §1)

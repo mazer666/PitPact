@@ -1,8 +1,10 @@
 # PitPact Data Schema Conventions
 
-> Status: **M0 template**, enforced from M1 onward. This document
-> defines how content data is shaped, named, versioned, and
-> extended. It is the operational companion to ADR-0003 (save
+> Status: **M16 final** (post M5-M15 content additions). This
+> document defines how content data is shaped, named, versioned,
+> and extended. The M0 template was filled in across M5-M15 with
+> new datatypes (cultures, events, achievements, chapters, mods,
+> save-slot). It is the operational companion to ADR-0003 (save
 > format) and the §16.3 module boundary for `src/content/`.
 
 ## Why a separate document
@@ -149,6 +151,62 @@ Defined in the M5 pass. The field set is the same shape as
 `OriginData` plus `body_form`, `movement`, `social_rules`,
 `conflict_pattern`. The M0 template reserves the path; the M5
 commit populates the actual data and the schema.
+
+### EventData (`data/events/*.tres`, M5-Closeout)
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | `StringName` | `snake_case`; e.g. `"famine"`. |
+| `display_name` | `LocalizedString` | UI name. |
+| `description` | `LocalizedString` | UI short blurb. |
+| `severity` | `int` | 1-5, default 1. |
+| `tags` | `PackedStringArray` | Default empty. |
+| `cooldown_days` | `int` | Default 0. |
+| `schema_version` | `int` | Default 1. |
+
+### AchievementData (`data/achievements/*.tres`, M14)
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | `StringName` | `snake_case`; e.g. `"first_hearth"`. |
+| `display_name` | `LocalizedString` | UI name. |
+| `description` | `LocalizedString` | UI short blurb. |
+| `condition_callable` | `StringName` | Path to a static function returning bool. |
+| `icon` | `String` | Path to icon. |
+| `schema_version` | `int` | Default 1. |
+
+### ChapterData (`data/chapters/*.tres`, M14)
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | `StringName` | `snake_case`; e.g. `"awakening"`. |
+| `display_name` | `LocalizedString` | UI name. |
+| `description` | `LocalizedString` | UI short blurb. |
+| `required_achievements` | `PackedStringArray` | Achievement ids. |
+| `biomes` | `PackedStringArray` | Biome ids. |
+| `schema_version` | `int` | Default 1. |
+
+### SaveSlotData (`saves/slot_*.json`, M15)
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `format_version` | `String` | `"1.0.0"` (per M15) |
+| `slot` | `int` | 0-4 (5 slots) |
+| `timestamp` | `int` | Unix timestamp |
+| `state_hash` | `String` | SHA-256-like hash via M9 CoopProtocol |
+| `state` | `Dictionary` | Game state (Map, inhabitants, resources) |
+| `metadata` | `Dictionary` | Free-form (player_name, day_count, etc.) |
+
+### HelpTopicData (`help/topics/*.tres`, M16)
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `id` | `StringName` | `snake_case`; e.g. `"getting_started"`. |
+| `title` | `LocalizedString` | UI name. |
+| `body` | `LocalizedString` | Body text. |
+| `related_topics` | `PackedStringArray` | Topic ids. |
+| `context` | `StringName` | e.g. `"gameplay"`, `"co_op"`, `"settings"`. |
+| `schema_version` | `int` | Default 1. |
 
 ## Forbidden patterns
 

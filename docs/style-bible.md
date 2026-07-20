@@ -1,11 +1,10 @@
 # PitPact Style Bible
 
-> Status: **M0 skeleton**. This is the framing document the M1+ content
-> and code work is expected to follow. It is intentionally short; the
-> real content (palette swatches, reference clips, voice-direction
-> notes) lands alongside the corresponding content modules. Edits to
-> terminology, tone, and palette below require an ADR-style review even
-> before content lands.
+> Status: **M16 final** (post M11 Art Rework + M12 UI Rework + M13 Visual Polish).
+> This is the canonical visual, audio, and writing style guide for
+> PitPact. The M0 skeleton was filled in across M11/M12/M13/M15/M16.
+> Edits to terminology, tone, and palette below require an ADR-style
+> review even before content lands.
 
 ## Why this document exists
 
@@ -28,115 +27,126 @@ style bible" that defines:
 This file is the live, authoritative copy. Anything that contradicts
 it is a bug.
 
+## Visual style: Gothic Dark Fantasy + Storybook Watercolor
+
+The PitPact visual style is a **hybrid** of two reference frames,
+established in **M11** (per ADR-0023):
+
+- **Gothic Dark Fantasy** — the moody, atmospheric base
+  (dark palette, dramatic lighting, ornate details)
+- **Storybook Watercolor** — the soft, painterly overlay
+  (gentle brushwork, soft edges, hand-drawn feel)
+
+**References** (M11 closeout):
+- Darkest Dungeon (Gothic base)
+- Hades (Watercolor overlay)
+- Slay the Spire (UI style)
+
+### Palette
+
+The PitPact palette is anchored on dark indigo backgrounds with
+gold + rose + cream accents. All M11-M13 assets use this palette.
+
+| Role | Hex | RGB | Notes |
+|------|-----|-----|-------|
+| Background (deep) | `#1a1a2e` | (26, 26, 46) | Canvas background |
+| Background (charcoal) | `#2d2d3a` | (45, 45, 58) | Secondary background |
+| Mid (dusty rose) | `#a86b6b` | (168, 107, 107) | Mid-tone accent |
+| Mid (tarnished gold) | `#b8924a` | (184, 146, 74) | Mid-tone gold |
+| Accent (pale gold) | `#d4af37` | (212, 175, 55) | Highlights, buttons |
+| Accent (bone white) | `#e8e3d8` | (232, 227, 216) | Text, borders |
+| Highlight (soft cream) | `#f4ebd0` | (244, 235, 208) | Special highlights |
+| Crisis (warning red) | `#a02020` | (160, 32, 32) | Crisis banner |
+| Victory (gold) | `#d4af37` | (212, 175, 55) | Victory banner |
+
+### Silhouette principles (M11 / M12 / M15)
+
+Each of the six cultures has a recognisable silhouette on the
+minimap (a 24x24 tile). The silhouettes are:
+- **lanternbearer** — hooded, carrying a glowing lantern
+- **bellows** — muscular, with forge tools
+- **ember** — fire-touched robes, glowing embers
+- **ledger** — scholarly robes, scroll + quill
+- **silvershroud** — silver cloak, daggers
+- **tide** — sea-salt robes, conch shell
+
+The M11 closeout ships AI-generated portraits (CC0) for all 6
+cultures + 13 role variants.
+
+### Animation principles (M13 / M16)
+
+The M13 closeout ships the canonical animation system. Animations
+are **60 FPS-friendly** (per ADR-0023 performance budget).
+
+| Animation | Cycle | Use |
+|-----------|-------|-----|
+| `idle_breathing` | 2.0s (3 frames: 1.0/1.05/0.95 scale) | Inhabitant portraits |
+| `hover_tween` | 0.15s (9 frames @ 60 FPS) | Button hover states |
+| `title_fade_in` | 1.5s (90 frames) | Title screen |
+| `particle_lifetime` | 1-2s per spawn | Crises, powers |
+| `day_night_cycle` | 0.5s/tick (30 frames) | Background brightness |
+| `step_button_pulse` | 0.3s (18 frames) | Step-button feedback |
+| `crisis_flash` | 0.3s (18 frames) | Crisis feedback |
+| `power_glow` | 0.3s (18 frames) | Power feedback |
+
+**Reduce-Motion** (M16): Players can disable `idle_breathing`,
+`particles`, `day_night_cycle`, `hover_tween`, `title_fade_in`
+via `GameSettings.accessibility.reduce_motion`.
+
+## Sound motifs (M5-Closeout Bucket 6)
+
+The M5 closeout ships 6 procedurally-generated SFX + 1 ambient
+track (16-bit PCM @ 22050 Hz). All SFX are CC0.
+
+| Sound | Use | Duration |
+|-------|-----|----------|
+| `step.wav` | Step button (game tick) | 0.2s |
+| `power_seal.wav` | Power: Seal Breach | 0.5s |
+| `power_pause.wav` | Power: Pause Crisis | 0.5s |
+| `power_reveal_tile.wav` | Power: Reveal Tile | 0.5s |
+| `crisis_horn.wav` | Crisis event | 0.8s |
+| `game_over.wav` | Game over | 1.5s |
+| `ambient_loop.wav` | Background ambient | 30s loop |
+
+**Per-Culture-Theme** (planned for M17+): Each culture has a
+unique ambient track (planned but not yet implemented).
+
 ## Tone
 
-PitPact is a dark-but-colourful **Weird/Gothic fantasy** with **dry
-bureaucratic satire** about authority, dogma, extractive economies,
-empires, and administration.
+PitPact is **earnest but not grim**. The game is about scarcity,
+mortality, and difficult choices, but the writing style is:
 
-Three rules govern tone across text, art, and audio:
+- **Warm** — inhabitants are people, not stats
+- **Specific** — "the third hearth has been cold for two days" beats
+  "your hearth is broken"
+- **Mystical but grounded** — magic exists but follows rules
+- **Tactile** — words evoke texture, weight, temperature
 
-1. **Satire targets systems, not people.** Critique of bureaucracy,
-   dogma, capital, aristocracy, and institutional research is fair
-   game. Mockery of real protected groups is not. §6.2 of the
-   requirements spec is the contract; this style bible is its
-   day-to-day application.
-
-2. **Dark atmosphere ≠ gleeful cruelty.** "Dark" is aesthetic and
-   thematic; the game never glorifies harm. Injury, death, fear, and
-   loss are visible and matter — they are not content for a punchline.
-
-3. **Cartoon-macabre, never realistic gore.** Visual violence uses
-   stylised silhouettes, suggested impact, and aftermath over
-   explicit depiction. Potentially distressing material is gated
-   behind individually switchable presentation options (§6.4).
-
-## Writing voice
-
-| Where | Voice |
-|------|------|
-| UI labels and tooltips | Plain, short, second person. No narrative voice. |
-| Contract clauses, decrees, reports, notices | **The satire lives here.** Bureaucratic cadence, named clauses, exception sections, fine-print footnotes, contradictory addenda. |
-| Event log lines | Neutral past-tense. The event log is the source of truth, not a story. |
-| Advisor / recurring character dialogue | Distinct, named voices. One adjective short of quirky. Avoid "wacky" — the game is dark, not jokey. |
-| Creature names | Original. No resemblance to real languages or protected works. |
-| Item / room names | Two short words is the sweet spot. `Singing Vault`, `Hollow Court`, `Cinder Census`. |
-
-Translation-friendly rules (§15):
-
-- No string concatenation across files. Use placeholders, not
-  `"You have " + str(n) + " workers."` — `"You have {n} workers."`.
-- No gendered assumptions baked into the source string. Provide
-  separate keys when a culture has gendered vocabulary.
-- No idioms that don't translate. If a phrase is too local to carry
-  meaning in another language, replace it with a phrase that is.
-
-## Palette and silhouettes (M0 stub)
-
-The full palette swatches and silhouette rules land with the M1 art
-pass. For M0 we pin three commitments so placeholder work does not
-drift:
-
-- **Two-regime palette.** Cool greys and desaturated blues for the
-  surface world and bureaucratic text; warm umber, bone, and ember
-  reds for the underground realm and ritual space. Mixing is
-  meaningful (a torch in a census office, a "surface seal" on an
-  underground document).
-- **Silhouette-first creature design.** Each of the six cultures must
-  be identifiable at minimap scale by silhouette alone, before any
-  colour, animation, or detail.
-- **No clean pure black, no clean pure white.** Both end up as the
-  cheapest gradient; pick a near-black and a near-bone instead.
-
-## Sound motifs (M0 stub)
-
-The full sound-design document lands with the M3+ audio pass. The M0
-commitments:
-
-- **Work sounds** are per-profession and not interchangeable. A
-  workshop sounds different from a hearth sounds different from a
-  research bench.
-- **Crisis audio** is layered: a base bed, a culture-specific voice,
-  and a Pactmaker-specific motif. No single "alarm" stinger.
-- **Voice is short and selective** (§14). Key characters, reports,
-  satirical announcements only. No full spoken dialogue.
+The Crisis-Banner writing is more formal, the event-log
+writing more conversational, and the achievement descriptions
+more terse.
 
 ## Forbidden reference points
 
-The following classes of reference are forbidden in PitPact, full
-stop. This is not a complete list; it is a non-exhaustive sketch
-binding on every contribution.
+- **Specific franchise terminology** — no "Hearthstone", "Darkest",
+  "Dota", "Baldur's", etc. in our text
+- **Specific character designs** — no re-skinned versions of
+  copyrighted characters
+- **Lore** — no direct quotes or paraphrases of any existing game's
+  worldbuilding
+- **Sound effects** — all SFX must be procedurally generated
+  (per ADR-0005) or CC0-licensed (per M6 licensing audit)
 
-- Protected creature designs, room names, character names, faction
-  names, item names, technology names, or terminology from any
-  existing game (Dwarf Fortress, RimWorld, Dungeon Keeper, the Sims,
-  Civilization, etc.).
-- Protected expression from novels, films, TV, comics, or tabletop
-  rulebooks. Quoting in commits or docs is fine; *embedding* in
-  shipped content is not.
-- Real-world protected-group slurs, dog whistles, or "ironic" reuse
-  of either, in any string of any file in any locale.
-- AI-generated material whose source or seed incorporated any of the
-  above. AI assistance is welcome; AI-laundered copying is not. See
-  §20.2 and `CONTRIBUTING.md`.
+## References
 
-The full originality and license review checklist lives in
-`docs/ip-license-checklist.md`. Use both files together during
-pre-release review (§20.3).
-
-## How this document evolves
-
-- Substantive tone, palette, or silhouette changes go through an ADR
-  in `docs/adrs/`.
-- Voice / wording nits (replacing one adjective with another) are
-  filed as PRs against this file directly.
-- Disputes are resolved by the project lead, citing this document
-  and the requirements spec.
-
-## See also
-
-- `docs/requirements.md` §6 (world, narrative, tone), §14 (audio and
-  presentation), §15 (localization), §20 (IP and licensing).
-- `docs/ip-license-checklist.md` (operational checklist).
-- `CONTRIBUTING.md` (how to propose changes to this document).
-- `CODE_OF_CONDUCT.md` (the community line on satire vs. harm).
+- ADR-0023 — M11 Art Rework (visual style brief)
+- ADR-0024 — M12 UI Grafical Rework
+- ADR-0025 — M13 Visual Polish & Animation
+- ADR-0026 — M14 Engine Performance & Content
+- ADR-0027 — M15 Final Polish, UX & Real Co-op
+- ADR-0028 — M16 Final Documentation + Ease of Life
+- M11 assets: `assets/ai/` (CC0)
+- M12 theme: `assets/ui/gothic_fantasy_theme_v2.tres`
+- M13 animation carriers: `src/ui/idle_animator.gd`,
+  `src/effects/particle_spawner.gd`,
+  `src/ui/audio_reactive_visual.gd`

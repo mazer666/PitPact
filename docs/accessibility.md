@@ -1,10 +1,10 @@
-# PitPact — M6 Accessibility Statement
+# PitPact — Accessibility Statement
 
-> Per ADR-0018 §Bucket 4. This document
-> describes the M6 accessibility standard
-> for PitPact, the implementation
-> evidence, and the manual-audit
-> checklist.
+> Per ADR-0018 §Bucket 4 (M6) + ADR-0028
+> §Bucket 2 (M16 Reduce-Motion). This
+> document describes the M16 accessibility
+> standard for PitPact, the implementation
+> evidence, and the manual-audit checklist.
 
 ## Goal
 
@@ -117,7 +117,51 @@ The M6 closeout does **not** include:
 - Dyslexia-friendly fonts (M7).
 - Adjustable UI scale (M7).
 
+## Reduce-Motion (M16)
+
+The M16 closeout adds
+`ReduceMotion` carrier
+(`src/config/reduce_motion.gd`),
+gated by the
+`accessibility.reduce_motion`
+setting. When active, all
+non-essential animations
+are disabled:
+
+| Animation | Disabled? | Reason |
+|-----------|-----------|--------|
+| `idle_breathing` | ✅ Yes | Decorative |
+| `particles` | ✅ Yes | Decorative |
+| `day_night_cycle` | ✅ Yes | Decorative (instant transition) |
+| `hover_tween` | ✅ Yes | Decorative (instant hover) |
+| `title_fade_in` | ✅ Yes | Decorative (instant) |
+| `step_button_pulse` | ❌ No | Functional feedback |
+| `crisis_banner_slide` | ❌ No | Important info |
+| `game_over_banner_slide` | ❌ No | Important info |
+| `victory_banner_slide` | ❌ No | Important info |
+
+This implements **WCAG 2.1 §2.5.4
+(Motion Actuation)**.
+
+## Color-blind modes
+
+The M15 closeout ships
+`accessibility.color_blind_mode`
+setting (3 modes: `off`,
+`deuteranopia`, `protanopia`,
+`tritanopia`).
+
 ## References
+
+- ADR-0018 §Bucket 4 (M6 accessibility)
+- ADR-0028 §Bucket 2 (M16 Reduce-Motion)
+- WCAG 2.1: https://www.w3.org/TR/WCAG21/
+- docs/style-bible.md (palette)
+- assets/ui/gothic_fantasy_theme_v2.tres
+  (theme v2 per M12)
+- scenes/main/PlayableShell.tscn
+  (focus chain)
+- src/config/reduce_motion.gd (M16)
 
 - ADR-0018 §Bucket 4 (M6 accessibility)
 - WCAG 2.1: https://www.w3.org/TR/WCAG21/

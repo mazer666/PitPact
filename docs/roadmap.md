@@ -59,10 +59,11 @@ hold before the next one opens. The milestones, in order:
 | M13 | Visual Polish & Animation | Idle Animator (3-frame breathing cycle, 2.0s), Particle Spawner (fire/smoke/magic/blood, headless-safe), DayNight Integrator (M11 TimeOfDay → M11 shader, 0.5s tick), Audio-Reactive Visual (step-pulse, crisis-flash, power-glow, 0.3s decay). 33 neue Tests, 5/5 M13-Mutationen REAL. 444/444 GUT tests, 1942 Asserts. ADR-0025 dokumentiert die 3 M13-Buckets + Side-Quest J. |
 | M14 | Engine Perf & Content | Achievement System (10 built-in achievements mit Condition-Callables), Campaign (5 chapters: awakening/settlement/expansion/crisis/mastery), FrameProfiler (avg + p99, 1000-frame rolling window), ObjectPool (16 default, factory-based), SpeedRun (timer + 3 targets). 44 neue Tests, 5/5 M14-Mutationen REAL. 492/492 GUT tests, 2016 Asserts. ADR-0026 dokumentiert die 3 M14-Buckets + Side-Quest K. |
 | M15 | Final Polish & Real Co-op | Cloud Save (5 slots + SHA-256 hash + auto-save every 10 ticks), GameSettings (10 defaults, JSON persistence), Tutorial (5 steps with trigger conditions), RunStats (win-rate, avg days, best time), LobbyServer (in-memory registry + filter), NAT Traversal stub (real STUN/TURN deferred to M16), Localization Manager (en/de/ja, 18 keys). 71 neue Tests, 5/5 M15-Mutationen REAL. 563/563 GUT tests, 2127 Asserts. ADR-0027 dokumentiert die 5 M15-Buckets + Side-Quest L. |
+| M16 | Final Docs & Ease of Life | Doc-Sync (style-bible v2 + localization v3 + sound-guide + animation-guide + accessibility update), ReduceMotion (5 blocked + 5 allowed anims, WCAG 2.1 §2.5.4), QuickSave (F5/F9 sentinel slot 99), PauseIndicator (window-unfocused + manual + auto), HelpSystem (5 default topics, F1 dialog), PerformanceOverlay (F3). 49 neue Tests, 10/10 M16-Mutationen REAL. 612/612 GUT tests, 2235 Asserts. ADR-0028 dokumentiert die 5 M16-Buckets + Side-Quest M. |
 
 Post-release work (balancing, additional content, mod/content
 interfaces, eventual co-op) is out of scope for
-M0-M14 and tracked separately.
+M0-M15 and tracked separately.
 
 ## What "done" means for M1
 
