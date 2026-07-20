@@ -92,7 +92,7 @@ Focus, ausreichende Color-Contrast.
 **Goal**: Alle Assets und Code-Teile sind sauber lizenziert.
 
 **Definition-of-Done**:
-- `LICENSES/`-Verzeichnis mit per-Asset-Records.
+- `licenses/`-Verzeichnis mit per-Asset-Records.
 - `tools/audit/check_licenses.sh`: assertet dass alle
   prozedural generierten PNGs/WAVs keine externen IP
   enthalten.

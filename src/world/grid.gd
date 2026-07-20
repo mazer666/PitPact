@@ -30,6 +30,7 @@ var h: int = 0
 ## The seed the grid was constructed from. The save format
 ## round-trips this value so a `Grid.from_seed` re-run with
 ## the same seed reproduces the same tile array.
+@warning_ignore("shadowed_global_identifier")
 var seed: int = 0
 
 ## The flat tile array. Indexed as `tiles[y * w + x]`. The

@@ -5,13 +5,13 @@
 # Audit test net.
 extends GutTest
 
-const _MANIFEST_PATH: String = "res://LICENSES/asset-manifest.md"
+const _MANIFEST_PATH: String = "res://licenses/asset-manifest.md"
 
 
 func test_manifest_exists() -> void:
 	# The M6 Bucket 5 ships the
 	# asset manifest at
-	# `LICENSES/asset-manifest.md`.
+	# `licenses/asset-manifest.md`.
 	assert_true(FileAccess.file_exists(_MANIFEST_PATH), "asset manifest exists")
 
 

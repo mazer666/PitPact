@@ -102,7 +102,7 @@
 ## References
 
 - ADR-0018 §Bucket 5 (M6 Licensing/IP Audit)
-- `LICENSES/README.md` (overview)
+- `licenses/README.md` (overview)
 - `docs/ip-license-checklist.md` (the
   M0-baseline audit checklist)
 - `tools/audit/check_licenses.sh`

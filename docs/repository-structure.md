@@ -32,7 +32,7 @@ boundaries or contributor workflow require an ADR in
   tools/build/                    # Reproducible-build scripts
   tools/benchmarks/               # Performance benchmarks
   tools/mod_template/             # M7 mod-template (manifest + events.json)
-  LICENSES/                       # Asset license manifest (M6 Bucket 5)
+  licenses/                       # Asset license manifest & texts (M6 Bucket 5)
   archive/                        # Superseded public plans/spec snapshots
 ```
 
@@ -89,7 +89,7 @@ The module-boundary check is automated via
   (`run_perf.gd`).
 - **`tools/mod_template/`** — M7 mod-template (manifest +
   sample events.json).
-- **`LICENSES/`** — asset license manifest (M6 Bucket 5).
+- **`licenses/`** — asset license manifest & texts (M6 Bucket 5).
 - **`archive/`** — superseded public plans/spec snapshots.
 
 ## ADRs (chronological)
@@ -166,6 +166,6 @@ The module-boundary check is automated via
 - `docs/milestones.md` — milestone Definition-of-Done
 - `docs/style-bible.md` — Gothic-Fantasy Dark palette
 - `docs/accessibility.md` — M6 WCAG 2.1 AA standard
-- `LICENSES/asset-manifest.md` — asset license manifest
+- `licenses/asset-manifest.md` — asset license manifest
 - `KNOWN_ISSUES.md` — M6 known issues
 - `RELEASE_NOTES.md` — M6 v0.2.0-m6 release notes

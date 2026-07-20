@@ -10,7 +10,7 @@
 # The screen fades in over
 # 1.5s (60 FPS perf budget
 # per ADR-0023).
-extends Control
+extends CanvasLayer
 
 # The canonical M12 version.
 # The M12 closeout pins the

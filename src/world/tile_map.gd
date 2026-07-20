@@ -52,7 +52,7 @@ const _TILE_ATLAS_PATH: String = "res://assets/tiles/world_tileset.tres"
 func tile_id_to_atlas_coord(tile_id: int) -> Vector2i:
 	# The atlas is 4x3 = 12 cells. Tiles 0..3
 	# in row 0, 4..7 in row 1, 8..11 in row 2.
-	return Vector2i(tile_id % 4, tile_id / 4)
+	return Vector2i(tile_id % 4, int(tile_id / 4))
 
 
 ## Bind the M5 TileSet to this layer. The M5-Foundation

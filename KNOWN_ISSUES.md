@@ -134,7 +134,7 @@ of the `.tres` and the import files).
 ## References
 
 - ADR-0018 §Bucket 6 (M6 Known-Issues)
-- `LICENSES/asset-manifest.md` (asset
+- `licenses/asset-manifest.md` (asset
   audit)
 - `tools/audit/check_licenses.sh`
   (the M6 closeout audit script)

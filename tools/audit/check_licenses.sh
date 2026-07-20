@@ -15,14 +15,14 @@
 #      CC0 (assets) or CC BY-SA 4.0
 #      (locales).
 #
-# The script reads `LICENSES/asset-manifest.md`
+# The script reads `licenses/asset-manifest.md`
 # and asserts the audit status.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-MANIFEST="$PROJECT_ROOT/LICENSES/asset-manifest.md"
+MANIFEST="$PROJECT_ROOT/licenses/asset-manifest.md"
 
 if [ ! -f "$MANIFEST" ]; then
 	echo "FAIL: $MANIFEST not found"

@@ -91,7 +91,7 @@ is **60 FPS @ 16.67ms/frame** (per ADR-0023).
 ## Licensing
 
 All SFX are procedurally generated (per ADR-0005) and therefore
-CC0 (per M6 licensing). The M6 closeout's `LICENSES/asset-manifest.md`
+CC0 (per M6 licensing). The M6 closeout's `licenses/asset-manifest.md`
 documents this.
 
 ## References

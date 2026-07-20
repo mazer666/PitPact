@@ -99,7 +99,7 @@ with 1566 Asserts, and `tools/run_quality.sh` reports
 - **Accessibility** — keyboard-navigable UI,
   color-contrast WCAG 2.1 AA.
 - **Licensing/IP audit** complete
-  (`LICENSES/` directory, all assets procedural).
+  (`licenses/` directory, all assets procedural).
 - **Known-Issues list** maintained
   (`KNOWN_ISSUES.md`).
 

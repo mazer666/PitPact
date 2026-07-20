@@ -138,8 +138,8 @@ func pan_by(delta: Vector2) -> void:
 ## stubbed. The M1 implementation does not animate the camera
 ## at all, so this is a no-op for now; the setter is exposed
 ## so the settings UI can drive it without an API change.
-func set_reduced_motion(enabled: bool) -> void:
-	reduced_motion = enabled
+func set_reduced_motion(p_enabled: bool) -> void:
+	reduced_motion = p_enabled
 
 
 ## Guarded rotation setter. ADR-0004 forbids any camera

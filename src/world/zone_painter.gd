@@ -33,7 +33,7 @@ var realm: RefCounted
 ## coordinates. The tool needs the layer's
 ## `screen_to_tile` to convert mouse events to tiles.
 ## `null` until `bind_tile_map` is called.
-var tile_map: RefCounted
+var tile_map: Node
 
 ## The zone purpose the tool paints. The M1 minimum is
 ## `ZonePurpose.HEARTH`; the painter defaults to that.
