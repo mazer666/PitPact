@@ -35,7 +35,7 @@ extends Node
 ## of timing out at runtime. Use `preload()` (not `load()`)
 ## so the editor's class-name table resolves the children
 ## before the scene is instantiated.
-const _TITLE_SCREEN_PATH := "res://scenes/ui/TitleScreen.tscn"
+const _TITLE_SCREEN_PATH := "res://scenes/main/TitleScreen.tscn"
 const _PAUSE_MENU_PATH := "res://scenes/ui/PauseMenu.tscn"
 const _DIAGNOSTICS_OVERLAY_PATH := "res://scenes/ui/DiagnosticsOverlay.tscn"
 const _MINIMAP_PATH := "res://scenes/ui/Minimap.tscn"
@@ -49,7 +49,7 @@ var camera: IsometricCamera
 var diagnostics: CanvasLayer
 var minimap: CanvasLayer
 var pause_menu: CanvasLayer
-var title_screen: CanvasLayer
+var title_screen: Control
 var demo_realm: Node2D
 
 ## The most recent realm scene we instantiated, used by the
