@@ -2091,3 +2091,95 @@ Total: **273/273 GUT tests passing (1652 Asserts)** — vorher
   2016 Asserts (was 444,
   1942 in M13; +44 tests,
   +74 asserts).
+
+## [Unreleased] — M15-Final-Polish-Coop in progress
+
+### Added (M15-Final-Polish-Coop)
+
+- `src/save/save_manager.gd` — `SaveManager` carrier
+  (5 slots, SHA-256-like hash via M9 CoopProtocol,
+  auto-save every 10 ticks, format version 1.0.0).
+- `src/config/settings.gd` — `GameSettings` carrier
+  (10 defaults: audio x3, display x3, language,
+  gameplay x2, accessibility).
+- `src/tutorial/tutorial_step.gd` — `TutorialStep`
+  carrier (id, title, body, condition callable,
+  trigger/complete state).
+- `src/tutorial/tutorial_manager.gd` — `TutorialManager`
+  carrier (5 default steps, check_triggers,
+  skip_all, mark_completed).
+- `src/stats/run_stats.gd` — `RunStats` carrier
+  (wins, losses, abandoned, win_rate, avg_days,
+  best_time).
+- `src/net/lobby_server.gd` — `LobbyServer` carrier
+  (in-memory registry, register/unregister, list
+  with filter, get_lobby, update_player_count).
+- `src/net/nat_traversal.gd` — `NatTraversal` stub
+  (is_available=false, connect_via_nat/relay_via_turn
+  return -1; M16 will integrate real STUN/TURN).
+- `src/i18n/localization_manager.gd` — `LocalizationManager`
+  (3 locales: en, de, ja; 18 keys; in-memory translations).
+- `docs/adrs/0027-m15-final-polish-coop.md` — ADR-0027
+  documenting the 5 M15 buckets + side-quest L.
+
+### Tests added (M15-Final-Polish-Coop, 71 new)
+
+- `tests/integration/test_m15_settings.gd` (11) —
+  version, defaults (10 keys), set/get, has,
+  missing key, unset, defaults_static, reset,
+  save+load, load missing, difficulty range.
+- `tests/integration/test_m15_save_manager.gd`
+  (13) — version, make, save/load roundtrip,
+  invalid slot, load empty, delete, has_save,
+  max_slots, format_version, verify_hash,
+  multiple slots, auto_save_interval, tick_auto_save.
+- `tests/integration/test_m15_tutorial.gd` (12) —
+  TutorialStep (version, make, check_triggers,
+  mark_completed), TutorialManager (version, make,
+  add_step, check_triggers, skip_all, default
+  tutorial, welcome, win, mark_completed, unknown).
+- `tests/integration/test_m15_run_stats.gd` (9) —
+  version, make, record, outcome counts, win_rate,
+  avg_days, best_time, best_time no wins, clear.
+- `tests/integration/test_m15_lobby_server.gd`
+  (14) — LobbyServer (version, make, register,
+  invalid, unregister, unknown, list, filter,
+  get, unknown get, update_player_count),
+  NatTraversal (version, is_available, connect).
+- `tests/integration/test_m15_localization.gd`
+  (10) — version, default_locale, supported,
+  set/get, invalid, is_supported, translate en/de/ja,
+  unknown key.
+
+### Hardened (M15-Final-Polish-Coop)
+
+- 5/5 M15 mutations REAL, 0 silent
+  (`tools/audit/mutation_sweep_m15.gd`):
+  1. remove GameSettings.set_value
+  2. change SaveManager max slots to 99
+  3. remove TutorialManager.append
+  4. change RunStats win_rate to 1.0
+  5. change LobbyServer register to always -1
+
+### Notes (M15-Final-Polish-Coop)
+
+- `Settings` was renamed to
+  `GameSettings` to avoid
+  collision with the existing
+  `src/sim/settings.gd` class.
+- `set()` / `get()` were
+  renamed to `set_value()` /
+  `get_value()` in
+  GameSettings to avoid
+  collision with `Object.set()`
+  / `Object.get()`.
+- `connect()` was renamed to
+  `connect_via_nat()` in
+  NatTraversal to avoid
+  collision with `Object.connect()`.
+- 563/563 GUT tests (4 risky
+  due to M8/M13 node
+  hierarchy; no failures),
+  2127 Asserts (was 492,
+  2016 in M14; +71 tests,
+  +111 asserts).

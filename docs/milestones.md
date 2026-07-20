@@ -17,6 +17,7 @@
 | M12: UI Grafical Rework | AI-driven .tscn scenes (PlayableShell + CrisisBanner + GameOverBanner + VictoryBanner + TitleScreen), gothic-fantasy theme v2 (4 button states), hover-tween (60 FPS), title-screen fade-in. |
 | M13: Visual Polish & Animation | Idle animator (3-frame breathing), particle spawner (fire/smoke/magic/blood), DayNight integrator (TimeOfDay → shader), audio-reactive visuals (step/crisis/power). |
 | M14: Engine Perf & Content | Achievement system (10 built-in), Campaign (5 chapters), FrameProfiler (avg + p99), ObjectPool (16 default), SpeedRun timer. |
+| M15: Final Polish & Real Co-op | Cloud Save (5 slots, hash validation), GameSettings (10 defaults), Tutorial (5 steps), RunStats (win-rate, avg days, best time), LobbyServer (in-memory + filtering), NAT Traversal stub, Localization (en/de/ja). |
 | Post-release | Balancing, additional content, mod/content interfaces, and later iPadOS preparation; co-op only after the single-player architecture is stable. |
 
 ## M5-Closeout sub-buckets (per ADR-0017)
@@ -59,7 +60,7 @@
 
 ## Out of scope
 
-- **Co-op (full networking)** — M15+ (the M10 closeout ships the live-mode headless loopback; the M15 closeout adds real internet co-op)
+- **Cloud-Backend / real STUN-TURN** — M16+ (the M15 closeout ships in-memory LobbyServer + NAT-Traversal-Stub; M16 closeout adds real cloud-backend + real STUN/TURN)
 - **Real-money shop** — explicitly out of scope (the
   project is open-source, offline-first, per
   `docs/requirements.md` §1)

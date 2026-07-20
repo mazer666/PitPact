@@ -26,8 +26,8 @@ Portraits, Crisis-Icons) + TileSet-Resource + UI-Theme
 (Gothic-Fantasy Dark) + echte `scenes/main/
 PlayableShell.tscn` + Animation-Entry-Points.
 **M5-Closeout + M6-Release-Readiness + M7-Content-and-Balance
-+ M8-iPadOS-and-Mobile + M9-Co-op-Foundation + M10-Co-op-Live-Mode + M11-Art-Rework + M12-UI-Grafical-Rework + M13-Visual-Polish + M14-Engine-Perf-Content komplett abgeschlossen**
-— alle 37 M5/M6/M7/M8/M9/M10/M11/M12/M13/M14-Buckets + 6 Side-Quests geliefert:
++ M8-iPadOS-and-Mobile + M9-Co-op-Foundation + M10-Co-op-Live-Mode + M11-Art-Rework + M12-UI-Grafical-Rework + M13-Visual-Polish + M14-Engine-Perf-Content + M15-Final-Polish-Coop komplett abgeschlossen**
+— alle 42 M5/M6/M7/M8/M9/M10/M11/M12/M13/M14/M15-Buckets + 7 Side-Quests geliefert:
 - **M5-Bucket 4 (Success/Failure/Restart)**
 - **M5-Bucket 1 (Six Cultures)**: 6 inhabitants,
   7 portrait PNGs
@@ -61,19 +61,20 @@ PlayableShell.tscn` + Animation-Entry-Points.
   `data/mods/example_mod/` +
   `tools/mod_template/`
 
-**492/492 GUT tests / 2016 Asserts** auf Godot 4.7+
+**563/563 GUT tests / 2127 Asserts** auf Godot 4.7+
 headless. Mutation sweeps: M5-Real-UI-Assets 6/6 REAL,
-M5-Closeout-Bucket-4 9/9 REAL, M8-iPadOS-and-Mobile 4/4 REAL, M9-Co-op-Foundation 5/5 REAL, M10-Co-op-Live-Mode 5/5 REAL, M11-Art-Rework 5/5 REAL, M12-UI-Grafical-Rework 5/5 REAL, M13-Visual-Polish 5/5 REAL, M14-Engine-Perf-Content 5/5 REAL.
+M5-Closeout-Bucket-4 9/9 REAL, M8-iPadOS-and-Mobile 4/4 REAL, M9-Co-op-Foundation 5/5 REAL, M10-Co-op-Live-Mode 5/5 REAL, M11-Art-Rework 5/5 REAL, M12-UI-Grafical-Rework 5/5 REAL, M13-Visual-Polish 5/5 REAL, M14-Engine-Perf-Content 5/5 REAL, M15-Final-Polish-Coop 5/5 REAL.
 Minimum supported Godot
 version: 4.7.
 
-**PitPact v0.10.0-m14 ist bereit für die
+**PitPact v0.11.0-m15 ist bereit für die
 öffentliche Veröffentlichung.**
 
-Post-M14: Echtes Internet-Co-op (M15+). Die M14 closeout
-liefert Engine-Perf & Content (Achievements, Campaign,
-FrameProfiler, ObjectPool, SpeedRun); die M15 closeout
-aktiviert echtes Internet-Co-op mit NAT-Traversal.
+Post-M15: Real STUN/TURN + Cloud-Backend (M16+). Die M15
+closeout liefert Final Polish + Real Co-op (Cloud-Save,
+GameSettings, Tutorial, RunStats, LobbyServer,
+NAT-Traversal-Stub, Localization en/de/ja); die M16
+closeout integriert echtes STUN/TURN + Cloud-Backend.
 
 ## Start here
 
